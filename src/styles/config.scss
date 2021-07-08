@@ -1,0 +1,45 @@
+/*eslint-disable*/
+$headNavbarHeight: 0.88rem; // 顶栏高度
+$borderRadius: 0.08rem;
+
+$backgroundColor: fff;
+$backgroundColorGrey: rgb(55, 58, 68); // 灰色背景
+
+$colorBlue: #0088ff;
+$colorRed: #f95454;
+$colorErrRed: #ff4437;
+
+$textColorBlack: #333333;
+
+.the-1px-divider {
+  position: relative;
+  &::after {
+    position: absolute;
+    box-sizing: border-box;
+    content: " ";
+    pointer-events: none;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
+    border: 0 solid #ebedf0;
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+
+    border-bottom-width: 1px;
+  }
+}
+
+// 消除页面最上方元素用margin-top，导致父级高度增加，页面高度超过100vh的问题
+@mixin delMarginTop {
+  &:before {
+    content: "";
+    display: table;
+  }
+}
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  colorBlue: $colorBlue;
+}

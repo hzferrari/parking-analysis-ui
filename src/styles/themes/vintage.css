@@ -1,0 +1,14 @@
+#app.theme-vintage {
+  background: rgba(254, 248, 239, 1);
+  color: rgba(0, 0, 0, 0.7);
+}
+
+#app.theme-vintage ::placeholder {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+#app.theme-vintage .el-date-editor .el-input__inner {
+  border: none;
+  background: none;
+  color: #606266;
+}

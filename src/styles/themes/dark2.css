@@ -1,0 +1,16 @@
+#app.theme-dark2 {
+  background: #263238;
+  color: #fff;
+}
+
+#app.theme-dark2 ::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#app.theme-dark2 .el-date-editor .el-input__inner {
+  border: none;
+  background: none;
+  color: #fff;
+}
+#app.theme-dark2 .el-date-editor.el-picker-panel {
+}
