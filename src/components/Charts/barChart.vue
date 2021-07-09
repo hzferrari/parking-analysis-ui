@@ -55,12 +55,19 @@ export default {
       themeName: "",
       markPoint: {},
       themeChange: false,
-      lineStyle: {
-        type: "dashed", //虚线
-        width: 3,
-        shadowColor: "rgba(0,0,0,0.3)",
-        shadowBlur: 10,
-        shadowOffsetY: 8,
+
+      lineChartStyle: {
+        lineStyle: {
+          type: "dashed", //虚线
+          width: 3,
+          shadowColor: "rgba(0,0,0,0.3)",
+          shadowBlur: 10,
+          shadowOffsetY: 8,
+        },
+        itemStyle: {},
+      },
+      barChartStyle: {
+        itemStyle: {},
       },
       showLabel: true,
     };
@@ -85,7 +92,16 @@ export default {
      * 主题变化时改变style
      */
     setThemeStyle() {
-      // this.lineStyle.color = "rgba(0,0,0,1)";
+      if (this.themeName === "vintage") {
+        this.lineChartStyle.lineStyle.color = "#61a0a8";
+        this.lineChartStyle.itemStyle.opacity = 0.6;
+        this.barChartStyle.itemStyle.color = "#efa18d";
+      } else {
+        this.lineChartStyle.lineStyle.color = "#73b9bc";
+        this.lineChartStyle.itemStyle.color = "#73b9bc";
+        this.lineChartStyle.itemStyle.opacity = 0.7;
+        this.barChartStyle.itemStyle.color = "#e69d87";
+      }
     },
     /**
      * 初始化图表
@@ -220,6 +236,7 @@ export default {
             name: "早高峰时间段",
             type: "bar",
             stack: "时间", // 相同的stack会堆叠在一起
+            itemStyle: this.barChartStyle.itemStyle,
             label: {
               show: false,
               position: "top",
@@ -243,7 +260,8 @@ export default {
                 return this.formatYAxisTime(params.data.p7first0Value);
               },
             },
-            lineStyle: this.lineStyle,
+            lineStyle: this.lineChartStyle.lineStyle,
+            itemStyle: this.lineChartStyle.itemStyle,
             markLine: {
               show: false,
               symbol: ["none", "circle"],
