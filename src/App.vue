@@ -1,31 +1,13 @@
 <template>
   <div id="app" class="theme-vintage">
-    <div
-      style="
-        position: fixed;
-        right: 20px;
-        top: 10px;
-        align-item: center;
-        font-size: 14px;
-      "
-    >
-      <span style="margin-right: 5px">深色主题</span>
-      <chart-theme-switch></chart-theme-switch>
-    </div>
-
     <router-view />
   </div>
 </template>
 
 <script>
-import util from "@/utils/util";
-import ChartThemeSwitch from "@/components/ChartThemeSwitch";
-
 export default {
   name: "app",
-  components: {
-    ChartThemeSwitch,
-  },
+  components: {},
   data() {
     return {};
   },
@@ -40,10 +22,6 @@ export default {
 
 <style>
 body,
-html {
-  margin: 0;
-  padding: 0;
-}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -53,5 +31,28 @@ html {
   height: 100vh;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #535353;
+}
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background: #ededed;
 }
 </style>

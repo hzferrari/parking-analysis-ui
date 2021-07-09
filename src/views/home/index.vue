@@ -1,5 +1,7 @@
 <template>
   <div class="home-page">
+    <title-bar-comp></title-bar-comp>
+    <div style="height: 40px"></div>
     <chart-1 v-show="showChart.chart1" @loaded="onChart1Loaded"></chart-1>
     <chart-2 v-show="showChart.chart2" style="margin-top: 100px"></chart-2>
 
@@ -8,12 +10,14 @@
 </template>
 
 <script>
+import TitleBarComp from "@/components/TitleBar";
 import chart1 from "./chart1.vue";
 import chart2 from "./chart2.vue";
 
 export default {
   name: "home-page",
   components: {
+    TitleBarComp,
     chart1,
     chart2,
   },

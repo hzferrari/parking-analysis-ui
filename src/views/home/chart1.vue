@@ -1,16 +1,6 @@
 <template>
   <div class="chart-1" v-if="!isLoading">
     <div
-      class="top-block"
-      style="
-        display: flex;
-        justify-content: flex-start;
-        margin-left: 120px;
-        margin-top: 20px;
-      "
-    ></div>
-
-    <div
       class="title"
       style="
         position: relative;

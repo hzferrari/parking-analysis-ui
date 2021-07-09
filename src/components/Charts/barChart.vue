@@ -278,7 +278,7 @@ export default {
                   {
                     type: "average",
                     name: "平均值",
-                    x: "92%",
+                    x: "91%",
                     lineStyle: {
                       opacity: 0.5,
                     },
