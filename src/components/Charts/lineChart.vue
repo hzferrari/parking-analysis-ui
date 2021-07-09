@@ -164,13 +164,13 @@ export default {
                 this.$emit("showMinuteAccuracy");
               },
             },
-            dataZoom: {
-              yAxisIndex: "none",
-              title: {
-                zoom: "框选视图范围",
-                back: "回退上一视图",
-              },
-            },
+            // dataZoom: {
+            //   yAxisIndex: "none",
+            //   title: {
+            //     zoom: "框选视图范围",
+            //     back: "回退上一视图",
+            //   },
+            // },
             // （重置视图时，日期也会回到一开始的默认日期）
             // restore: {
             //   title: "重置视图",

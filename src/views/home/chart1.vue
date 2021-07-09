@@ -43,9 +43,11 @@
 </template>
 
 <script>
+import util from "@/utils/util";
 import LineChart from "@/components/Charts/lineChart";
 import TheDatePicker from "@/components/TheDatePicker";
-import util from "@/utils/util";
+
+import { getDataByTimestamp } from "@/api/index";
 
 export default {
   name: "chart-1",
@@ -62,6 +64,7 @@ export default {
         dataList: [], // 这里必须初始化dataList，否则子组件watch不到
         markPoints: {},
       },
+      originDataList: [],
       defaultDay: "",
       curTimestamp: "", // initData() 正在使用的时间戳
       titleText: "",
@@ -75,13 +78,51 @@ export default {
     this.defaultDay = new Date().getTime() - 60 * 60 * 24 * 1 * 1000;
 
     this.initData();
+    // this.initLocalData();
   },
   mounted() {},
   methods: {
     /**
-     *
+     * 从接口获取数据
      */
-    initData() {
+    async initData() {
+      let timestamp = this.curTimestamp ? this.curTimestamp : this.defaultDay; // 默认timestamp是defaultDay
+      let dataList = [];
+
+      let dayStr = util.formatDate(new Date(timestamp), "yyyy-MM-dd");
+
+      // 一天的数据要分成上下两半获取，因为腾讯云数据库一次最多获取1000条
+      let res1 = await getDataByTimestamp(
+        new Date(dayStr + " 00:00:00").getTime(),
+        new Date(dayStr + " 11:59:59").getTime()
+      );
+      let res2 = await getDataByTimestamp(
+        new Date(dayStr + " 12:00:00").getTime(),
+        new Date(dayStr + " 23:59:59").getTime()
+      );
+
+      // 两次数据组合成一天的数据保存
+      dataList = res1.data.concat(res2.data);
+      // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
+      this.originDataList = dataList;
+
+      this.dataObj.dataList = this.handleData(dataList);
+      this.dataObj.timestamp = timestamp;
+
+      console.log(
+        "🚀 ~ file: index.vue ~ line 71 ~ initData ~ this.dataObj",
+        this.dataObj
+      );
+
+      this.titleText =
+        util.formatDate(new Date(timestamp), "yyyy年MM月dd日") +
+        " " +
+        util.getWeekByTimestamp(timestamp);
+    },
+    /**
+     * 从本地json文件获取数据
+     */
+    initLocalData() {
       let timestamp = this.curTimestamp ? this.curTimestamp : this.defaultDay; // 默认timestamp是defaultDay
       let dataList = [];
 
@@ -100,6 +141,9 @@ export default {
 
         return;
       }
+
+      // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
+      this.originDataList = dataList;
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
@@ -403,13 +447,13 @@ export default {
     onAccuracyChange(type) {
       if (type === "second" && !this.isAccuracyToSecond) {
         this.isAccuracyToSecond = true;
-        this.resetData();
-        this.initData();
       } else if (type === "minute" && this.isAccuracyToSecond) {
         this.isAccuracyToSecond = false;
-        this.resetData();
-        this.initData();
       }
+
+      this.resetData();
+      // 利用保存的接口数据再次初始化dataList
+      this.dataObj.dataList = this.handleData(this.originDataList);
     },
   },
 };

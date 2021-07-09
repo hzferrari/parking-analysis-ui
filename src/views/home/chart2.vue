@@ -17,10 +17,10 @@
 </template>
 
 <script>
+import _ from "lodash";
+import util from "@/utils/util";
 import BarChart from "@/components/Charts/barChart";
 import TheDatePicker from "@/components/TheDatePicker";
-import util from "@/utils/util";
-import _ from "lodash";
 
 export default {
   name: "chart-2",
