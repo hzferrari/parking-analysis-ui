@@ -40,6 +40,7 @@ export default {
       handler(newValue) {
         this.themeName = newValue;
         this.themeChange = true;
+        this.setThemeStyle();
 
         this.initChart();
       },
@@ -54,11 +55,20 @@ export default {
       themeName: "",
       markPoint: {},
       themeChange: false,
+      lineStyle: {
+        type: "dashed", //虚线
+        width: 3,
+        shadowColor: "rgba(0,0,0,0.3)",
+        shadowBlur: 10,
+        shadowOffsetY: 8,
+      },
+      showLabel: true,
     };
   },
   created() {},
   mounted() {
     this.setDefaultTheme();
+    this.setThemeStyle();
 
     this.initChart();
   },
@@ -70,6 +80,12 @@ export default {
       this.themeName = this.$store.state.app.themeSelected
         ? this.$store.state.app.themeSelected
         : "vintage";
+    },
+    /**
+     * 主题变化时改变style
+     */
+    setThemeStyle() {
+      // this.lineStyle.color = "rgba(0,0,0,1)";
     },
     /**
      * 初始化图表
@@ -89,8 +105,6 @@ export default {
         this.myChart = echarts.init(chartEL, this.themeName);
       }
 
-      this.beforeSetOption();
-
       this.setOption();
     },
     setOption() {
@@ -109,6 +123,15 @@ export default {
           show: true,
           right: "10%",
           feature: {
+            myTool1: {
+              show: true,
+              title: "显示/隐藏标签",
+              icon: "path://M498.4832 815.9232a60.2112 60.2112 0 0 1-18.8416-2.8672 61.44 61.44 0 0 1-40.96-48.3328l-23.3472-138.4448a20.0704 20.0704 0 0 0-16.7936-16.7936l-138.4448-23.3472a61.44 61.44 0 0 1-33.1776-104.0384l259.2768-259.2768A62.2592 62.2592 0 0 1 528.7936 204.8h228.9664A61.44 61.44 0 0 1 819.2 266.24v228.9664a62.2592 62.2592 0 0 1-18.0224 43.4176l-259.2768 259.2768a61.0304 61.0304 0 0 1-43.4176 18.0224zM528.7936 245.76a19.2512 19.2512 0 0 0-14.336 6.144l-259.2768 259.2768a20.48 20.48 0 0 0-5.3248 21.2992 21.2992 21.2992 0 0 0 16.384 13.9264l138.4448 22.9376a61.44 61.44 0 0 1 50.3808 50.3808l22.9376 138.4448a21.2992 21.2992 0 0 0 13.9264 16.384 20.48 20.48 0 0 0 20.8896-5.3248l259.2768-259.2768a19.2512 19.2512 0 0 0 6.144-14.336V266.24a20.48 20.48 0 0 0-20.48-20.48z M655.36 368.64m-40.96 0a40.96 40.96 0 1 0 81.92 0 40.96 40.96 0 1 0-81.92 0Z",
+              onclick: () => {
+                this.showLabel = !this.showLabel;
+                this.setOption();
+              },
+            },
             // （重置视图时，日期也会回到一开始的默认日期）
             restore: {
               title: "重置视图",
@@ -207,14 +230,53 @@ export default {
             type: "line",
             connectNulls: true, // 连接空数据
             label: {
-              show: true,
+              opacity: 0.8,
+              show: this.showLabel,
               position: "top",
+              distance: 5, // 标签和折线间距、
+              fontSize: 10,
+              emphasis: {
+                fontSize: 14,
+                fontWeight: 700,
+              },
               formatter: (params) => {
                 return this.formatYAxisTime(params.data.p7first0Value);
               },
             },
-            lineStyle: {
-              type: "dashed",
+            lineStyle: this.lineStyle,
+            markLine: {
+              show: false,
+              symbol: ["none", "circle"],
+              data: [
+                [
+                  {
+                    type: "average",
+                    name: "平均值",
+                    x: "17%",
+                  },
+                  {
+                    type: "average",
+                    name: "平均值",
+                    x: "88%",
+                    lineStyle: {
+                      opacity: 0.5,
+                    },
+                    // 鼠标移上去时
+                    emphasis: {
+                      lineStyle: {
+                        opacity: 1,
+                      },
+                    },
+                    label: {
+                      opacity: 0.7,
+                      position: "end",
+                      formatter: (params) => {
+                        return "平均满位时刻\n" + this.formatAvgTime(params);
+                      },
+                    },
+                  },
+                ],
+              ],
             },
           },
           {
@@ -236,12 +298,6 @@ export default {
       };
       // 画图
       option && this.myChart.setOption(option);
-    },
-    /**
-     * 在setOption()之前执行
-     */
-    beforeSetOption() {
-      // let tData = this.dataObj;
     },
     /**
      * 格式化tooltip显示内容
@@ -293,6 +349,15 @@ export default {
       let minute = Math.floor((value % 3600) / 60);
 
       return hour + ":" + (minute < 10 ? "0" + minute : minute);
+    },
+    /**
+     *
+     */
+    formatAvgTime(params) {
+      let str = this.formatYAxisTime(params.data.value);
+      str = " " + str.split(":")[0] + " : " + str.split(":")[1];
+      // console.log("params: ", params);
+      return str;
     },
   },
 };

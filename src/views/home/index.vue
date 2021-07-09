@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-    <chart-1></chart-1>
+    <chart-1 @loaded="onChart1Loaded"></chart-1>
     <chart-2 style="margin-top: 100px"></chart-2>
 
     <div style="height: 100px"></div>
@@ -25,7 +25,11 @@ export default {
   },
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    onChart1Loaded() {
+      console.log("chart1 loaded.");
+    },
+  },
 };
 </script>
 

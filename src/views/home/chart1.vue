@@ -29,6 +29,7 @@
     </div>
 
     <line-chart
+      v-if="!isLoading"
       chartWidth="7.5rem"
       chartHeight="4rem"
       chartIndex="1"
@@ -57,7 +58,16 @@ export default {
   },
   props: {},
   computed: {},
-  watch: {},
+  watch: {
+    isLoading: {
+      handler(val, old) {
+        // 从true变false
+        if (old && !val) {
+          this.$emit("loaded");
+        }
+      },
+    },
+  },
   data() {
     return {
       dataObj: {
@@ -69,6 +79,7 @@ export default {
       curTimestamp: "", // initData() 正在使用的时间戳
       titleText: "",
       isAccuracyToSecond: false, // 是否精确到秒
+      isLoading: false,
     };
   },
   created() {
@@ -77,8 +88,9 @@ export default {
     // 默认timestamp是昨天
     this.defaultDay = new Date().getTime() - 60 * 60 * 24 * 1 * 1000;
 
-    this.initData();
-    // this.initLocalData();
+    this.isLoading = true;
+    // this.initData();
+    this.initLocalData();
   },
   mounted() {},
   methods: {
@@ -108,6 +120,8 @@ export default {
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
+
+      this.isLoading = false;
 
       console.log(
         "🚀 ~ file: index.vue ~ line 71 ~ initData ~ this.dataObj",
@@ -147,6 +161,8 @@ export default {
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
+
+      this.isLoading = false;
 
       console.log(
         "🚀 ~ file: index.vue ~ line 71 ~ initData ~ this.dataObj",

@@ -110,7 +110,9 @@ export default {
       }
       // 不重复init
       if (!this.myChart) {
-        this.myChart = echarts.init(chartEL, this.themeName);
+        this.myChart = echarts.init(chartEL, this.themeName, {
+          renderer: "canvas",
+        });
       }
 
       this.beforeSetOption();
@@ -252,6 +254,12 @@ export default {
           // 气泡里的文字样式
           label: {
             color: "rgba(0,0,0,0.8)",
+            fontSize: 11,
+          },
+          emphasis: {
+            label: {
+              fontWeight: 700,
+            },
           },
           data: [
             {
@@ -279,7 +287,7 @@ export default {
             },
           ],
         };
-        // 这样写，没有那时刻的数据时才不会保存
+        // 这样写，没有那时刻的数据时才不会报错
         if (tData.markPoints["time0800"]) {
           this.markPoint.data.push({
             name: "8点剩余车位",

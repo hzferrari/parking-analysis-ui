@@ -128,6 +128,8 @@ export default {
      */
     handleData(dataListGroup) {
       dataListGroup.forEach((oneDay) => {
+        // 当天0点的timestamp
+        oneDay.timestamp = oneDay.dataList[0].timestamp;
         // 设置当天是星期几
         oneDay.week = util.getWeekByTimestamp(oneDay.dataList[0].timestamp);
 
@@ -191,7 +193,7 @@ export default {
         }
       });
 
-      console.log("dataListGroup: ", dataListGroup);
+      // console.log("dataListGroup: ", dataListGroup);
 
       return dataListGroup;
     },
