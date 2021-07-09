@@ -1,20 +1,14 @@
 <template>
-  <div class="chart-1">
+  <div class="chart-1" v-if="!isLoading">
     <div
       class="top-block"
       style="
         display: flex;
         justify-content: flex-start;
-        margin-left: 20px;
-        margin-bottom: 20px;
+        margin-left: 120px;
+        margin-top: 20px;
       "
-    >
-      <the-date-picker
-        ref="theDatePicker"
-        :defaultDay="defaultDay"
-        @change="onDatePickerChange"
-      ></the-date-picker>
-    </div>
+    ></div>
 
     <div
       class="title"
@@ -25,11 +19,17 @@
         text-align: center;
       "
     >
+      <the-date-picker
+        ref="theDatePicker"
+        :defaultDay="defaultDay"
+        @change="onDatePickerChange"
+      ></the-date-picker>
       <span>{{ titleText }}</span>
     </div>
 
     <line-chart
-      v-if="!isLoading"
+      ref="lineChart1"
+      style="width: 100vw; height: 75vh; margin: 0 auto"
       chartWidth="7.5rem"
       chartHeight="4rem"
       chartIndex="1"
@@ -61,6 +61,7 @@ export default {
   watch: {
     isLoading: {
       handler(val, old) {
+        // console.log("val: ", val);
         // 从true变false
         if (old && !val) {
           this.$emit("loaded");
@@ -89,8 +90,9 @@ export default {
     this.defaultDay = new Date().getTime() - 60 * 60 * 24 * 1 * 1000;
 
     this.isLoading = true;
-    // this.initData();
-    this.initLocalData();
+
+    this.initData();
+    // this.initLocalData();
   },
   mounted() {},
   methods: {
@@ -120,13 +122,12 @@ export default {
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
-
-      this.isLoading = false;
-
       console.log(
-        "🚀 ~ file: index.vue ~ line 71 ~ initData ~ this.dataObj",
+        "🚀 ~ file: chart1.vue ~ line 125 ~ initData ~ this.dataObj",
         this.dataObj
       );
+
+      this.isLoading = false;
 
       this.titleText =
         util.formatDate(new Date(timestamp), "yyyy年MM月dd日") +
@@ -161,13 +162,12 @@ export default {
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
-
-      this.isLoading = false;
-
       console.log(
-        "🚀 ~ file: index.vue ~ line 71 ~ initData ~ this.dataObj",
+        "🚀 ~ file: chart1.vue ~ line 164 ~ initLocalData ~ this.dataObj",
         this.dataObj
       );
+
+      this.isLoading = false;
 
       this.titleText =
         util.formatDate(new Date(timestamp), "yyyy年MM月dd日") +
@@ -434,6 +434,7 @@ export default {
     onDatePickerChange(timestamp) {
       this.resetData();
       this.curTimestamp = timestamp;
+
       this.initData();
     },
     /**

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      style="width: 100vw; height: 75vh; margin: 0 auto"
+      style="width: 85vw; height: 75vh; margin: 0 auto"
       :id="'bar-chart-' + chartIndex"
     ></div>
   </div>
@@ -30,15 +30,18 @@ export default {
   watch: {
     // 必须在父组件的dataObj初始化dataList，否则这里watch不到dataList变化
     dataObj: {
-      handler(newValue) {
-        // 变化时重新渲染图表
-        this.initChart();
+      handler(val) {
+        // 判断一下有数据时才执行，避免父组件resetData()的时候也initChart()一次
+        if (val.dataList.length > 0) {
+          // 变化时重新渲染图表
+          this.initChart();
+        }
       },
       deep: true,
     },
     themeSelected: {
-      handler(newValue) {
-        this.themeName = newValue;
+      handler(val) {
+        this.themeName = val;
         this.themeChange = true;
         this.setThemeStyle();
 
@@ -137,7 +140,7 @@ export default {
         },
         toolbox: {
           show: true,
-          right: "10%",
+          right: "9%",
           feature: {
             myTool1: {
               show: true,
@@ -173,14 +176,14 @@ export default {
           },
         ],
         legend: {
-          data: ["早高峰时间段", "天台停车场满位", "天台停车场出现空位"],
+          data: ["早高峰时间段", "停车场满位", "出现空位"],
           selected: {
-            天台停车场出现空位: false,
+            出现空位: false,
           },
         },
         grid: {
-          left: "15%",
-          right: "15%",
+          left: "10%",
+          right: "10%",
           top: "20%",
           bottom: "10%",
           containLabel: true,
@@ -243,7 +246,7 @@ export default {
             },
           },
           {
-            name: "天台停车场满位",
+            name: "停车场满位",
             type: "line",
             connectNulls: true, // 连接空数据
             label: {
@@ -270,12 +273,12 @@ export default {
                   {
                     type: "average",
                     name: "平均值",
-                    x: "17%",
+                    x: "12%",
                   },
                   {
                     type: "average",
                     name: "平均值",
-                    x: "88%",
+                    x: "92%",
                     lineStyle: {
                       opacity: 0.5,
                     },
@@ -298,7 +301,7 @@ export default {
             },
           },
           {
-            name: "天台停车场出现空位",
+            name: "出现空位",
             type: "line",
             connectNulls: true, // 连接空数据
             label: {

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      style="width: 100vw; height: 75vh; margin: 0 auto"
+      style="width: 85vw; height: 75vh; margin: 0 auto"
       :id="'line-chart-' + chartIndex"
     ></div>
   </div>
@@ -42,15 +42,18 @@ export default {
   watch: {
     // 必须在父组件的dataObj初始化dataList，否则这里watch不到dataList变化
     dataObj: {
-      handler(newValue) {
-        // 变化时重新渲染图表
-        this.initChart();
+      handler(val) {
+        // 判断一下有数据时才执行，避免父组件resetData()的时候也initChart()一次
+        if (val.dataList.length > 0) {
+          // 变化时重新渲染图表
+          this.initChart();
+        }
       },
       deep: true,
     },
     themeSelected: {
-      handler(newValue) {
-        this.themeName = newValue;
+      handler(val) {
+        this.themeName = val;
         this.themeChange = true;
 
         this.initChart();
@@ -84,6 +87,12 @@ export default {
     this.initChart();
   },
   methods: {
+    showLoading() {
+      this.myChart.showLoading();
+    },
+    hideLoading() {
+      this.myChart.hideLoading();
+    },
     /**
      * 默认主题
      */
@@ -120,6 +129,10 @@ export default {
       this.setOption();
 
       this.setEvents();
+      console.log("1: ", 1);
+      setTimeout(() => {
+        this.hideLoading();
+      }, 500);
     },
     setOption() {
       let option = {
@@ -133,8 +146,8 @@ export default {
           // },
         ],
         grid: {
-          left: "15%",
-          right: "15%",
+          left: "10%",
+          right: "10%",
           top: "20%",
           bottom: "10%",
           containLabel: true,
@@ -148,7 +161,7 @@ export default {
         },
         toolbox: {
           show: true,
-          right: "10%",
+          right: "9%",
           feature: {
             myTool1: {
               show: true,

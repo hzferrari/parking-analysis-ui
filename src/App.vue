@@ -9,7 +9,7 @@
         font-size: 14px;
       "
     >
-      <span style="margin-right: 5px">深色模式</span>
+      <span style="margin-right: 5px">深色主题</span>
       <chart-theme-switch></chart-theme-switch>
     </div>
 

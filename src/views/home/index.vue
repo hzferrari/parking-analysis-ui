@@ -1,7 +1,7 @@
 <template>
   <div class="home-page">
-    <chart-1 @loaded="onChart1Loaded"></chart-1>
-    <chart-2 style="margin-top: 100px"></chart-2>
+    <chart-1 v-show="showChart.chart1" @loaded="onChart1Loaded"></chart-1>
+    <chart-2 v-show="showChart.chart2" style="margin-top: 100px"></chart-2>
 
     <div style="height: 100px"></div>
   </div>
@@ -21,13 +21,20 @@ export default {
   computed: {},
   watch: {},
   data() {
-    return {};
+    return {
+      showChart: {
+        chart1: false,
+        chart2: false,
+      },
+    };
   },
   created() {},
   mounted() {},
   methods: {
     onChart1Loaded() {
       console.log("chart1 loaded.");
+      this.showChart.chart1 = true;
+      this.showChart.chart2 = true;
     },
   },
 };

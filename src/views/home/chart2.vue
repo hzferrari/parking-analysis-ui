@@ -38,7 +38,7 @@ export default {
       },
       defaultDay: "",
       curTimestamp: "", // initData() 正在使用的时间戳
-      titleText: "上班早峰期时间段示意",
+      titleText: "上班早峰期时间段（天台停车场）",
     };
   },
   created() {
