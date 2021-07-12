@@ -16,6 +16,9 @@ import "@/styles/echartsTheme/vintage";
 
 Vue.config.productionTip = false;
 
+import mountMethods from "@/utils/mountMethods";
+Vue.use(mountMethods);
+
 // vant组件
 import "vant/lib/index.css";
 import { Dialog, Toast, Loading, Button } from "vant";

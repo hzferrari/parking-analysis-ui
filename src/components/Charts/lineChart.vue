@@ -129,10 +129,8 @@ export default {
       this.setOption();
 
       this.setEvents();
-      console.log("1: ", 1);
-      setTimeout(() => {
-        this.hideLoading();
-      }, 500);
+
+      this.hideLoading();
     },
     setOption() {
       let option = {

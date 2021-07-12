@@ -5,6 +5,9 @@
 </template>
 
 <script>
+import eruda from "eruda";
+import util from "@/utils/util";
+
 export default {
   name: "app",
   components: {},
@@ -15,6 +18,15 @@ export default {
     // if (!util.isMobile()) {
     //   document.querySelector("html").style.fontSize = "18px";
     // }
+  },
+  mounted() {
+    if (util.isMobile()) {
+      eruda.init();
+      eruda.position({
+        x: "90%",
+        y: "80%",
+      });
+    }
   },
   methods: {},
 };
@@ -40,12 +52,12 @@ html {
 
 ::-webkit-scrollbar {
   /*滚动条整体样式*/
-  width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+  width: 7px; /*高宽分别对应横竖滚动条的尺寸*/
   height: 1px;
 }
 ::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
-  border-radius: 10px;
+  /* border-radius: 10px; */
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   background: #535353;
 }

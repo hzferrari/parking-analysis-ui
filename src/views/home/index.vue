@@ -1,11 +1,15 @@
 <template>
   <div class="home-page">
     <title-bar-comp></title-bar-comp>
-    <div style="height: 40px"></div>
-    <chart-1 v-show="showChart.chart1" @loaded="onChart1Loaded"></chart-1>
+    <!-- <div style="height: 40px"></div> -->
+    <chart-1
+      style="margin-top: 50px"
+      v-show="showChart.chart1"
+      @loaded="onChart1Loaded"
+    ></chart-1>
     <chart-2 v-show="showChart.chart2" style="margin-top: 100px"></chart-2>
 
-    <div style="height: 100px"></div>
+    <div style="height: 40px"></div>
   </div>
 </template>
 
