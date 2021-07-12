@@ -107,6 +107,12 @@ export default {
 
       // 两次数据组合成一天的数据保存
       dataList = res1.data.concat(res2.data);
+
+      if (dataList.length === 0) {
+        this.$toast("抱歉，没有这天的数据！");
+        return;
+      }
+
       // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
       this.originDataList = dataList;
 
@@ -137,11 +143,6 @@ export default {
         dataList =
           require(`/src/parkingData/parking_data_bytime_${dayStr}.json`).data;
       } catch (e) {
-        this.$message({
-          message: "抱歉，没有这天的数据！",
-          type: "warning",
-        });
-
         this.$toast("抱歉，没有这天的数据！");
 
         return;
