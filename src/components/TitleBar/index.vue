@@ -36,12 +36,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/config.scss";
+
+/**themes style */
+.theme-dark2 .title-bar-comp {
+  background: #32434c;
+}
+.theme-vintage .title-bar-comp {
+  background: #fff;
+}
+
 .title-bar-comp {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 40px;
+  height: $titleBarHeight;
   background: #fff;
   z-index: 100;
 }

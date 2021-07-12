@@ -290,15 +290,19 @@ export default {
                 color: chartColors.grad.burningOrange,
               },
             },
-            {
-              name: "出现空闲车位",
-              xAxis: tData.markPoints["p7firstNot0"],
-              yAxis: tData.dataList[tData.markPoints["p7firstNot0"]].p7,
-              value: tData.dataList[tData.markPoints["p7firstNot0"]].p7,
-            },
           ],
         };
+
         // 这样写，没有那时刻的数据时才不会报错
+        if (tData.markPoints["p7firstNot0"]) {
+          this.markPoint.data.push({
+            name: "出现空闲车位",
+            xAxis: tData.markPoints["p7firstNot0"],
+            yAxis: tData.dataList[tData.markPoints["p7firstNot0"]].p7,
+            value: tData.dataList[tData.markPoints["p7firstNot0"]].p7,
+          });
+        }
+
         if (tData.markPoints["time0800"]) {
           this.markPoint.data.push({
             name: "8点剩余车位",

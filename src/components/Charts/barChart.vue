@@ -256,7 +256,7 @@ export default {
               distance: 5, // 标签和折线间距、
               fontSize: 10,
               emphasis: {
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: 700,
               },
               formatter: (params) => {

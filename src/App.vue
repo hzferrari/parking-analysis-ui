@@ -1,16 +1,21 @@
 <template>
   <div id="app" class="theme-vintage">
-    <router-view />
+    <title-bar-comp></title-bar-comp>
+
+    <router-view id="router-view-comp" />
   </div>
 </template>
 
 <script>
 import eruda from "eruda";
 import util from "@/utils/util";
+import TitleBarComp from "@/components/TitleBar";
 
 export default {
   name: "app",
-  components: {},
+  components: {
+    TitleBarComp,
+  },
   data() {
     return {};
   },
@@ -32,7 +37,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "~@/styles/config.scss";
+
 body,
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -41,6 +48,11 @@ body,
 
   width: 100%;
   height: 100vh;
+  overflow: hidden;
+}
+
+#router-view-comp {
+  height: calc(100vh - #{$titleBarHeight});
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -59,12 +71,12 @@ html {
   /*滚动条里面小方块*/
   /* border-radius: 10px; */
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: #535353;
+  background: #ccc;
 }
 ::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  /* border-radius: 10px; */
   background: #ededed;
 }
 </style>
