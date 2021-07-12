@@ -2,16 +2,22 @@
   <div class="title-bar-comp">
     <div
       style="
-        position: fixed;
-        right: 20px;
-        top: 10px;
-        align-item: center;
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
         font-size: 14px;
       "
     >
       <span style="margin-right: 5px">深色主题</span>
       <chart-theme-switch></chart-theme-switch>
     </div>
+
+    <svg-icon
+      style="margin-right: 20px; cursor: pointer; font-size: 22px"
+      class="icons"
+      icon-class="github"
+      @click="gotoGithub"
+    />
   </div>
 </template>
 
@@ -31,7 +37,11 @@ export default {
   },
   created() {},
   mounted() {},
-  methods: {},
+  methods: {
+    gotoGithub() {
+      window.open("https://github.com/hzferrari/parking-analysis-ui", "_blank");
+    },
+  },
 };
 </script>
 
@@ -54,5 +64,9 @@ export default {
   height: $titleBarHeight;
   background: #fff;
   z-index: 100;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 </style>
