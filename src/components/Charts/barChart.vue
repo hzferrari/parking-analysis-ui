@@ -30,6 +30,7 @@ export default {
     // 必须在父组件的dataObj初始化dataList，否则这里watch不到dataList变化
     dataObj: {
       handler(val) {
+        console.log("val: ", val);
         // 判断一下有数据时才执行，避免父组件resetData()的时候也initChart()一次
         if (val.dataList.length > 0) {
           // 变化时重新渲染图表
@@ -149,10 +150,6 @@ export default {
                 this.showLabel = !this.showLabel;
                 this.setOption();
               },
-            },
-            // （重置视图时，日期也会回到一开始的默认日期）
-            restore: {
-              title: "重置视图",
             },
             saveAsImage: {
               title: "保存为图片",

@@ -119,10 +119,10 @@ export default {
 
       // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
       this.originDataList = _.cloneDeep(dataList);
-      console.log(
-        "🚀 ~ file: chart1.vue ~ line 122 ~ initData ~ this.originDataList",
-        this.originDataList
-      );
+      // console.log(
+      //   "🚀 ~ file: chart1.vue ~ line 122 ~ initData ~ this.originDataList",
+      //   this.originDataList
+      // );
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
