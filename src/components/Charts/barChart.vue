@@ -9,7 +9,6 @@
 <script>
 import * as echarts from "echarts";
 import { mapGetters } from "vuex";
-import util from "@/utils/util";
 
 export default {
   props: {
@@ -190,7 +189,7 @@ export default {
         },
         dataset: {
           dimensions: [
-            "dateTime",
+            "date",
             "rushTimeStartValue",
             "diffInRushTimeValue",
             "p7first0Value",
@@ -348,6 +347,8 @@ export default {
      * x轴label处理
      */
     formatXAxisTime(value) {
+      if (!value) return;
+
       let month = value.split("-")[1];
       let date = value.split("-")[2];
 

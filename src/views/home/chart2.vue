@@ -21,6 +21,8 @@ import _ from "lodash";
 import util from "@/utils/util";
 import BarChart from "@/components/Charts/barChart";
 
+import { getOnedayDataByTimestamp } from "@/api/index";
+
 export default {
   name: "chart-2",
   components: {
@@ -44,18 +46,37 @@ export default {
     // 默认timestamp是今天
     this.defaultDay = new Date().getTime();
 
+    // this.initLocalData();
     this.initData();
   },
   mounted() {},
   methods: {
-    initData() {
+    /**
+     * 从接口获取数据
+     */
+    async initData() {
+      let fileNames = this.getFileNames();
+
+      let res = await getOnedayDataByTimestamp(
+        new Date(fileNames[0] + " 00:00:00").getTime(),
+        new Date(fileNames[fileNames.length - 1] + " 11:59:59").getTime()
+      );
+
+      this.dataObj.dataList = res.data;
+
+      console.log("this.dataObj.dataList: ", this.dataObj.dataList);
+    },
+    /**
+     * 从本地加载json数据
+     */
+    initLocalData() {
       let fileNames = this.getFileNames();
       let dataListGroup = [];
 
       fileNames.forEach((dateTime) => {
         try {
           dataListGroup.push({
-            dateTime: dateTime,
+            date: dateTime,
             dataList:
               require(`/src/parkingData/parking_data_bytime_${dateTime}.json`)
                 .data,
