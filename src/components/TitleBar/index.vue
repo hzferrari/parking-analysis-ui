@@ -1,5 +1,5 @@
 <template>
-  <div class="title-bar-comp">
+  <div class="title-bar-comp" :class="{ '__scroll-down': isScrollDown }">
     <div class="title">Parking Data Analysis</div>
     <div class="right-menu">
       <div
@@ -36,14 +36,40 @@ export default {
   computed: {},
   watch: {},
   data() {
-    return {};
+    return {
+      isScrollDown: false,
+    };
   },
   created() {},
-  mounted() {},
+  mounted() {
+    window.addEventListener("scroll", this.windowScroll); //监听页面滚动
+  },
   methods: {
     gotoGithub() {
       window.open("https://github.com/hzferrari/parking-analysis-ui", "_blank");
     },
+    /**
+     * 页面滚动事件
+     */
+    windowScroll() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      console.log(
+        "🚀 ~ file: index.vue ~ line 44 ~ windowScroll ~ scrollTop",
+        scrollTop
+      );
+
+      if (scrollTop > 0) {
+        this.isScrollDown = true;
+      } else {
+        this.isScrollDown = false;
+      }
+    },
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.windowScroll); //销毁滚动事件
   },
 };
 </script>
@@ -53,14 +79,21 @@ export default {
 
 /**themes style */
 .theme-dark2 .title-bar-comp {
-  background: #32434c;
+  background: #263238;
+  &.__scroll-down {
+    background: #32434c;
+  }
 }
 .theme-vintage .title-bar-comp {
-  background: #fff;
+  background: rgba(254, 248, 239, 1);
+  &.__scroll-down {
+    background: #fcfcfc;
+  }
 }
 
 .title-bar-comp {
-  position: relative;
+  transition: all 0.5s;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;

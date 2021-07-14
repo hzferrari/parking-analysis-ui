@@ -47,14 +47,16 @@ body,
   -moz-osx-font-smoothing: grayscale;
 
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  height: 100%;
+  // height: 100vh;
+  // overflow: hidden;
 }
 
 #router-view-comp {
-  height: calc(100vh - #{$titleBarHeight});
-  overflow-y: auto;
-  overflow-x: hidden;
+  height: 100%;
+  // height: calc(100vh - #{$titleBarHeight});
+  // overflow-y: auto;
+  // overflow-x: hidden;
 }
 
 html {

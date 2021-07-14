@@ -2,7 +2,7 @@
   <div class="the-date-picker">
     <el-date-picker
       v-model="value"
-      align="right"
+      align="center"
       type="date"
       placeholder="选择日期"
       value-format="timestamp"

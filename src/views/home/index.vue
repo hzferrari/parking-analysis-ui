@@ -1,5 +1,6 @@
 <template>
   <div class="home-page">
+    <div class="placeHolder"></div>
     <chart-1
       style="margin-top: 20px"
       v-show="showChart.chart1"
@@ -35,6 +36,9 @@ export default {
   created() {},
   mounted() {},
   methods: {
+    /**
+     *
+     */
     onChart1Loaded() {
       console.log("chart1 loaded.");
       this.showChart.chart1 = true;
@@ -45,6 +49,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/config.scss";
+
 .home-page {
+  min-height: 100vh;
+  .placeHolder {
+    height: $titleBarHeight;
+  }
 }
 </style>
