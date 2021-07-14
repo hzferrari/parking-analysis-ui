@@ -1,23 +1,26 @@
 <template>
   <div class="title-bar-comp">
-    <div
-      style="
-        display: flex;
-        align-items: center;
-        margin-right: 20px;
-        font-size: 14px;
-      "
-    >
-      <span style="margin-right: 5px">深色主题</span>
-      <chart-theme-switch></chart-theme-switch>
-    </div>
+    <div class="title">Parking Data Analysis</div>
+    <div class="right-menu">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          margin-right: 20px;
+          font-size: 14px;
+        "
+      >
+        <span style="margin-right: 5px">深色主题</span>
+        <chart-theme-switch></chart-theme-switch>
+      </div>
 
-    <svg-icon
-      style="margin-right: 20px; cursor: pointer; font-size: 22px"
-      class="icons"
-      icon-class="github"
-      @click="gotoGithub"
-    />
+      <svg-icon
+        style="margin-right: 20px; cursor: pointer; font-size: 22px"
+        class="icons"
+        icon-class="github"
+        @click="gotoGithub"
+      />
+    </div>
   </div>
 </template>
 
@@ -64,9 +67,19 @@ export default {
   height: $titleBarHeight;
   background: #fff;
   z-index: 100;
-
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  .title {
+    font-family: "STHupo";
+    margin: 0 15px;
+    font-size: 17px;
+  }
+
+  .right-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
 }
 </style>

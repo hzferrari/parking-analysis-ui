@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import util from "@/utils/util";
 import LineChart from "@/components/Charts/lineChart";
 import TheDatePicker from "@/components/TheDatePicker";
@@ -76,8 +77,8 @@ export default {
   created() {
     // 默认timestamp是一周前的今天
     // this.defaultDay = new Date().getTime() - 60 * 60 * 24 * 7 * 1000;
-    // 默认timestamp是昨天
-    this.defaultDay = new Date().getTime() - 60 * 60 * 24 * 1 * 1000;
+    // 默认timestamp是今天
+    this.defaultDay = new Date().getTime();
 
     this.isLoading = true;
 
@@ -94,6 +95,9 @@ export default {
       let dataList = [];
 
       let dayStr = util.formatDate(new Date(timestamp), "yyyy-MM-dd");
+
+      ////////////////////
+      // dayStr = "2021-07-08";
 
       // 一天的数据要分成上下两半获取，因为腾讯云数据库一次最多获取1000条
       let res1 = await getDataByTimestamp(
@@ -114,7 +118,7 @@ export default {
       }
 
       // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
-      this.originDataList = dataList;
+      this.originDataList = _.cloneDeep(dataList);
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
@@ -149,7 +153,7 @@ export default {
       }
 
       // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
-      this.originDataList = dataList;
+      this.originDataList = _.cloneDeep(dataList);
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
@@ -167,7 +171,7 @@ export default {
     },
     handleData(dataList) {
       // 使时间连续
-      dataList = this._serialize(dataList);
+      // dataList = this._serialize(dataList);
 
       // 合并
       if (!this.isAccuracyToSecond) {
@@ -268,35 +272,43 @@ export default {
                     new Date(tmp.timestamp),
                     "yyyy-MM-dd hh:mm:ss"
                   );
+
+                  // console.log("tmp: ", tmp);
                   resList.push(tmp);
                 }
+                // console.log("item: ", item);
                 // 补完后记得把当前项也推入
                 resList.push(item);
               }
             }
           } else {
-            // 当前项的数据是只记录到秒钟的
+            // 当前项的数据是记录到秒钟的
 
             if (
               lastItemMinute === itemMinute - 1 ||
               (lastItemMinute == 59 && itemMinute == 0)
             ) {
+              resList.push(item);
+
               // 类似这种情况：6月24号，01:45:00  01:46:01
               // 这时 lastItemMinute === itemMinute -1，在这里处理：两项之间多添加一个01:46:00
 
-              let tmp = { ...lastItem };
-              tmp.timestamp += 1000 * 60; // 加1分钟
+              // let tmp = { ...lastItem };
+              // tmp.timestamp += 1000 * 60; // 加1分钟
 
-              tmp.time = util.formatDate(
-                new Date(tmp.timestamp),
-                "yyyy-MM-dd hh:mm:ss"
-              );
-              resList.push(tmp);
-              resList.push(item);
+              // tmp.time = util.formatDate(
+              //   new Date(tmp.timestamp),
+              //   "yyyy-MM-dd hh:mm:ss"
+              // );
+              // console.log("tmp: ", tmp);
+              // console.log("item: ", item);
 
-              // 01:45:00  01:46:01变为01:45:00 01:46:00 01:46:01后，要把01:46:00作为lastItem。并用continue;来跳过，避免下面又重复对lastItem赋值
-              lastItem = tmp;
-              continue;
+              // resList.push(tmp);
+              // resList.push(item);
+
+              // // 01:45:00  01:46:01变为01:45:00 01:46:00 01:46:01后，要把01:46:00作为lastItem。并用continue;来跳过，避免下面又重复对lastItem赋值
+              // lastItem = tmp;
+              // continue;
             } else {
               // 前后两项不连续
               if (lastItemMinute === itemMinute) {
@@ -323,8 +335,10 @@ export default {
                     new Date(tmp.timestamp),
                     "yyyy-MM-dd hh:mm:ss"
                   );
+
                   resList.push(tmp);
                 }
+
                 // 补完后记得把当前项也推入
                 resList.push(item);
 

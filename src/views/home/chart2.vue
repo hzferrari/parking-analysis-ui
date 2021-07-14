@@ -20,7 +20,6 @@
 import _ from "lodash";
 import util from "@/utils/util";
 import BarChart from "@/components/Charts/barChart";
-import TheDatePicker from "@/components/TheDatePicker";
 
 export default {
   name: "chart-2",
