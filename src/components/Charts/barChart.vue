@@ -81,6 +81,10 @@ export default {
     this.setThemeStyle();
 
     this.initChart();
+
+    window.addEventListener("resize", () => {
+      this.myChart.resize();
+    });
   },
   methods: {
     /**

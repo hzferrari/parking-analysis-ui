@@ -26,6 +26,8 @@ export default {
   },
   mounted() {
     if (util.isMobile()) {
+      this.initOrientation();
+
       eruda.init();
       eruda.position({
         x: "90%",
@@ -33,7 +35,19 @@ export default {
       });
     }
   },
-  methods: {},
+  methods: {
+    /**
+     * 设置监听手机旋转
+     */
+    initOrientation() {
+      let vm = this;
+      window.onorientationchange = function (event) {
+        // console.log("window.orientation: ", window.orientation);
+
+        vm.$store.commit("app/setOrientation", window.orientation);
+      };
+    },
+  },
 };
 </script>
 

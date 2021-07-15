@@ -59,9 +59,21 @@ export default {
         this.initChart();
       },
     },
+    // orientation: {
+    //   handler: function (val) {
+    //     console.log("🚀 ~ file: index.vue ~ line 105 ~ orientation", val);
+
+    //     //手机旋转
+    //     if (val == 90 || val == -90) {
+    //       // 横屏
+    //     } else {
+    //       // 竖屏
+    //     }
+    //   },
+    // },
   },
   computed: {
-    ...mapGetters(["themeSelected"]),
+    ...mapGetters(["themeSelected", "orientation"]),
   },
   data() {
     return {
@@ -85,6 +97,10 @@ export default {
     this.setDefaultTheme();
 
     this.initChart();
+
+    window.addEventListener("resize", () => {
+      this.myChart.resize();
+    });
   },
   methods: {
     showLoading() {
