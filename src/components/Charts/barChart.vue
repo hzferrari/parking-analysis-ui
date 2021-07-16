@@ -176,7 +176,7 @@ export default {
           },
         ],
         legend: {
-          data: ["早高峰时间段", "停车场满位", "出现空位"],
+          data: ["早高峰时间段", "停车场满位"],
           selected: {
             出现空位: false,
           },

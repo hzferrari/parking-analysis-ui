@@ -24,16 +24,20 @@
         <svg-icon class="icons" icon-class="github" @click="gotoGithub" />
       </el-tooltip>
     </div>
+
+    <manual-dialog> </manual-dialog>
   </div>
 </template>
 
 <script>
 import ChartThemeSwitch from "@/components/ChartThemeSwitch";
+import ManualDialog from "@/components/ManualDialog";
 
 export default {
   name: "title-bar-comp",
   components: {
     ChartThemeSwitch,
+    ManualDialog,
   },
   props: {},
   computed: {},
