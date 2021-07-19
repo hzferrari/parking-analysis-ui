@@ -1,6 +1,9 @@
 <template>
   <div class="title-bar-comp" :class="{ '__scroll-down': isScrollDown }">
-    <div class="title">Parking Data Analysis</div>
+    <div class="title">
+      <svg-icon class="icon" icon-class="car" />
+      <span> Parking Data Analysis </span>
+    </div>
     <div class="right-menu">
       <div
         style="
@@ -25,7 +28,7 @@
       </el-tooltip>
     </div>
 
-    <manual-dialog> </manual-dialog>
+    <manual-dialog v-if="showManualDialog"></manual-dialog>
   </div>
 </template>
 
@@ -45,6 +48,7 @@ export default {
   data() {
     return {
       isScrollDown: false,
+      showManualDialog: false,
     };
   },
   created() {},
@@ -58,7 +62,9 @@ export default {
     /**
      * 显示说明
      */
-    showManual() {},
+    showManual() {
+      this.showManualDialog = true;
+    },
     /**
      * 页面滚动事件
      */
@@ -87,6 +93,15 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/config.scss";
+
+@keyframes moving {
+  0% {
+    margin-top: -3px;
+  }
+  100% {
+    margin-top: -1px;
+  }
+}
 
 /**themes style */
 .theme-dark2 .title-bar-comp {
@@ -122,7 +137,16 @@ export default {
   .title {
     font-family: "STHupo";
     margin: 0 15px;
-    font-size: 17px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-top: -2px;
+      margin-right: 5px;
+      width: 18px;
+      height: 18px;
+      animation: moving 0.5s linear infinite alternate;
+    }
   }
 
   .right-menu {
