@@ -2,14 +2,12 @@
   <div class="chart-2">
     <div
       class="title"
-      style="
-        position: relative;
-        margin-bottom: 20px;
-        font-size: 20px;
-        text-align: center;
-      "
+      style="position: relative; margin-bottom: 20px; text-align: center"
     >
-      <span>{{ titleText }}</span>
+      <div>
+        <p style="font-size: 20px">{{ titleText }}</p>
+        <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
+      </div>
     </div>
 
     <bar-chart chartIndex="1" :dataObj="dataObj"></bar-chart>
@@ -39,7 +37,8 @@ export default {
       },
       defaultDay: "",
       curTimestamp: "", // initData() 正在使用的时间戳
-      titleText: "上班早峰期时间段（天台停车场）",
+      titleText: "上班早峰期时间段",
+      subTitle: "(天台停车场)",
     };
   },
   created() {

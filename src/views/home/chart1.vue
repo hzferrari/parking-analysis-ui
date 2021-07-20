@@ -4,17 +4,23 @@
       class="title"
       style="
         position: relative;
+        margin: 0 auto;
         margin-bottom: 20px;
-        font-size: 20px;
+        width: 70vw;
         text-align: center;
       "
     >
       <the-date-picker
+        style="position: absolute; left: 10px"
         ref="theDatePicker"
         :defaultDay="defaultDay"
         @change="onDatePickerChange"
       ></the-date-picker>
-      <span>{{ titleText }}</span>
+      <!-- <span>{{ subTitle }}</span> -->
+      <div>
+        <p style="font-size: 20px">单日停车场剩余车位数</p>
+        <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
+      </div>
     </div>
 
     <line-chart
@@ -69,7 +75,7 @@ export default {
       originDataList: [],
       defaultDay: "",
       curTimestamp: "", // initData() 正在使用的时间戳
-      titleText: "",
+      subTitle: "",
       isAccuracyToSecond: false, // 是否精确到秒
       isLoading: false,
     };
@@ -133,7 +139,7 @@ export default {
 
       this.isLoading = false;
 
-      this.titleText =
+      this.subTitle =
         util.formatDate(new Date(timestamp), "yyyy年MM月dd日") +
         " " +
         util.getWeekByTimestamp(timestamp);
@@ -168,7 +174,7 @@ export default {
 
       this.isLoading = false;
 
-      this.titleText =
+      this.subTitle =
         util.formatDate(new Date(timestamp), "yyyy年MM月dd日") +
         " " +
         util.getWeekByTimestamp(timestamp);
@@ -462,7 +468,7 @@ export default {
       //
       this.$refs.theDatePicker.setDate(this.defaultDay);
 
-      this.titleText =
+      this.subTitle =
         util.formatDate(new Date(this.defaultDay), "yyyy年MM月dd日") +
         " " +
         util.getWeekByTimestamp(this.defaultDay);

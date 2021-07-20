@@ -184,6 +184,8 @@ export default {
           selected: {
             出现空位: false,
           },
+          left: "10%",
+          top: "1%",
         },
         grid: {
           left: "10%",

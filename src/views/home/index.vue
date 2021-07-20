@@ -9,7 +9,7 @@
 
     <chart-2 v-show="showChart.chart2" style="margin-top: 100px"></chart-2>
 
-    <chart-3 v-show="showChart.chart3" style="margin-top: 100px"></chart-3>
+    <!-- <chart-3 v-show="showChart.chart3" style="margin-top: 100px"></chart-3> -->
 
     <div style="height: 60px"></div>
   </div>

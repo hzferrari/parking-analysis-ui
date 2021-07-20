@@ -177,7 +177,8 @@ export default {
         },
         legend: {
           data: ["西门南侧", "宿舍区", "二期天面"],
-          // left: 10,
+          left: "10%",
+          top: "1%",
         },
         tooltip: {
           trigger: "axis",
@@ -185,6 +186,7 @@ export default {
         toolbox: {
           show: true,
           right: "9%",
+          // top: "-5px",
           feature: {
             myTool1: {
               show: true,
