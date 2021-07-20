@@ -78,6 +78,71 @@ util.getWeekByTimestamp = function(timestamp) {
 };
 
 /**
+ * 获取最近一个月（30天）的日期列表
+ */
+util.getFileNames = function(defaultDay) {
+  let newDate = new Date(defaultDay);
+  let year = newDate.getFullYear();
+  let month = newDate.getMonth() + 1; // 月份从0开始
+  let date = newDate.getDate();
+
+  let fileNames = [];
+
+  // 30天
+  for (let i = 30; i > 0; i--) {
+    fileNames.push(
+      year + "-" + (month < 10 ? "0" + month : month) + "-" + (date < 10 ? "0" + date : date)
+    );
+    // 计算当前日期减一天的日期
+    if (date === 1) {
+      // date是1号
+      if (
+        month === 1 ||
+        month === 3 ||
+        month === 5 ||
+        month === 7 ||
+        month === 10 ||
+        month === 12
+      ) {
+        date = 30;
+      } else {
+        date = 31;
+      }
+
+      if (month === 1) {
+        month = 12;
+        year--;
+      } else {
+        month--;
+      }
+    } else {
+      // date不是1号
+      date--;
+    }
+  }
+
+  // 倒序处理，让时间正序排列
+  _.reverse(fileNames);
+  // console.log("fileNames: ", fileNames);
+
+  return fileNames;
+};
+
+/**
+ * 将时间戳转换为归一化的值，即全部转换为秒（忽略年月日，只看小时分钟秒）
+ */
+util.normalizeDatetime = function(timestamp) {
+  let newDate = new Date(timestamp);
+  let hour = newDate.getHours();
+  let minute = newDate.getMinutes();
+  let second = newDate.getSeconds();
+
+  let totalSecond = hour * 3600 + minute * 60 + second;
+
+  return totalSecond;
+};
+
+/**
  *  判断传入参数的类型，以字符串的形式返回
  *  @obj：数据
  **/

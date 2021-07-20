@@ -1,12 +1,20 @@
 <template>
   <div>
-    <div
+    <!-- <div
       style="width: 85vw; height: 75vh; margin: 0 auto"
       :id="'line-chart-' + chartIndex"
+    ></div> -->
+    <div
+      style="width: 85vw; height: 75vh; margin: 0 auto"
+      id="line-chart-1"
     ></div>
   </div>
 </template>
+
 <script>
+/**
+ * 单日车位变化折线图
+ */
 import * as echarts from "echarts";
 import chartColors from "@/styles/chartColors";
 import { mapGetters } from "vuex";
@@ -121,7 +129,8 @@ export default {
      * 初始化图表
      */
     initChart() {
-      let chartEL = document.getElementById("line-chart-" + this.chartIndex);
+      let chartEL = document.getElementById("line-chart-1");
+      // let chartEL = document.getElementById("line-chart-" + this.chartIndex);
       // 必须设置dom的宽高，才能显示出图表
       // chartEL.style.width = this.chartWidth;
       // chartEL.style.height = this.chartHeight;

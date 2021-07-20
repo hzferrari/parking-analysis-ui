@@ -2,7 +2,7 @@
   <div>
     <div
       style="width: 85vw; height: 75vh; margin: 0 auto"
-      id="bar-chart-1"
+      id="line-chart-2"
     ></div>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
     // 必须在父组件的dataObj初始化dataList，否则这里watch不到dataList变化
     dataObj: {
       handler(val) {
-        // console.log("val: ", val);
+        console.log("val: ", val);
         // 判断一下有数据时才执行，避免父组件resetData()的时候也initChart()一次
         if (val.dataList.length > 0) {
           // 变化时重新渲染图表
@@ -75,7 +75,7 @@ export default {
       barChartStyle: {
         itemStyle: {},
       },
-      showLabel: true,
+      showLabel: false,
     };
   },
   created() {},
@@ -117,8 +117,7 @@ export default {
      * 初始化图表
      */
     initChart() {
-      // let chartEL = document.getElementById("bar-chart-" + this.chartIndex);
-      let chartEL = document.getElementById("bar-chart-1");
+      let chartEL = document.getElementById("line-chart-2");
 
       // 切换时要dispose()，否则切换不了主题
       if (this.themeChange && this.myChart) {
@@ -180,7 +179,12 @@ export default {
           },
         ],
         legend: {
-          data: ["早高峰时间段", "停车场满位"],
+          data: [
+            "天台停车场满位",
+            "天台停车场出现空位",
+            "宿舍区停车场满位",
+            "西区停车场满位",
+          ],
           selected: {
             出现空位: false,
           },
@@ -195,11 +199,10 @@ export default {
         dataset: {
           dimensions: [
             "date",
-            "rushTimeStartValue",
-            "diffInRushTimeValue",
             "p7first0Value",
             "p7firstNot0Value",
             "p6first0Value",
+            "p5first0Value",
           ],
           source: this.dataObj.dataList,
         },
@@ -217,8 +220,6 @@ export default {
         yAxis: {
           name: "时间",
           type: "value",
-          // min: 26000,
-          // max: 33000,
           scale: true,
           axisLabel: {
             formatter: (value) => {
@@ -228,30 +229,7 @@ export default {
         },
         series: [
           {
-            name: "高峰期开始时间",
-            type: "bar",
-            stack: "时间", // 相同的stack会堆叠在一起
-            itemStyle: {
-              color: "rgba(0,0,0,0)",
-            },
-            emphasis: {
-              itemStyle: {
-                color: "rgba(0,0,0,0)",
-              },
-            },
-          },
-          {
-            name: "早高峰时间段",
-            type: "bar",
-            stack: "时间", // 相同的stack会堆叠在一起
-            itemStyle: this.barChartStyle.itemStyle,
-            label: {
-              show: false,
-              position: "top",
-            },
-          },
-          {
-            name: "停车场满位",
+            name: "天台停车场满位",
             type: "line",
             connectNulls: true, // 连接空数据
             label: {
@@ -306,14 +284,58 @@ export default {
             },
           },
           {
-            name: "出现空位",
+            name: "天台停车场出现空位",
             type: "line",
             connectNulls: true, // 连接空数据
             label: {
-              show: true,
+              show: this.showLabel,
               position: "top",
               formatter: (params) => {
                 return this.formatYAxisTime(params.data.p7firstNot0Value);
+              },
+            },
+            lineStyle: {
+              type: "dashed",
+            },
+          },
+          {
+            name: "宿舍区停车场满位",
+            type: "line",
+            connectNulls: true, // 连接空数据
+            label: {
+              opacity: 0.8,
+              show: this.showLabel,
+              position: "top",
+              distance: 5, // 标签和折线间距
+              fontSize: 10,
+              emphasis: {
+                fontSize: 12,
+                fontWeight: 700,
+              },
+              formatter: (params) => {
+                return this.formatYAxisTime(params.data.p6first0Value);
+              },
+            },
+            lineStyle: {
+              type: "dashed",
+            },
+          },
+          {
+            name: "西区停车场满位",
+            type: "line",
+            connectNulls: true, // 连接空数据
+            label: {
+              opacity: 0.8,
+              show: this.showLabel,
+              position: "top",
+              distance: 5, // 标签和折线间距
+              fontSize: 10,
+              emphasis: {
+                fontSize: 12,
+                fontWeight: 700,
+              },
+              formatter: (params) => {
+                return this.formatYAxisTime(params.data.p5first0Value);
               },
             },
             lineStyle: {

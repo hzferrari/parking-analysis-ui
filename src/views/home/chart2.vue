@@ -52,44 +52,6 @@ export default {
   mounted() {},
   methods: {
     /**
-     * 从接口获取数据
-     */
-    async initData() {
-      let fileNames = this.getFileNames();
-
-      let res = await getOnedayDataByTimestamp(
-        new Date(fileNames[0] + " 00:00:00").getTime(),
-        new Date(fileNames[fileNames.length - 1] + " 11:59:59").getTime()
-      );
-
-      this.dataObj.dataList = res.data;
-
-      console.log("this.dataObj.dataList: ", this.dataObj.dataList);
-    },
-    /**
-     * 从本地加载json数据
-     */
-    initLocalData() {
-      let fileNames = this.getFileNames();
-      let dataListGroup = [];
-
-      fileNames.forEach((dateTime) => {
-        try {
-          dataListGroup.push({
-            date: dateTime,
-            dataList:
-              require(`/src/parkingData/parking_data_bytime_${dateTime}.json`)
-                .data,
-          });
-        } catch (e) {
-          console.log("读取数据失败: ", dateTime);
-        }
-      });
-
-      // console.log("dataListGroup: ", dataListGroup);
-      this.dataObj.dataList = this.handleData(dataListGroup);
-    },
-    /**
      * 获取最近一个月（30天）的日期列表
      */
     getFileNames() {
@@ -144,6 +106,47 @@ export default {
       return fileNames;
     },
     /**
+     * 从接口获取数据
+     */
+    async initData() {
+      let fileNames = util.getFileNames(this.defaultDay);
+
+      let res = await getOnedayDataByTimestamp(
+        new Date(fileNames[0] + " 00:00:00").getTime(),
+        new Date(fileNames[fileNames.length - 1] + " 11:59:59").getTime()
+      );
+
+      this.dataObj.dataList = res.data;
+
+      console.log(
+        "chart2 initData this.dataObj.dataList: ",
+        this.dataObj.dataList
+      );
+    },
+    /**
+     * 从本地加载json数据
+     */
+    initLocalData() {
+      let fileNames = this.getFileNames();
+      let dataListGroup = [];
+
+      fileNames.forEach((dateTime) => {
+        try {
+          dataListGroup.push({
+            date: dateTime,
+            dataList:
+              require(`/src/parkingData/parking_data_bytime_${dateTime}.json`)
+                .data,
+          });
+        } catch (e) {
+          console.log("读取数据失败: ", dateTime);
+        }
+      });
+
+      // console.log("dataListGroup: ", dataListGroup);
+      this.dataObj.dataList = this.handleData(dataListGroup);
+    },
+    /**
      * 处理
      */
     handleData(dataListGroup) {
@@ -185,14 +188,14 @@ export default {
           oneDay.rushTimeStartTimestamp =
             oneDay.dataList[rushTimeStartIndex].timestamp;
 
-          oneDay.rushTimeStartValue = this._normalizeDatetime(
+          oneDay.rushTimeStartValue = util.normalizeDatetime(
             oneDay.rushTimeStartTimestamp
           );
         }
         if (p7first0Index !== undefined) {
           oneDay.p7first0Timestamp = oneDay.dataList[p7first0Index].timestamp;
 
-          oneDay.p7first0Value = this._normalizeDatetime(
+          oneDay.p7first0Value = util.normalizeDatetime(
             oneDay.p7first0Timestamp
           );
         }
@@ -200,7 +203,7 @@ export default {
           oneDay.p7firstNot0Timestamp =
             oneDay.dataList[p7firstNot0Index].timestamp;
 
-          oneDay.p7firstNot0Value = this._normalizeDatetime(
+          oneDay.p7firstNot0Value = util.normalizeDatetime(
             oneDay.p7firstNot0Timestamp
           );
         }
@@ -216,19 +219,6 @@ export default {
       // console.log("dataListGroup: ", dataListGroup);
 
       return dataListGroup;
-    },
-    /**
-     * 将时间戳转换为归一化的值，即全部转换为秒（忽略年月日，只看小时分钟秒）
-     */
-    _normalizeDatetime(timestamp) {
-      let newDate = new Date(timestamp);
-      let hour = newDate.getHours();
-      let minute = newDate.getMinutes();
-      let second = newDate.getSeconds();
-
-      let totalSecond = hour * 3600 + minute * 60 + second;
-
-      return totalSecond;
     },
   },
 };
