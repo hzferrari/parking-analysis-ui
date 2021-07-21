@@ -73,10 +73,10 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-      console.log(
-        "🚀 ~ file: index.vue ~ line 44 ~ windowScroll ~ scrollTop",
-        scrollTop
-      );
+      // console.log(
+      //   "🚀 ~ file: index.vue ~ line 44 ~ windowScroll ~ scrollTop",
+      //   scrollTop
+      // );
 
       if (scrollTop > 0) {
         this.isScrollDown = true;

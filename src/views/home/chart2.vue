@@ -2,8 +2,20 @@
   <div class="chart-2">
     <div
       class="title"
-      style="position: relative; margin-bottom: 20px; text-align: center"
+      style="
+        position: relative;
+        margin: 0 auto;
+        margin-bottom: 20px;
+        width: 70vw;
+        text-align: center;
+      "
     >
+      <the-daterange-picker
+        style="position: absolute; left: 10px"
+        ref="theDatePicker"
+        @change="onDaterangePickerChange"
+      ></the-daterange-picker>
+
       <div>
         <p style="font-size: 20px">{{ titleText }}</p>
         <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
@@ -18,6 +30,7 @@
 import _ from "lodash";
 import util from "@/utils/util";
 import BarChart from "@/components/Charts/barChart";
+import TheDaterangePicker from "@/components/TheDatePicker/daterange";
 
 import { getOnedayDataByTimestamp } from "@/api/index";
 
@@ -25,6 +38,7 @@ export default {
   name: "chart-2",
   components: {
     BarChart,
+    TheDaterangePicker,
   },
   props: {},
   computed: {},
@@ -35,15 +49,23 @@ export default {
         dataList: [], // 这里必须初始化dataList，否则子组件watch不到
         markPoints: {},
       },
-      defaultDay: "",
-      curTimestamp: "", // initData() 正在使用的时间戳
+      today: "",
+      curDateRange: [], // initData() 正在使用的时间戳
       titleText: "上班早峰期时间段",
       subTitle: "(天台停车场)",
     };
   },
   created() {
     // 默认timestamp是今天
-    this.defaultDay = new Date().getTime();
+    this.today = Date.now();
+
+    // 默认是最近一个月
+    let fileNames = util.getFileNames(this.today);
+
+    this.curDateRange = [
+      new Date(fileNames[0] + " 00:00:00").getTime(),
+      new Date(fileNames[fileNames.length - 1] + " 23:59:59").getTime(),
+    ];
 
     // this.initLocalData();
     this.initData();
@@ -54,7 +76,7 @@ export default {
      * 获取最近一个月（30天）的日期列表
      */
     getFileNames() {
-      let newDate = new Date(this.defaultDay);
+      let newDate = new Date(this.today);
       let year = newDate.getFullYear();
       let month = newDate.getMonth() + 1; // 月份从0开始
       let date = newDate.getDate();
@@ -108,11 +130,9 @@ export default {
      * 从接口获取数据
      */
     async initData() {
-      let fileNames = util.getFileNames(this.defaultDay);
-
       let res = await getOnedayDataByTimestamp(
-        new Date(fileNames[0] + " 00:00:00").getTime(),
-        new Date(fileNames[fileNames.length - 1] + " 11:59:59").getTime()
+        this.curDateRange[0],
+        this.curDateRange[1]
       );
 
       this.dataObj.dataList = res.data;
@@ -218,6 +238,15 @@ export default {
       // console.log("dataListGroup: ", dataListGroup);
 
       return dataListGroup;
+    },
+    /**
+     * 日期选择
+     */
+    onDaterangePickerChange(timestampArr) {
+      console.log("timestampArr: ", timestampArr);
+      this.curDateRange = timestampArr;
+
+      this.initData();
     },
   },
 };

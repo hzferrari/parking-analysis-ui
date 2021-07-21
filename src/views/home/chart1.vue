@@ -16,7 +16,7 @@
         :defaultDay="defaultDay"
         @change="onDatePickerChange"
       ></the-date-picker>
-      <!-- <span>{{ subTitle }}</span> -->
+
       <div>
         <p style="font-size: 20px">单日停车场剩余车位数</p>
         <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>

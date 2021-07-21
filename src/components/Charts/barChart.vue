@@ -209,7 +209,7 @@ export default {
           name: "日期",
           type: "category",
           axisLabel: {
-            interval: 1, // x轴间隔1个显示
+            // interval: 1, // x轴间隔1个显示
             rotate: 45,
             formatter: (value) => {
               return this.formatXAxisTime(value);
