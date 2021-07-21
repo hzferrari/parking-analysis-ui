@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-2">
+  <div class="chart-2-comp">
     <div
       class="title"
       style="
@@ -35,7 +35,7 @@ import TheDaterangePicker from "@/components/TheDatePicker/daterange";
 import { getOnedayDataByTimestamp } from "@/api/index";
 
 export default {
-  name: "chart-2",
+  name: "chart-2-comp",
   components: {
     BarChart,
     TheDaterangePicker,
@@ -51,8 +51,8 @@ export default {
       },
       today: "",
       curDateRange: [], // initData() 正在使用的时间戳
-      titleText: "上班早峰期时间段",
-      subTitle: "(天台停车场)",
+      titleText: "上班早高峰时间段",
+      subTitle: "(二期天面)",
     };
   },
   created() {
@@ -137,10 +137,12 @@ export default {
 
       this.dataObj.dataList = res.data;
 
-      console.log(
-        "chart2 initData this.dataObj.dataList: ",
-        this.dataObj.dataList
-      );
+      this.$store.commit("app/setOnedayDataList", res.data);
+
+      // console.log(
+      //   "chart2 initData this.dataObj.dataList: ",
+      //   this.dataObj.dataList
+      // );
     },
     /**
      * 从本地加载json数据
@@ -243,7 +245,7 @@ export default {
      * 日期选择
      */
     onDaterangePickerChange(timestampArr) {
-      console.log("timestampArr: ", timestampArr);
+      // console.log("timestampArr: ", timestampArr);
       this.curDateRange = timestampArr;
 
       this.initData();
@@ -253,6 +255,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.chart-2 {
+.chart-2-comp {
 }
 </style>

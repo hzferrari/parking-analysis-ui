@@ -2,13 +2,13 @@
   <div>
     <div
       style="width: 85vw; height: 75vh; margin: 0 auto"
-      id="line-chart-2"
+      id="the-chart-3"
     ></div>
   </div>
 </template>
 <script>
 /**
- * 早高峰时段+车位变0趋势图
+ * 3个停车场车位变0与变1趋势图
  */
 import * as echarts from "echarts";
 import { mapGetters } from "vuex";
@@ -117,7 +117,7 @@ export default {
      * 初始化图表
      */
     initChart() {
-      let chartEL = document.getElementById("line-chart-2");
+      let chartEL = document.getElementById("the-chart-3");
 
       // 切换时要dispose()，否则切换不了主题
       if (this.themeChange && this.myChart) {
@@ -180,8 +180,8 @@ export default {
         ],
         legend: {
           data: [
-            "天台停车场满位",
-            "天台停车场出现空位",
+            "二期天面满位",
+            "二期天面出现空位",
             "宿舍区停车场满位",
             "西区停车场满位",
           ],
@@ -229,7 +229,7 @@ export default {
         },
         series: [
           {
-            name: "天台停车场满位",
+            name: "二期天面满位",
             type: "line",
             connectNulls: true, // 连接空数据
             label: {
@@ -284,7 +284,7 @@ export default {
             },
           },
           {
-            name: "天台停车场出现空位",
+            name: "二期天面出现空位",
             type: "line",
             connectNulls: true, // 连接空数据
             label: {

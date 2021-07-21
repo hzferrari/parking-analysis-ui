@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-3">
+  <div class="chart-3-comp">
     <div
       class="title"
       style="
@@ -24,7 +24,7 @@ import theChart3 from "@/components/Charts/theChart3";
 import { getOnedayDataByTimestamp } from "@/api/index";
 
 export default {
-  name: "chart-3",
+  name: "chart-3-comp",
   components: {
     theChart3,
   },
@@ -69,6 +69,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.chart-3 {
+.chart-3-comp {
 }
 </style>

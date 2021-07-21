@@ -7,9 +7,11 @@
       @loaded="onChart1Loaded"
     ></chart-1>
 
-    <chart-2 v-show="showChart.chart2" style="margin-top: 100px"></chart-2>
+    <!-- <chart-2 v-if="showChart.chart2" style="margin-top: 100px"></chart-2> -->
 
-    <!-- <chart-3 v-show="showChart.chart3" style="margin-top: 100px"></chart-3> -->
+    <!-- <chart-3 v-if="showChart.chart3" style="margin-top: 100px"></chart-3> -->
+
+    <chart-4 v-if="showChart.chart4" style="margin-top: 100px"></chart-4>
 
     <div style="height: 60px"></div>
   </div>
@@ -19,6 +21,7 @@
 import chart1 from "./chart1.vue";
 import chart2 from "./chart2.vue";
 import chart3 from "./chart3.vue";
+import chart4 from "./chart4.vue";
 
 export default {
   name: "home-page",
@@ -26,6 +29,7 @@ export default {
     chart1,
     chart2,
     chart3,
+    chart4,
   },
   props: {},
   computed: {},
@@ -50,6 +54,7 @@ export default {
       this.showChart.chart1 = true;
       this.showChart.chart2 = true;
       this.showChart.chart3 = true;
+      this.showChart.chart4 = true;
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-1" v-if="!isLoading">
+  <div class="chart-1-comp" v-if="!isLoading">
     <div
       class="title"
       style="
@@ -18,7 +18,7 @@
       ></the-date-picker>
 
       <div>
-        <p style="font-size: 20px">单日停车场剩余车位数</p>
+        <p style="font-size: 20px">单日剩余车位数</p>
         <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
       </div>
     </div>
@@ -34,8 +34,6 @@
       @showSecondAccuracy="onAccuracyChange('second')"
       @showMinuteAccuracy="onAccuracyChange('minute')"
     ></line-chart>
-
-    <!-- <div style="margin-top: 0.2rem; font-size: 0.2rem">图表说明：</div> -->
   </div>
 </template>
 
@@ -48,7 +46,7 @@ import TheDatePicker from "@/components/TheDatePicker";
 import { getDataByTimestamp } from "@/api/index";
 
 export default {
-  name: "chart-1",
+  name: "chart-1-comp",
   components: {
     LineChart,
     TheDatePicker,
@@ -125,17 +123,12 @@ export default {
 
       // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
       this.originDataList = _.cloneDeep(dataList);
-      // console.log(
-      //   "🚀 ~ file: chart1.vue ~ line 122 ~ initData ~ this.originDataList",
-      //   this.originDataList
-      // );
+
+      // 保存到store
+      this.$store.commit("app/setOriginDataList", this.originDataList);
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
-      // console.log(
-      //   "🚀 ~ file: chart1.vue ~ line 125 ~ initData ~ this.dataObj",
-      //   this.dataObj
-      // );
 
       this.isLoading = false;
 
@@ -492,6 +485,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.chart-1 {
+.chart-1-comp {
 }
 </style>

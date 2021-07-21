@@ -1,6 +1,8 @@
 const state = {
   themeSelected: "",
   orientation: "", //手机旋转角度
+  originDataList: [], // chart1的数据
+  onedayDataList: [],
 };
 
 const mutations = {
@@ -9,6 +11,12 @@ const mutations = {
   },
   setOrientation: (state, data) => {
     state.orientation = data;
+  },
+  setOriginDataList: (state, data) => {
+    state.originDataList = data;
+  },
+  setOnedayDataList: (state, data) => {
+    state.onedayDataList = data;
   },
 };
 
