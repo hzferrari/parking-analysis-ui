@@ -80,9 +80,9 @@ export default {
   },
   created() {
     // 默认timestamp是一周前的今天
-    // this.defaultDay = new Date().getTime() - 60 * 60 * 24 * 7 * 1000;
+    // this.defaultDay = Date.now() - 60 * 60 * 24 * 7 * 1000;
     // 默认timestamp是今天
-    this.defaultDay = new Date().getTime();
+    this.defaultDay = Date.now();
 
     this.isLoading = true;
 
@@ -96,9 +96,11 @@ export default {
      */
     async initData() {
       let timestamp = this.curTimestamp ? this.curTimestamp : this.defaultDay; // 默认timestamp是defaultDay
+      console.log("timestamp: ", timestamp);
       let dataList = [];
 
       let dayStr = util.formatDate(new Date(timestamp), "yyyy-MM-dd");
+      console.log("dayStr: ", dayStr);
 
       ////////////////////
       // dayStr = "2021-07-08";

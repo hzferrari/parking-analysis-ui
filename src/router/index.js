@@ -20,11 +20,11 @@ const routes = [
     name: "iconsviewpage",
     component: () => import(/* webpackChunkName: "private" */ "../views/_iconsView"),
   },
-  {
-    path: "/calculate",
-    name: "calculate",
-    component: () => import(/* webpackChunkName: "private" */ "../views/_calculate"),
-  },
+  // {
+  //   path: "/calculate",
+  //   name: "calculate",
+  //   component: () => import(/* webpackChunkName: "private" */ "../views/_calculate"),
+  // },
 ];
 
 const router = new VueRouter({
