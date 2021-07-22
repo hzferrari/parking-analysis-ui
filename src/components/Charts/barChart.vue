@@ -344,17 +344,23 @@ export default {
       let label1 = params[1].seriesName;
       let label2 = params[2].seriesName;
 
+      let color1 = params[1].color;
+      let color2 = params[2].color;
+
       let start = this.formatYAxisTime(params[0].data.rushTimeStartValue);
       let end = this.formatYAxisTime(params[0].data.p7first0Value);
 
-      let res1 = `<p style="font-weight:700;">${title}&nbsp;&nbsp; ${week}</p>`;
-      let res2 = "";
+      let line0 = `<p style="font-weight:500;">${title}&nbsp;&nbsp; ${week}</p>`;
+      let line1 = "";
+      let line2 = "";
 
       if (params[0].data.p7first0Value) {
-        res2 = `<p>${label1}&nbsp;&nbsp;&nbsp; : ${start} - ${end}</p><p>${label2} : ${end}</p>`;
+        line1 = `<p style="margin-top:3px;" ><span style="color:${color2}">- </span>${label2}&nbsp;&nbsp;&nbsp; : <span style="font-weight:700;">${end}</span></p>`;
+
+        line2 = `<p style="margin-top:3px;"><span style="color:${color1}">- </span>${label1} : <span style="font-weight:700;">${start} - ${end}</span></p>`;
       }
 
-      return res1 + res2;
+      return line0 + line1 + line2;
     },
     /**
      * x轴label处理

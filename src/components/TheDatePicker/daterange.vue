@@ -41,8 +41,8 @@ export default {
         // 禁止选择的时间段
         disabledDate(time) {
           return (
-            time.getTime() < new Date(disabledDateStart).getTime() ||
-            time.getTime() > Date.now() + 3600 * 1000 * 24 * 1 // 禁止日期到今天为止
+            time.getTime() < new Date(disabledDateStart).getTime()
+            // ||  time.getTime() > Date.now() + 3600 * 1000 * 24 * 1 // 禁止日期到今天为止
           );
         },
         shortcuts: [
@@ -111,6 +111,7 @@ export default {
      * 选中日期时
      */
     onChange(timestampArr) {
+      console.log("timestampArr: ", timestampArr);
       if (timestampArr) {
         // 注意要设置 :default-time="['00:00:00', '23:59:59']"
         this.$emit("change", timestampArr);

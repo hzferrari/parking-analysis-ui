@@ -43,7 +43,7 @@ import util from "@/utils/util";
 import LineChart from "@/components/Charts/lineChart";
 import TheDatePicker from "@/components/TheDatePicker";
 
-import { getDataByTimestamp } from "@/api/index";
+import { getDataByTimestamp, getOnedayDataByTimestamp } from "@/api/index";
 
 export default {
   name: "chart-1-comp",
@@ -103,18 +103,29 @@ export default {
       ////////////////////
       // dayStr = "2021-07-08";
 
-      // 一天的数据要分成上下两半获取，因为腾讯云数据库一次最多获取1000条
-      let res1 = await getDataByTimestamp(
+      let res0 = await getOnedayDataByTimestamp(
         new Date(dayStr + " 00:00:00").getTime(),
-        new Date(dayStr + " 11:59:59").getTime()
+        new Date(dayStr + " 23:59:59").getTime(),
+        true
       );
-      let res2 = await getDataByTimestamp(
-        new Date(dayStr + " 12:00:00").getTime(),
-        new Date(dayStr + " 23:59:59").getTime()
-      );
+      // console.log("res0: ", res0);
+      if (res0.data && res0.data.length > 0) {
+        // 先用getOnedayDataByTimestamp接口获取一天的数据，如果查到了就不用getDataByTimestamp接口查两次了
+        dataList = res0.data[0].dataList;
+      } else {
+        // 一天的数据要分成上下两半获取，因为腾讯云数据库一次最多获取1000条
+        let res1 = await getDataByTimestamp(
+          new Date(dayStr + " 00:00:00").getTime(),
+          new Date(dayStr + " 11:59:59").getTime()
+        );
+        let res2 = await getDataByTimestamp(
+          new Date(dayStr + " 12:00:00").getTime(),
+          new Date(dayStr + " 23:59:59").getTime()
+        );
 
-      // 两次数据组合成一天的数据保存
-      dataList = res1.data.concat(res2.data);
+        // 两次数据组合成一天的数据保存
+        dataList = res1.data.concat(res2.data);
+      }
 
       if (dataList.length === 0) {
         this.$toast("抱歉，没有这天的数据！");
