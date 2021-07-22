@@ -79,27 +79,31 @@ export default {
       let timestamp = this.curTimestamp ? this.curTimestamp : this.defaultDay; // 默认timestamp是defaultDay
       let dataList = [];
 
-      let dayStr = util.formatDate(new Date(timestamp), "yyyy-MM-dd");
+      let dayStr = util.formatDate(new Date(timestamp), "yyyy/MM/dd");
 
-      let res0 = await getOnedayDataByTimestamp(
-        new Date(dayStr + " 00:00:00").getTime(),
-        new Date(dayStr + " 23:59:59").getTime(),
-        true
-      );
+      let startTime;
+      let endTime;
 
-      if (res0.data && res0.data.length > 0) {
-        // 先用getOnedayDataByTimestamp接口获取一天的数据，如果查到了就不用getDataByTimestamp接口查两次了
+      // 如果日期不是今天，则先用getOnedayDataByTimestamp接口获取一天的数据，如果查到了就不用getDataByTimestamp接口查两次了
+      let res0;
+      if (dayStr !== util.formatDate(new Date(), "yyyy/MM/dd")) {
+        startTime = new Date(dayStr + " 00:00:00").getTime();
+        endTime = new Date(dayStr + " 23:59:59").getTime();
+        res0 = await getOnedayDataByTimestamp(startTime, endTime, true);
+      }
+
+      // console.log("res0: ", res0);
+      if (res0 && res0.data && res0.data.length > 0) {
         dataList = res0.data[0].dataList;
       } else {
         // 一天的数据要分成上下两半获取，因为腾讯云数据库一次最多获取1000条
-        let res1 = await getDataByTimestamp(
-          new Date(dayStr + " 00:00:00").getTime(),
-          new Date(dayStr + " 11:59:59").getTime()
-        );
-        let res2 = await getDataByTimestamp(
-          new Date(dayStr + " 12:00:00").getTime(),
-          new Date(dayStr + " 23:59:59").getTime()
-        );
+        startTime = new Date(dayStr + " 00:00:00").getTime();
+        endTime = new Date(dayStr + " 8:59:59").getTime();
+        let res1 = await getDataByTimestamp(startTime, endTime);
+
+        startTime = new Date(dayStr + " 9:00:00").getTime();
+        endTime = new Date(dayStr + " 23:59:59").getTime();
+        let res2 = await getDataByTimestamp(startTime, endTime);
 
         // 两次数据组合成一天的数据保存
         dataList = res1.data.concat(res2.data);

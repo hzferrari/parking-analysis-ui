@@ -7,7 +7,7 @@ let util = {};
 /*
 * 日期格式化
   @param  date: Date()对象
-          fmt: 'yyyy-MM-dd' ,'MM-dd'等格式
+          fmt: 'yyyy/MM/dd' ,'MM-dd'等格式
   @return
 */
 util.formatDate = (date, fmt) => {
@@ -91,7 +91,7 @@ util.getFileNames = function(defaultDay) {
   // 30天
   for (let i = 30; i > 0; i--) {
     fileNames.push(
-      year + "-" + (month < 10 ? "0" + month : month) + "-" + (date < 10 ? "0" + date : date)
+      year + "/" + (month < 10 ? "0" + month : month) + "/" + (date < 10 ? "0" + date : date)
     );
     // 计算当前日期减一天的日期
     if (date === 1) {

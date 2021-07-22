@@ -49,11 +49,11 @@ export default {
           {
             text: "最近一周",
             onClick(picker) {
-              let todayStr = util.formatDate(new Date(), "yyyy-MM-dd");
+              let todayStr = util.formatDate(new Date(), "yyyy/MM/dd");
 
               let startDayStr = util.formatDate(
                 new Date(Date.now() - 3600 * 1000 * 24 * 7),
-                "yyyy-MM-dd"
+                "yyyy/MM/dd"
               );
 
               const start = new Date(startDayStr + " 00:00:00");
@@ -69,10 +69,10 @@ export default {
           {
             text: "最近一个月",
             onClick(picker) {
-              let todayStr = util.formatDate(new Date(), "yyyy-MM-dd");
+              let todayStr = util.formatDate(new Date(), "yyyy/MM/dd");
               let startDayStr = util.formatDate(
                 new Date(Date.now() - 3600 * 1000 * 24 * 29),
-                "yyyy-MM-dd"
+                "yyyy/MM/dd"
               ); // *29就刚好是显示30天
 
               const start = new Date(startDayStr + " 00:00:00");
@@ -84,10 +84,10 @@ export default {
           {
             text: "最近三个月",
             onClick(picker) {
-              let todayStr = util.formatDate(new Date(), "yyyy-MM-dd");
+              let todayStr = util.formatDate(new Date(), "yyyy/MM/dd");
               let startDayStr = util.formatDate(
                 new Date(Date.now() - 3600 * 1000 * 24 * 89),
-                "yyyy-MM-dd"
+                "yyyy/MM/dd"
               );
 
               const start = new Date(startDayStr + " 00:00:00");
