@@ -73,7 +73,12 @@ export default {
         itemStyle: {},
       },
       barChartStyle: {
-        itemStyle: {},
+        itemStyle: {
+          shadowColor: "rgba(0,0,0,0.3)",
+          shadowBlur: 7,
+          shadowOffsetX: 2,
+          shadowOffsetY: 5,
+        },
       },
       showLabel: true,
     };
@@ -190,7 +195,7 @@ export default {
         grid: {
           left: "10%",
           right: "10%",
-          top: "20%",
+          top: "15%",
           bottom: "10%",
           containLabel: true,
         },

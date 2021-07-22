@@ -46,7 +46,6 @@ export default {
       handler(val) {
         this.themeName = val;
         this.themeChange = true;
-        this.setThemeStyle();
 
         this.initChart();
       },
