@@ -46,6 +46,7 @@ export default {
       handler(val) {
         this.themeName = val;
         this.themeChange = true;
+        this.setThemeStyle();
 
         this.initChart();
       },
@@ -64,6 +65,7 @@ export default {
       barChartStyle: {
         itemStyle: {},
       },
+      nameTextStyle: {},
       dataZoom: [],
       showLabel: false,
     };
@@ -71,6 +73,7 @@ export default {
   created() {},
   mounted() {
     this.setDefaultTheme();
+    this.setThemeStyle();
 
     this.initChart();
 
@@ -87,7 +90,20 @@ export default {
         ? this.$store.state.app.themeSelected
         : "vintage";
     },
-
+    /**
+     * 主题变化时改变style
+     */
+    setThemeStyle() {
+      if (this.themeName === "vintage") {
+        this.nameTextStyle = {
+          color: "rgba(0, 0, 0, 0.5)",
+        };
+      } else {
+        this.nameTextStyle = {
+          color: "rgba(255, 255, 255, 0.5)",
+        };
+      }
+    },
     /**
      * 初始化图表
      */
@@ -116,22 +132,22 @@ export default {
           {
             left: "10%",
             right: "10%",
-            top: "10%", // 10%-30%
-            bottom: "70%",
+            top: "10%", // 10%-32%
+            bottom: "68%",
             containLabel: true,
           },
           {
             left: "10%",
             right: "10%",
-            top: "40%", // 40%-60%
-            bottom: "40%",
+            top: "40%", // 40%-62%
+            bottom: "38%",
             containLabel: true,
           },
           {
             left: "10%",
             right: "10%",
-            top: "70%", // 70%-90%
-            bottom: "10%",
+            top: "70%", // 70%-92%
+            bottom: "8%",
             containLabel: true,
           },
         ],
@@ -158,6 +174,7 @@ export default {
           {
             gridIndex: 0,
             name: "时间",
+            nameTextStyle: this.nameTextStyle,
             type: "category",
             axisLabel: {
               show: false,
@@ -166,6 +183,7 @@ export default {
           {
             gridIndex: 1,
             name: "时间",
+            nameTextStyle: this.nameTextStyle,
             type: "category",
             axisLabel: {
               show: false,
@@ -174,6 +192,7 @@ export default {
           {
             gridIndex: 2,
             name: "时间",
+            nameTextStyle: this.nameTextStyle,
             type: "category",
             axisLabel: {
               show: true,
@@ -184,18 +203,21 @@ export default {
           {
             gridIndex: 0,
             name: "车位数变化量\n\n二期天面",
+            nameTextStyle: this.nameTextStyle,
             type: "value",
             minInterval: 1,
           },
           {
             gridIndex: 1,
             name: "宿舍区",
+            nameTextStyle: this.nameTextStyle,
             type: "value",
             minInterval: 1,
           },
           {
             gridIndex: 2,
             name: "西门南侧",
+            nameTextStyle: this.nameTextStyle,
             type: "value",
             minInterval: 1,
           },
@@ -235,7 +257,7 @@ export default {
           filterMode: "empty", // 使另一个轴自适应过滤后的数值范围
           brushSelect: false, // 关闭鼠标框选功能
           //  范围（index）
-          startValue: 400,
+          startValue: 400, // 7:10分左右开始
           endValue: 500,
         },
         {
@@ -250,7 +272,7 @@ export default {
      * 格式化tooltip显示内容
      */
     formatTooltip(params) {
-      console.log("params: ", params);
+      // console.log("params: ", params);
 
       let title = params[0].axisValue;
 

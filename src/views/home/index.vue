@@ -7,7 +7,7 @@
       @loaded="onChart1Loaded"
     ></chart-1>
 
-    <chart-2 v-if="showChart.chart2" style="margin-top: 100px"></chart-2>
+    <!-- <chart-2 v-if="showChart.chart2" style="margin-top: 100px"></chart-2> -->
 
     <!-- <chart-3 v-if="showChart.chart3" style="margin-top: 100px"></chart-3> -->
 
@@ -40,6 +40,7 @@ export default {
         chart1: false,
         chart2: false,
         chart3: false,
+        chart4: false,
       },
     };
   },
