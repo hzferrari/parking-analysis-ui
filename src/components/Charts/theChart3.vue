@@ -67,8 +67,8 @@ export default {
           type: "dashed", //虚线
           width: 3,
           shadowColor: "rgba(0,0,0,0.3)",
-          shadowBlur: 10,
-          shadowOffsetY: 8,
+          shadowBlur: 7,
+          shadowOffsetY: 5,
         },
         itemStyle: {},
       },

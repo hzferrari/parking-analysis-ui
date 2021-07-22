@@ -90,8 +90,8 @@ export default {
       lineStyle: {
         width: 2,
         shadowColor: "rgba(0,0,0,0.3)",
-        shadowBlur: 10,
-        shadowOffsetY: 8,
+        shadowBlur: 7,
+        shadowOffsetY: 5,
       },
       markPoint: {},
       markArea: {},
@@ -241,8 +241,9 @@ export default {
           {
             type: "line",
             name: "西门南侧",
+            lineStyle: this.lineStyle,
           },
-          { type: "line", name: "宿舍区" },
+          { type: "line", name: "宿舍区", lineStyle: this.lineStyle },
           {
             type: "line",
             name: "二期天面",
