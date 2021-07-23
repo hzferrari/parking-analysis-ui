@@ -164,10 +164,26 @@ export default {
         },
         dataZoom: this.dataZoom,
         legend: {
-          data: ["二期天面", "宿舍区", "西门南侧"],
+          left: "10%",
+          data: [
+            "二期天面入",
+            "二期天面出",
+            "宿舍区入",
+            "宿舍区出",
+            "西门南侧入",
+            "西门南侧出",
+          ],
         },
         dataset: {
-          dimensions: ["timeStr", "deltaP7", "deltaP6", "deltaP5"],
+          dimensions: [
+            "timeStr",
+            "p7Down",
+            "p7Up",
+            "p6Down",
+            "p6Up",
+            "p5Down",
+            "p5Up",
+          ],
           source: this.dataObj.dataList,
         },
         xAxis: [
@@ -202,10 +218,11 @@ export default {
         yAxis: [
           {
             gridIndex: 0,
-            name: "车位数变化量\n\n二期天面",
+            name: "二期天面",
             nameTextStyle: this.nameTextStyle,
             type: "value",
             minInterval: 1,
+            scale: true,
           },
           {
             gridIndex: 1,
@@ -213,6 +230,7 @@ export default {
             nameTextStyle: this.nameTextStyle,
             type: "value",
             minInterval: 1,
+            scale: true,
           },
           {
             gridIndex: 2,
@@ -220,6 +238,7 @@ export default {
             nameTextStyle: this.nameTextStyle,
             type: "value",
             minInterval: 1,
+            scale: true,
           },
         ],
         series: [
@@ -227,19 +246,37 @@ export default {
             xAxisIndex: 0,
             yAxisIndex: 0,
             type: "bar",
-            name: "二期天面",
+            name: "二期天面入",
+          },
+          {
+            xAxisIndex: 0,
+            yAxisIndex: 0,
+            type: "bar",
+            name: "二期天面出",
           },
           {
             xAxisIndex: 1,
             yAxisIndex: 1,
             type: "bar",
-            name: "宿舍区",
+            name: "宿舍区入",
+          },
+          {
+            xAxisIndex: 1,
+            yAxisIndex: 1,
+            type: "bar",
+            name: "宿舍区出",
           },
           {
             xAxisIndex: 2,
             yAxisIndex: 2,
             type: "bar",
-            name: "西门南侧",
+            name: "西门南侧入",
+          },
+          {
+            xAxisIndex: 2,
+            yAxisIndex: 2,
+            type: "bar",
+            name: "西门南侧出",
           },
         ],
       };
@@ -254,11 +291,13 @@ export default {
         {
           xAxisIndex: [0, 1, 2],
           type: "slider",
-          filterMode: "empty", // 使另一个轴自适应过滤后的数值范围
+          filterMode: "weakFilter", // 使另一个轴自适应过滤后的数值范围
           brushSelect: false, // 关闭鼠标框选功能
           //  范围（index）
-          startValue: 400, // 7:10分左右开始
-          endValue: 500,
+          // startValue: 400, // 7:10分左右开始
+          // endValue: 500,
+          startValue: 0, // 7:10分左右开始
+          endValue: 50,
         },
         {
           xAxisIndex: [0, 1, 2],
@@ -272,29 +311,38 @@ export default {
      * 格式化tooltip显示内容
      */
     formatTooltip(params) {
-      // console.log("params: ", params);
+      console.log("params: ", params);
 
       let title = params[0].axisValue;
 
       // 鼠标在不同图表时，params里数组顺序会变，因此这里只能固定写死顺序显示
-      let label0 = "二期天面";
-      let label1 = "宿舍区";
-      let label2 = "西门南侧";
+      let label0 = "二期天面入";
+      let label1 = "二期天面出";
+      let label2 = "宿舍区入";
+      let label3 = "宿舍区出";
+      let label4 = "西门南侧入";
+      let label5 = "西门南侧出";
 
-      let data0 = params[0].data.deltaP7;
-      let data1 = params[0].data.deltaP6;
-      let data2 = params[0].data.deltaP5;
+      let data0 = params[0].data.p7Down;
+      let data1 = params[0].data.p7Up;
+      let data2 = params[0].data.p6Down;
+      let data3 = params[0].data.p6Up;
+      let data4 = params[0].data.p5Down;
+      let data5 = params[0].data.p5Up;
 
       let color0 = params[0].color;
       let color1 = params[1].color;
       let color2 = params[2].color;
 
-      let line0 = `<p style="font-weight:500;">${title}</p>`;
-      let line1 = `<p>${label0} : ${data0}</p>`;
-      let line2 = `<p>${label1} : &nbsp;&nbsp;${data1}</p>`;
-      let line3 = `<p>${label2} : ${data2}</p>`;
+      let titleLine = `<p >${title}</p>`;
+      let line0 = `<p>${label0} : <span style="font-weight:700;">${data0}</span></p>`;
+      let line1 = `<p>${label1} : <span style="font-weight:700;">${data1}</span></p>`;
+      let line2 = `<p>${label2} : <span style="font-weight:700;">${data2}</span></p>`;
+      let line3 = `<p>${label3} : <span style="font-weight:700;">${data3}</span></p>`;
+      let line4 = `<p>${label4} : <span style="font-weight:700;">${data4}</span></p>`;
+      let line5 = `<p>${label5} : <span style="font-weight:700;">${data5}</span></p>`;
 
-      return line0 + line1 + line2 + line3;
+      return titleLine + line0 + line1 + line2 + line3 + line4 + line5;
     },
   },
 };

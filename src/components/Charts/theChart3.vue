@@ -166,7 +166,7 @@ export default {
         dataZoom: [
           {
             type: "inside",
-            filterMode: "filter", // 使另一个轴自适应过滤后的数值范围
+            filterMode: "weakFilter", // 使另一个轴自适应过滤后的数值范围
             brushSelect: false, // 关闭鼠标框选功能
             //  范围（百分比）
             start: 0,

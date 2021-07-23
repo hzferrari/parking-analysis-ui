@@ -81,15 +81,14 @@ export default {
 
       let dayStr = util.formatDate(new Date(timestamp), "yyyy/MM/dd");
 
-      let startTime;
-      let endTime;
-
       // 如果日期不是今天，则先用getOnedayDataByTimestamp接口获取一天的数据，如果查到了就不用getDataByTimestamp接口查两次了
       let res0;
       if (dayStr !== util.formatDate(new Date(), "yyyy/MM/dd")) {
-        startTime = new Date(dayStr + " 00:00:00").getTime();
-        endTime = new Date(dayStr + " 23:59:59").getTime();
-        res0 = await getOnedayDataByTimestamp(startTime, endTime, true);
+        res0 = await getOnedayDataByTimestamp(
+          new Date(dayStr + " 00:00:00").getTime(),
+          new Date(dayStr + " 23:59:59").getTime(),
+          true
+        );
       }
 
       // console.log("res0: ", res0);
@@ -97,13 +96,14 @@ export default {
         dataList = res0.data[0].dataList;
       } else {
         // 一天的数据要分成上下两半获取，因为腾讯云数据库一次最多获取1000条
-        startTime = new Date(dayStr + " 00:00:00").getTime();
-        endTime = new Date(dayStr + " 8:59:59").getTime();
-        let res1 = await getDataByTimestamp(startTime, endTime);
-
-        startTime = new Date(dayStr + " 9:00:00").getTime();
-        endTime = new Date(dayStr + " 23:59:59").getTime();
-        let res2 = await getDataByTimestamp(startTime, endTime);
+        let res1 = await getDataByTimestamp(
+          new Date(dayStr + " 00:00:00").getTime(),
+          new Date(dayStr + " 8:59:59").getTime()
+        );
+        let res2 = await getDataByTimestamp(
+          new Date(dayStr + " 9:00:00").getTime(),
+          new Date(dayStr + " 23:59:59").getTime()
+        );
 
         // 两次数据组合成一天的数据保存
         dataList = res1.data.concat(res2.data);
@@ -115,6 +115,7 @@ export default {
       }
 
       this.dataObj.dataList = this.handleData(dataList);
+
       this.dataObj.timestamp = timestamp;
 
       this.isLoading = false;
@@ -125,6 +126,9 @@ export default {
      *
      */
     handleData(dataList) {
+      dataList.splice(0, 485);
+      return this._combineToMinute(dataList);
+
       // console.log("chart4 dataList: ", dataList);
       let newList = [];
 
@@ -142,13 +146,13 @@ export default {
         }
 
         if (i === 0) {
-          tmp.deltaP5 = 0;
-          tmp.deltaP6 = 0;
-          tmp.deltaP7 = 0;
+          tmp.p5Down = 0;
+          tmp.p6Down = 0;
+          tmp.p7Down = 0;
         } else {
-          tmp.deltaP5 = v.p5 - dataList[i - 1].p5;
-          tmp.deltaP6 = v.p6 - dataList[i - 1].p6;
-          tmp.deltaP7 = v.p7 - dataList[i - 1].p7;
+          tmp.p5Down = v.p5 - dataList[i - 1].p5;
+          tmp.p6Down = v.p6 - dataList[i - 1].p6;
+          tmp.p7Down = v.p7 - dataList[i - 1].p7;
         }
         newList.push(tmp);
       }
@@ -159,6 +163,109 @@ export default {
       );
 
       return newList;
+    },
+    /**
+     * 将精确到秒的时间点数据合并到分钟
+     */
+    _combineToMinute(dataList) {
+      let resList = [];
+
+      let lastItem = {}; // 上一项或上一个整分钟点项
+
+      for (let i = 0, len = dataList.length; i < len; i++) {
+        let item = dataList[i];
+        // debugger;
+        if (i === 0) {
+          // 第一项
+
+          item = _cal(item);
+          item.timeStr = util.formatDate(new Date(item.timestamp), "h:mm"); // 几点几分
+
+          lastItem = { ...item };
+        } else if (i < len - 1) {
+          // 不是最后一项
+          if (
+            item.time.substr(item.time.length - 2, item.time.length) !== "00"
+          ) {
+            // 当前项的数据是记录到秒的（非整分钟点项）
+            let time00 = item.time.substr(0, item.time.length - 2) + "00";
+
+            let tmp = { ...item };
+
+            tmp = _cal(tmp, lastItem, true);
+
+            lastItem = { ...tmp }; // 不能直接写 = ，否则对lastItem的修改也会影响到dataList
+            lastItem.time = time00; // 时间只显示到分钟，因此时间最后两位（秒）改为00
+          } else {
+            // 当前项的数据是只记录到分钟的（整分钟点项）
+
+            // 先记录timeStr，然后推入上一项到数组
+            lastItem.timeStr = util.formatDate(
+              new Date(lastItem.timestamp),
+              "h:mm"
+            ); // 几点几分
+
+            resList.push(lastItem);
+
+            item = _cal(item, lastItem);
+
+            // lastItem替换成当前循环项（然后就进入下一个循环了）
+            lastItem = { ...item };
+          }
+        } else {
+          // 最后一项
+
+          item = _cal(item, lastItem);
+
+          item.timeStr = util.formatDate(new Date(item.timestamp), "h:mm"); // 几点几分
+
+          resList.push(lastItem);
+          resList.push(item);
+        }
+      }
+
+      function _cal(item, lastItem, accumulation) {
+        // 没有这些字段就初始化
+        item.p5Up = item.p5Up ? item.p5Up : 0;
+        item.p5Down = item.p5Down ? item.p5Down : 0;
+        item.p6Up = item.p6Up ? item.p6Up : 0;
+        item.p6Down = item.p6Down ? item.p6Down : 0;
+        item.p7Up = item.p7Up ? item.p7Up : 0;
+        item.p7Down = item.p7Down ? item.p7Down : 0;
+
+        if (lastItem) {
+          // 如果需要累加上次的数据
+          if (accumulation) {
+            item.p5Up += lastItem.p5Up;
+            item.p5Down += lastItem.p5Down;
+            item.p6Up += lastItem.p6Up;
+            item.p6Down += lastItem.p6Down;
+            item.p7Up += lastItem.p7Up;
+            item.p7Down += lastItem.p7Down;
+          }
+
+          if (item.p5 - lastItem.p5 >= 0) {
+            item.p5Up += item.p5 - lastItem.p5;
+          } else {
+            item.p5Down += item.p5 - lastItem.p5;
+          }
+          if (item.p6 - lastItem.p6 >= 0) {
+            item.p6Up += item.p6 - lastItem.p6;
+          } else {
+            item.p6Down += item.p6 - lastItem.p6;
+          }
+          if (item.p7 - lastItem.p7 >= 0) {
+            item.p7Up += item.p7 - lastItem.p7;
+          } else {
+            item.p7Down += item.p7 - lastItem.p7;
+          }
+        }
+
+        return item;
+      }
+
+      console.log("combine: ", resList);
+      return resList;
     },
     /**
      * 日期选择时
