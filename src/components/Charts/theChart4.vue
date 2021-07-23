@@ -311,36 +311,41 @@ export default {
      * 格式化tooltip显示内容
      */
     formatTooltip(params) {
-      console.log("params: ", params);
+      // console.log("params: ", params);
 
       let title = params[0].axisValue;
 
-      // 鼠标在不同图表时，params里数组顺序会变，因此这里只能固定写死顺序显示
-      let label0 = "二期天面入";
-      let label1 = "二期天面出";
-      let label2 = "宿舍区入";
-      let label3 = "宿舍区出";
-      let label4 = "西门南侧入";
-      let label5 = "西门南侧出";
+      // 鼠标在不同图表时，params里数组顺序会变
+      let label0 = params[0].seriesName;
+      let label1 = params[1].seriesName;
+      let label2 = params[2].seriesName;
+      let label3 = params[3].seriesName;
+      let label4 = params[4].seriesName;
+      let label5 = params[5].seriesName;
 
-      let data0 = params[0].data.p7Down;
+      let data0 = -params[0].data.p7Down;
       let data1 = params[0].data.p7Up;
-      let data2 = params[0].data.p6Down;
+      let data2 = -params[0].data.p6Down;
       let data3 = params[0].data.p6Up;
-      let data4 = params[0].data.p5Down;
+      let data4 = -params[0].data.p5Down;
       let data5 = params[0].data.p5Up;
 
       let color0 = params[0].color;
       let color1 = params[1].color;
       let color2 = params[2].color;
+      let color3 = params[3].color;
+      let color4 = params[4].color;
+      let color5 = params[5].color;
 
-      let titleLine = `<p >${title}</p>`;
-      let line0 = `<p>${label0} : <span style="font-weight:700;">${data0}</span></p>`;
-      let line1 = `<p>${label1} : <span style="font-weight:700;">${data1}</span></p>`;
-      let line2 = `<p>${label2} : <span style="font-weight:700;">${data2}</span></p>`;
-      let line3 = `<p>${label3} : <span style="font-weight:700;">${data3}</span></p>`;
-      let line4 = `<p>${label4} : <span style="font-weight:700;">${data4}</span></p>`;
-      let line5 = `<p>${label5} : <span style="font-weight:700;">${data5}</span></p>`;
+      let titleLine = `<p style="font-weight:700">${title}</p>`;
+      let circleStyle =
+        "display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px";
+      let line0 = `<p><span style="${circleStyle};background:${color0}"></span>${label0} : <span style="font-weight:700;">${data0}</span></p>`;
+      let line1 = `<p><span style="${circleStyle};background:${color1}"></span>${label1} : <span style="font-weight:700;">${data1}</span></p>`;
+      let line2 = `<p><span style="${circleStyle};background:${color2}"></span>${label2} : <span style="font-weight:700;">${data2}</span></p>`;
+      let line3 = `<p><span style="${circleStyle};background:${color3}"></span>${label3} : <span style="font-weight:700;">${data3}</span></p>`;
+      let line4 = `<p><span style="${circleStyle};background:${color4}"></span>${label4} : <span style="font-weight:700;">${data4}</span></p>`;
+      let line5 = `<p><span style="${circleStyle};background:${color5}"></span>${label5} : <span style="font-weight:700;">${data5}</span></p>`;
 
       return titleLine + line0 + line1 + line2 + line3 + line4 + line5;
     },
