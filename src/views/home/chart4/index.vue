@@ -23,11 +23,16 @@
       </div>
     </div>
 
-    <the-chart-4 :dataObj="dataObj"></the-chart-4>
+    <the-chart-4
+      :dataObj="dataObj"
+      @showSecondAccuracy="onAccuracyChange('second')"
+      @showMinuteAccuracy="onAccuracyChange('minute')"
+    ></the-chart-4>
   </div>
 </template>
 
 <script>
+import _ from "lodash";
 import util from "@/utils/util";
 import theChart4 from "@/components/Charts/theChart4";
 import TheDatePicker from "@/components/TheDatePicker";
@@ -49,10 +54,12 @@ export default {
         dataList: [], // 这里必须初始化dataList，否则子组件watch不到
         markPoints: {},
       },
+      originDataList: [],
       defaultDay: "",
       curTimestamp: "", // initData() 正在使用的时间戳
       titleText: "车位变化量",
       subTitle: "",
+      isAccuracyToSecond: false, // 是否精确到秒
     };
   },
   created() {
@@ -60,9 +67,11 @@ export default {
     this.defaultDay = new Date().getTime();
 
     if (this.$store.state.app.originDataList.length > 0) {
-      this.dataObj.dataList = this.handleData(
-        this.$store.state.app.originDataList
-      );
+      let dataList = this.$store.state.app.originDataList;
+      // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
+      this.originDataList = _.cloneDeep(dataList);
+
+      this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = this.defaultDay;
 
       this.setSubtitle(this.defaultDay);
@@ -114,6 +123,9 @@ export default {
         return;
       }
 
+      // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
+      this.originDataList = _.cloneDeep(dataList);
+
       this.dataObj.dataList = this.handleData(dataList);
 
       this.dataObj.timestamp = timestamp;
@@ -123,38 +135,61 @@ export default {
       this.setSubtitle(timestamp);
     },
     /**
-     *
+     * 处理数据
      */
     handleData(dataList) {
-      dataList.splice(0, 485);
-      return this._combineToMinute(dataList);
+      // dataList.splice(0, 485);
 
-      // console.log("chart4 dataList: ", dataList);
       let newList = [];
 
-      for (let i = 0, len = dataList.length; i < len; i++) {
-        let tmp = {};
-        let v = dataList[i];
+      if (!this.isAccuracyToSecond) {
+        // 合并到分钟
+        newList = this._combineToMinute(dataList);
+      } else {
+        // 精确到秒（原始数据）
 
-        tmp.time = v.time;
-        tmp.timestamp = v.timestamp;
+        for (let i = 0, len = dataList.length; i < len; i++) {
+          let tmp = {};
+          let v = dataList[i];
 
-        if (v.time.substr(v.time.length - 2, v.time.length) !== "00") {
-          tmp.timeStr = util.formatDate(new Date(v.timestamp), "h:mm:ss"); // 几点几分几秒
-        } else {
-          tmp.timeStr = util.formatDate(new Date(v.timestamp), "h:mm"); // 几点几分
-        }
+          tmp.time = v.time;
+          tmp.timestamp = v.timestamp;
 
-        if (i === 0) {
+          if (v.time.substr(v.time.length - 2, v.time.length) !== "00") {
+            tmp.timeStr = util.formatDate(new Date(v.timestamp), "h:mm:ss"); // 几点几分几秒
+          } else {
+            tmp.timeStr = util.formatDate(new Date(v.timestamp), "h:mm"); // 几点几分
+          }
+
+          // 初始化
+          tmp.p5Up = 0;
           tmp.p5Down = 0;
+          tmp.p6Up = 0;
           tmp.p6Down = 0;
+          tmp.p7Up = 0;
           tmp.p7Down = 0;
-        } else {
-          tmp.p5Down = v.p5 - dataList[i - 1].p5;
-          tmp.p6Down = v.p6 - dataList[i - 1].p6;
-          tmp.p7Down = v.p7 - dataList[i - 1].p7;
+
+          if (i !== 0) {
+            if (v.p5 - dataList[i - 1].p5 >= 0) {
+              tmp.p5Up = v.p5 - dataList[i - 1].p5;
+            } else {
+              tmp.p5Down = v.p5 - dataList[i - 1].p5;
+            }
+
+            if (v.p6 - dataList[i - 1].p6 >= 0) {
+              tmp.p6Up = v.p6 - dataList[i - 1].p6;
+            } else {
+              tmp.p6Down = v.p6 - dataList[i - 1].p6;
+            }
+
+            if (v.p7 - dataList[i - 1].p7 >= 0) {
+              tmp.p7Up = v.p7 - dataList[i - 1].p7;
+            } else {
+              tmp.p7Down = v.p7 - dataList[i - 1].p7;
+            }
+          }
+          newList.push(tmp);
         }
-        newList.push(tmp);
       }
 
       console.log(
@@ -293,6 +328,20 @@ export default {
         util.formatDate(new Date(timestamp), "yyyy年MM月dd日") +
         " " +
         util.getWeekByTimestamp(timestamp);
+    },
+    /**
+     * 时间精度变化
+     */
+    onAccuracyChange(type) {
+      if (type === "second" && !this.isAccuracyToSecond) {
+        this.isAccuracyToSecond = true;
+      } else if (type === "minute" && this.isAccuracyToSecond) {
+        this.isAccuracyToSecond = false;
+      }
+
+      this.resetData();
+      // 利用保存的接口数据再次初始化dataList
+      this.dataObj.dataList = this.handleData(this.originDataList);
     },
   },
 };
