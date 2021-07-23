@@ -192,12 +192,12 @@ export default {
         legend: {
           left: "10%",
           data: [
-            "二期天面出",
             "二期天面入",
-            "宿舍区出",
+            "二期天面出",
             "宿舍区入",
-            "西门南侧出",
+            "宿舍区出",
             "西门南侧入",
+            "西门南侧出",
           ],
         },
         dataset: {
@@ -272,22 +272,15 @@ export default {
             xAxisIndex: 0,
             yAxisIndex: 0,
             type: "bar",
-            name: "二期天面出",
+            name: "二期天面入",
             stack: "二期天面",
           },
           {
             xAxisIndex: 0,
             yAxisIndex: 0,
             type: "bar",
-            name: "二期天面入",
+            name: "二期天面出",
             stack: "二期天面",
-          },
-          {
-            xAxisIndex: 1,
-            yAxisIndex: 1,
-            type: "bar",
-            name: "宿舍区出",
-            stack: "宿舍区",
           },
           {
             xAxisIndex: 1,
@@ -297,17 +290,24 @@ export default {
             stack: "宿舍区",
           },
           {
-            xAxisIndex: 2,
-            yAxisIndex: 2,
+            xAxisIndex: 1,
+            yAxisIndex: 1,
             type: "bar",
-            name: "西门南侧出",
-            stack: "西门南侧",
+            name: "宿舍区出",
+            stack: "宿舍区",
           },
           {
             xAxisIndex: 2,
             yAxisIndex: 2,
             type: "bar",
             name: "西门南侧入",
+            stack: "西门南侧",
+          },
+          {
+            xAxisIndex: 2,
+            yAxisIndex: 2,
+            type: "bar",
+            name: "西门南侧出",
             stack: "西门南侧",
           },
         ],
@@ -322,12 +322,12 @@ export default {
       this.dataZoom = [
         {
           xAxisIndex: [0, 1, 2],
-          type: "slider",
+          type: "inside",
           filterMode: "weakFilter", // 使另一个轴自适应过滤后的数值范围
           brushSelect: false, // 关闭鼠标框选功能
           //  范围（index）
-          startValue: 450, // 7:30分左右开始
-          endValue: 530,
+          startValue: 450, //
+          endValue: 540,
           // startValue: 0,
           // endValue: 50,
         },
