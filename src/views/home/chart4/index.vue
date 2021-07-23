@@ -192,10 +192,10 @@ export default {
         }
       }
 
-      console.log(
-        "🚀 ~ file: chart4.vue ~ line 131 ~ handleData ~ newList",
-        newList
-      );
+      // console.log(
+      //   "🚀 ~ file: chart4.vue ~ line 131 ~ handleData ~ newList",
+      //   newList
+      // );
 
       return newList;
     },
@@ -299,7 +299,7 @@ export default {
         return item;
       }
 
-      console.log("combine: ", resList);
+      // console.log("combine: ", resList);
       return resList;
     },
     /**

@@ -122,7 +122,7 @@ export default {
         // 一天的数据要分成上下两半获取，因为腾讯云数据库一次最多获取1000条
         startTime = new Date(dayStr + " 00:00:00").getTime();
         endTime = new Date(dayStr + " 8:59:59").getTime();
-        console.log("1: ", startTime, endTime);
+
         let res1 = await getDataByTimestamp(startTime, endTime);
 
         startTime = new Date(dayStr + " 9:00:00").getTime();
