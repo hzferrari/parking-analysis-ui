@@ -109,11 +109,12 @@ export default {
     setThemeStyle() {
       if (this.themeName === "vintage") {
         this.lineChartStyle.lineStyle.color = "#61a0a8";
+        this.lineChartStyle.itemStyle.color = "#d87c7c";
         this.lineChartStyle.itemStyle.opacity = 0.6;
         this.barChartStyle.itemStyle.color = "#efa18d";
       } else {
         this.lineChartStyle.lineStyle.color = "#73b9bc";
-        this.lineChartStyle.itemStyle.color = "#73b9bc";
+        this.lineChartStyle.itemStyle.color = "#eedd78";
         this.lineChartStyle.itemStyle.opacity = 0.7;
         this.barChartStyle.itemStyle.color = "#e69d87";
       }
