@@ -18,7 +18,7 @@
       </div>
 
       <el-tooltip class="icon-wrap" :open-delay="200">
-        <div slot="content">操作说明</div>
+        <div slot="content">操作手册</div>
         <svg-icon class="icons" icon-class="question" @click="showManual" />
       </el-tooltip>
 
@@ -28,7 +28,10 @@
       </el-tooltip>
     </div>
 
-    <manual-dialog v-if="showManualDialog"></manual-dialog>
+    <manual-dialog
+      v-model="showManualDialog"
+      @close="onManualDialogClose"
+    ></manual-dialog>
   </div>
 </template>
 
@@ -51,7 +54,15 @@ export default {
       showManualDialog: false,
     };
   },
-  created() {},
+  created() {
+    // 如果是第一次进入，显示操作手册
+    if (localStorage.getItem("showManunal")) {
+      this.showManualDialog = false;
+    } else {
+      this.showManualDialog = true;
+      localStorage.setItem("showManunal", "1");
+    }
+  },
   mounted() {
     window.addEventListener("scroll", this.windowScroll); //监听页面滚动
   },
@@ -64,6 +75,9 @@ export default {
      */
     showManual() {
       this.showManualDialog = true;
+    },
+    onManualDialogClose() {
+      this.showManualDialog = false;
     },
     /**
      * 页面滚动事件
@@ -163,10 +177,12 @@ export default {
       &:last-child {
         margin-right: 25px;
       }
-      .icons {
-        cursor: pointer;
-        font-size: 22px;
-      }
+    }
+
+    .icons {
+      cursor: pointer;
+      font-size: 22px;
+      color: #6d7792 !important;
     }
   }
 }

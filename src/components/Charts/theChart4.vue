@@ -108,6 +108,11 @@ export default {
      * 初始化图表
      */
     initChart() {
+      console.log(
+        "🚀 ~ file: theChart4.vue ~ line 130 ~ initChart ~       this.dataObj.dataList",
+        this.dataObj.dataList
+      );
+
       let chartEL = document.getElementById("the-chart-4");
 
       // 切换时要dispose()，否则切换不了主题

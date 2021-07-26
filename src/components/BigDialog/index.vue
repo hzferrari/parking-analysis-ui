@@ -1,31 +1,90 @@
 <template>
-  <div class="Big-dialog">
-    <div class="dialog-wrapper">
-      <div class="title"><slot name="title"> </slot></div>
-      <div class="content">
-        <slot name="content"> </slot>
+  <transition name="fade">
+    <div class="Big-dialog" v-if="showDialog" @click.stop.prevent="onMaskClick">
+      <div
+        class="dialog-wrapper"
+        style="position: relative"
+        @click.stop.prevent
+      >
+        <svg-icon
+          class="icon"
+          icon-class="cross"
+          style="
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+          "
+          @click="onCloseBtnClk"
+        />
+        <div class="title">
+          <slot name="title"></slot>
+        </div>
+        <div class="content">
+          <slot name="content"></slot>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
 export default {
   name: "Big-dialog",
   components: {},
-  props: {},
-  computed: {},
-  watch: {},
-  data() {
-    return {};
+  model: {
+    prop: "value",
+    event: "change",
   },
-  created() {},
+  props: {
+    value: {
+      type: Boolean,
+    },
+  },
+  computed: {},
+  watch: {
+    value(val) {
+      this.showDialog = val;
+    },
+  },
+  data() {
+    return {
+      showDialog: false,
+    };
+  },
+  created() {
+    this.showDialog = this.value;
+  },
   mounted() {},
-  methods: {},
+  methods: {
+    /**
+     * 点击背景遮罩事件。
+     * 在.dialog-wrapper里加上@click.stop.prevent，这样点击内容弹窗时就不会触发onBackgroundClk()
+     */
+    onMaskClick() {
+      this.$emit("maskClick");
+    },
+    /**
+     * 关闭按钮
+     */
+    onCloseBtnClk() {
+      this.$emit("close");
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.4s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
 .Big-dialog {
   position: fixed;
   top: 0;
@@ -38,17 +97,25 @@ export default {
 
   .dialog-wrapper {
     width: 80%;
-    height: 80vh;
     margin: 0 auto;
-    margin-top: 10vh;
-    padding: 20px;
+    margin-top: 5vh;
+    padding: 20px 0;
     background: #fff;
     border-radius: 10px;
+    overflow: hidden;
+
     .title {
-      font-size: 26px;
+      font-size: 24px;
+      font-weight: 700;
     }
     .content {
+      margin-top: 20px;
+      padding: 0 30px;
+      height: 75vh;
+      overflow-y: auto;
       font-size: 16px;
+      line-height: 20px;
+      text-align: initial;
     }
   }
 }

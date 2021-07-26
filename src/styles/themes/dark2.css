@@ -23,3 +23,7 @@
 #app.theme-dark2 .el-date-editor.el-range-editor.el-input__inner .el-range-separator {
   color: #fff;
 }
+
+#app.theme-dark2 .Big-dialog .dialog-wrapper {
+  background-color: #263238;
+}
