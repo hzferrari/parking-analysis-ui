@@ -209,7 +209,9 @@ export default {
 
       for (let i = 0, len = dataList.length; i < len; i++) {
         let item = dataList[i];
-        // debugger;
+        let minute = item.time.split(":")[1];
+        let second = item.time.split(":")[2];
+
         if (i === 0) {
           // 第一项
 
@@ -219,18 +221,41 @@ export default {
           lastItem = { ...item };
         } else if (i < len - 1) {
           // 不是最后一项
-          if (
-            item.time.substr(item.time.length - 2, item.time.length) !== "00"
-          ) {
+          let lastItemMinute = lastItem.time.split(":")[1];
+
+          if (second !== "00") {
             // 当前项的数据是记录到秒的（非整分钟点项）
-            let time00 = item.time.substr(0, item.time.length - 2) + "00";
+            if (lastItemMinute === minute) {
+              // 如上一项是 8:30:00，当前项是8:30:05。是同一分钟
 
-            let tmp = { ...item };
+              let time00 = item.time.substr(0, item.time.length - 2) + "00";
 
-            tmp = _cal(tmp, lastItem, true);
+              let tmp = { ...item };
 
-            lastItem = { ...tmp }; // 不能直接写 = ，否则对lastItem的修改也会影响到dataList
-            lastItem.time = time00; // 时间只显示到分钟，因此时间最后两位（秒）改为00
+              tmp = _cal(tmp, lastItem, true);
+
+              lastItem = { ...tmp }; // 不能直接写 = ，否则对lastItem的修改也会影响到dataList
+              lastItem.time = time00; // 时间只显示到分钟，因此时间最后两位（秒）改为00
+            } else {
+              // 如上一项是 8:30:00，当前项是8:31:01。不是同一分钟
+
+              // 将8:31:01改为8:31:00
+              let time00 = item.time.substr(0, item.time.length - 2) + "00";
+              item.time = time00;
+
+              // 先记录timeStr，然后推入上一项到数组
+              lastItem.timeStr = util.formatDate(
+                new Date(lastItem.timestamp),
+                "h:mm"
+              ); // 几点几分
+
+              resList.push(lastItem);
+
+              item = _cal(item, lastItem);
+
+              // lastItem替换成当前循环项（然后就进入下一个循环了）
+              lastItem = { ...item };
+            }
           } else {
             // 当前项的数据是只记录到分钟的（整分钟点项）
 

@@ -386,29 +386,48 @@ export default {
 
       for (let i = 0, len = dataList.length; i < len; i++) {
         let item = dataList[i];
+        let minute = item.time.split(":")[1];
+        let second = item.time.split(":")[2];
+
         if (i === 0) {
           // 第一项
           lastItem = { ...item };
         } else if (i < len - 1) {
           // 不是最后一项
-          if (
-            item.time.substr(item.time.length - 2, item.time.length) !== "00"
-          ) {
-            // 当前项的数据是记录到秒的，当前分钟的每个停车场剩余车位的最大数量，记录到lastItem
-            let time00 = item.time.substr(0, item.time.length - 2) + "00";
 
-            let tmp = { ...item };
-            if (item.p5 < lastItem.p5) {
-              tmp.p5 = lastItem.p5;
+          let lastItemMinute = lastItem.time.split(":")[1];
+
+          if (second !== "00") {
+            // 当前项的数据是记录到秒的，当前分钟的每个停车场剩余车位的最大数量，记录到lastItem
+
+            if (lastItemMinute === minute) {
+              // 如上一项是 8:30:00，当前项是8:30:05。是同一分钟
+              let time00 = item.time.substr(0, item.time.length - 2) + "00";
+
+              let tmp = { ...item };
+              if (item.p5 < lastItem.p5) {
+                tmp.p5 = lastItem.p5;
+              }
+              if (item.p6 < lastItem.p6) {
+                tmp.p6 = lastItem.p6;
+              }
+              if (item.p7 < lastItem.p7) {
+                tmp.p7 = lastItem.p7;
+              }
+              lastItem = { ...tmp }; // 不能直接写 = ，否则对lastItem的修改也会影响到dataList
+              lastItem.time = time00; // 时间只显示到分钟，因此时间最后两位（秒）改为00
+            } else {
+              // 如上一项是 8:30:00，当前项是8:31:01。不是同一分钟
+
+              // 将8:31:01改为8:31:00
+              let time00 = item.time.substr(0, item.time.length - 2) + "00";
+              item.time = time00;
+
+              // 推入上一项到数组
+              resList.push(lastItem);
+              // lastItem替换成当前循环项（然后就进入下一个循环了）
+              lastItem = { ...item };
             }
-            if (item.p6 < lastItem.p6) {
-              tmp.p6 = lastItem.p6;
-            }
-            if (item.p7 < lastItem.p7) {
-              tmp.p7 = lastItem.p7;
-            }
-            lastItem = { ...tmp }; // 不能直接写 = ，否则对lastItem的修改也会影响到dataList
-            lastItem.time = time00; // 时间只显示到分钟，因此时间最后两位（秒）改为00
           } else {
             // 当前项的数据是只记录到分钟的
             // 推入上一项到数组
