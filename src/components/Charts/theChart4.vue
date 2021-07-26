@@ -63,7 +63,18 @@ export default {
       themeChange: false,
       lineChartStyle: {},
       barChartStyle: {
-        itemStyle: {},
+        itemStyle: {
+          shadowColor: "rgba(0,0,0,0.3)",
+          shadowBlur: 7,
+          shadowOffsetX: 1,
+          shadowOffsetY: 2,
+        },
+        itemStyle2: {
+          shadowColor: "rgba(0,0,0,0.2)",
+          shadowBlur: 7,
+          shadowOffsetX: 2,
+          shadowOffsetY: -2,
+        },
       },
       nameTextStyle: {},
       dataZoom: [],
@@ -279,6 +290,7 @@ export default {
             type: "bar",
             name: "二期天面入",
             stack: "二期天面",
+            itemStyle: this.barChartStyle.itemStyle,
           },
           {
             xAxisIndex: 0,
@@ -286,6 +298,7 @@ export default {
             type: "bar",
             name: "二期天面出",
             stack: "二期天面",
+            itemStyle: this.barChartStyle.itemStyle2,
           },
           {
             xAxisIndex: 1,
@@ -293,6 +306,7 @@ export default {
             type: "bar",
             name: "宿舍区入",
             stack: "宿舍区",
+            itemStyle: this.barChartStyle.itemStyle,
           },
           {
             xAxisIndex: 1,
@@ -300,6 +314,7 @@ export default {
             type: "bar",
             name: "宿舍区出",
             stack: "宿舍区",
+            itemStyle: this.barChartStyle.itemStyle2,
           },
           {
             xAxisIndex: 2,
@@ -307,6 +322,7 @@ export default {
             type: "bar",
             name: "西门南侧入",
             stack: "西门南侧",
+            itemStyle: this.barChartStyle.itemStyle,
           },
           {
             xAxisIndex: 2,
@@ -314,6 +330,7 @@ export default {
             type: "bar",
             name: "西门南侧出",
             stack: "西门南侧",
+            itemStyle: this.barChartStyle.itemStyle2,
           },
         ],
       };

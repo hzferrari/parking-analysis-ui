@@ -176,7 +176,7 @@ export default {
           containLabel: true,
         },
         legend: {
-          data: ["西门南侧", "宿舍区", "二期天面"],
+          data: ["二期天面", "宿舍区", "西门南侧"],
           left: "10%",
           top: "1%",
         },
@@ -223,7 +223,7 @@ export default {
         // 图表坐标缩放
         dataZoom: this.dataZoom,
         dataset: {
-          dimensions: ["timeStr", "p5", "p6", "p7"],
+          dimensions: ["timeStr", "p7", "p6", "p5"],
           source: this.dataObj.dataList,
         },
         xAxis: {
@@ -240,16 +240,16 @@ export default {
         series: [
           {
             type: "line",
-            name: "西门南侧",
-            lineStyle: this.lineStyle,
-          },
-          { type: "line", name: "宿舍区", lineStyle: this.lineStyle },
-          {
-            type: "line",
             name: "二期天面",
             lineStyle: this.lineStyle,
             markPoint: this.markPoint,
             markArea: this.markArea,
+          },
+          { type: "line", name: "宿舍区", lineStyle: this.lineStyle },
+          {
+            type: "line",
+            name: "西门南侧",
+            lineStyle: this.lineStyle,
           },
         ],
       };
