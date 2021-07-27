@@ -21,12 +21,12 @@
       <p class="title-2 _margin-top">每个图表都可以通过鼠标/手势进行一些操作，如：</p>
       <p>
         <ul>
+          <li>查看数据详情</li>
           <li>选择日期或日期范围</li>
           <li>缩放改变显示的时间范围</li>
           <li>改变时间分钟/秒钟显示精度（仅限支持数据）</li>
           <li>自由显示/隐藏图例</li>
           <li>显示/隐藏标签</li>
-          <li>查看当前图表的说明</li>
           <li>……</li>
         </ul>
       </p>
@@ -89,11 +89,11 @@ export default {
 <style lang="scss" scoped>
 .manual-dialog {
   p {
-    margin: 5px 0;
+    margin: 10px 0;
   }
   ul li {
     margin-left: 30px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     list-style: disc;
   }
   ._margin-top {
@@ -101,7 +101,7 @@ export default {
   }
 
   .title-2 {
-    margin-bottom: 10px;
+    margin: 20px 0;
     font-size: 18px;
   }
   .hint {

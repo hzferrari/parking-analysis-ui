@@ -18,7 +18,7 @@
       ></the-date-picker>
 
       <div>
-        <p style="font-size: 20px">单日剩余车位数</p>
+        <p style="font-size: 20px">剩余车位数</p>
         <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
       </div>
     </div>

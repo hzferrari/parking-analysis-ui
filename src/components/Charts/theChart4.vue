@@ -188,7 +188,6 @@ export default {
         toolbox: {
           show: true,
           right: "9%",
-          // top: "-5px",
           feature: {
             myTool1: {
               show: true,
@@ -209,6 +208,31 @@ export default {
             saveAsImage: {
               title: "保存为图片",
             },
+            myManual: {
+              show: true,
+              icon: "path://M559.261538 748.307692h-98.461538c-15.753846 0-27.569231-11.815385-27.569231-27.56923v-29.538462c0-82.707692 53.169231-157.538462 131.938462-185.107692 23.630769-7.876923 45.292308-21.661538 63.015384-41.353846 98.461538-118.153846 7.876923-259.938462-110.276923-263.876924-43.323077-1.969231-84.676923 13.784615-116.184615 43.323077-25.6 23.630769-41.353846 53.169231-45.292308 86.646154-1.969231 11.815385-13.784615 21.661538-29.538461 21.661539h-98.461539c-17.723077 0-31.507692-13.784615-29.538461-31.507693 7.876923-74.830769 41.353846-141.784615 94.523077-194.953846 63.015385-59.076923 143.753846-90.584615 230.4-88.615384C687.261538 43.323077 821.169231 177.230769 827.076923 340.676923c5.907692 137.846154-78.769231 261.907692-206.769231 309.169231-17.723077 7.876923-29.538462 21.661538-29.538461 39.384615v29.538462c0 17.723077-15.753846 29.538462-31.507693 29.538461zM590.769231 955.076923c0 15.753846-13.784615 29.538462-29.538462 29.538462h-98.461538c-15.753846 0-29.538462-13.784615-29.538462-29.538462v-98.461538c0-15.753846 13.784615-29.538462 29.538462-29.538462h98.461538c15.753846 0 29.538462 13.784615 29.538462 29.538462v98.461538z",
+              onclick: () => {},
+            },
+          },
+          tooltip: {
+            // 和 option.tooltip 的配置项相同
+            show: true,
+            formatter: function (param) {
+              if (param.name === "myManual") {
+                let redDom =
+                  "<div style='padding: 0 20px;font-size:14px;line-height:26px'>" +
+                  "<ul style='list-style: disc'>" +
+                  "<li><p>同一坐标轴上，朝上的柱子（y>0）表示车辆驶出数量。</p><p>朝下的柱子（y<0）表示车辆驶入数量</p></li>" +
+                  "<li><p>默认横坐标间隔以分钟为单位。开启“精确到秒”时，</p><p>大概8:20-8:50的一段时间间隔变为5s</p></li>" +
+                  "</ul>" +
+                  "</div>";
+
+                return redDom; // 自定义的 DOM 结构
+              } else {
+                return "";
+              }
+            },
+            extraCssText: "box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);", // 自定义的 CSS 样式
           },
         },
         axisPointer: {
@@ -220,23 +244,25 @@ export default {
         legend: {
           left: "10%",
           data: [
-            "二期天面出",
             "二期天面入",
-            "宿舍区出",
+            "二期天面出",
             "宿舍区入",
-            "西门南侧出",
+            "宿舍区出",
             "西门南侧入",
+            "西门南侧出",
           ],
         },
         dataset: {
           dimensions: [
             "timeStr",
-            "p7Up",
             "p7Down",
-            "p6Up",
+            "p7Up",
             "p6Down",
-            "p5Up",
+
+            "p6Up",
             "p5Down",
+
+            "p5Up",
           ],
           source: this.dataObj.dataList,
         },
@@ -300,24 +326,16 @@ export default {
             xAxisIndex: 0,
             yAxisIndex: 0,
             type: "bar",
-            name: "二期天面出",
-            stack: "二期天面",
-            itemStyle: this.barChartStyle.itemStyle2,
-          },
-          {
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            type: "bar",
             name: "二期天面入",
             stack: "二期天面",
             itemStyle: this.barChartStyle.itemStyle,
           },
           {
-            xAxisIndex: 1,
-            yAxisIndex: 1,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
             type: "bar",
-            name: "宿舍区出",
-            stack: "宿舍区",
+            name: "二期天面出",
+            stack: "二期天面",
             itemStyle: this.barChartStyle.itemStyle2,
           },
           {
@@ -329,11 +347,11 @@ export default {
             itemStyle: this.barChartStyle.itemStyle,
           },
           {
-            xAxisIndex: 2,
-            yAxisIndex: 2,
+            xAxisIndex: 1,
+            yAxisIndex: 1,
             type: "bar",
-            name: "西门南侧出",
-            stack: "西门南侧",
+            name: "宿舍区出",
+            stack: "宿舍区",
             itemStyle: this.barChartStyle.itemStyle2,
           },
           {
@@ -343,6 +361,14 @@ export default {
             name: "西门南侧入",
             stack: "西门南侧",
             itemStyle: this.barChartStyle.itemStyle,
+          },
+          {
+            xAxisIndex: 2,
+            yAxisIndex: 2,
+            type: "bar",
+            name: "西门南侧出",
+            stack: "西门南侧",
+            itemStyle: this.barChartStyle.itemStyle2,
           },
         ],
       };

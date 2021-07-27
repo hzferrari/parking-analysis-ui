@@ -18,7 +18,7 @@
       ></the-date-picker>
 
       <div>
-        <p style="font-size: 20px">单日剩余车位数每分钟变化量</p>
+        <p style="font-size: 20px">车辆出入数量</p>
         <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
       </div>
     </div>
