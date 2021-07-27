@@ -169,8 +169,17 @@ export default {
         ],
         tooltip: {
           trigger: "axis",
+          axisPointer: {
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+          },
           formatter: (params) => {
             return this.formatTooltip(params);
+          },
+          position: function (pos, params, el, elRect, size) {
+            var obj = { top: 50 };
+            obj[["left", "right"][+(pos[0] < size.viewSize[0] / 2)]] = 140;
+            return obj;
           },
         },
         toolbox: {
@@ -348,8 +357,8 @@ export default {
           filterMode: "weakFilter", // 使另一个轴自适应过滤后的数值范围
           brushSelect: false, // 关闭鼠标框选功能
           //  范围（index）
-          startValue: 450, //
-          endValue: 540,
+          startValue: 430, //
+          endValue: 510,
           // startValue: 0,
           // endValue: 50,
         },
@@ -368,60 +377,22 @@ export default {
       // console.log("params: ", params);
 
       let title = params[0].axisValue;
-
-      let label0 = params[0].seriesName;
-      let label1 = params[1].seriesName;
-      let label2 = params[2].seriesName;
-      let label3 = params[3].seriesName;
-      let label4 = params[4].seriesName;
-      let label5 = params[5].seriesName;
-
-      // 鼠标在不同图表时，params里数组顺序会变
-      let data0, data1, data2, data3, data4, data5;
-      if (params[0].seriesIndex === 0) {
-        // 鼠标在图1
-        data0 = params[0].data.p7Up;
-        data1 = -params[0].data.p7Down;
-        data2 = params[0].data.p6Up;
-        data3 = -params[0].data.p6Down;
-        data4 = params[0].data.p5Up;
-        data5 = -params[0].data.p5Down;
-      } else if (params[0].seriesIndex === 2) {
-        // 鼠标在图2
-        data0 = params[0].data.p6Up;
-        data1 = -params[0].data.p6Down;
-        data2 = params[0].data.p7Up;
-        data3 = -params[0].data.p7Down;
-        data4 = params[0].data.p5Up;
-        data5 = -params[0].data.p5Down;
-      } else if (params[0].seriesIndex === 4) {
-        // 鼠标在图3
-        data0 = params[0].data.p5Up;
-        data1 = -params[0].data.p5Down;
-        data2 = params[0].data.p7Up;
-        data3 = -params[0].data.p7Down;
-        data4 = params[0].data.p6Up;
-        data5 = -params[0].data.p6Down;
-      }
-
-      let color0 = params[0].color;
-      let color1 = params[1].color;
-      let color2 = params[2].color;
-      let color3 = params[3].color;
-      let color4 = params[4].color;
-      let color5 = params[5].color;
-
-      let titleLine = `<p style="font-weight:700">${title}</p>`;
+      let res = `<p style="font-weight:700">${title}</p>`;
       let circleStyle =
         "display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px";
-      let line0 = `<p><span style="${circleStyle};background:${color0}"></span>${label0} : <span style="font-weight:700;">${data0}</span></p>`;
-      let line1 = `<p><span style="${circleStyle};background:${color1}"></span>${label1} : <span style="font-weight:700;">${data1}</span></p>`;
-      let line2 = `<p><span style="${circleStyle};background:${color2}"></span>${label2} : <span style="font-weight:700;">${data2}</span></p>`;
-      let line3 = `<p><span style="${circleStyle};background:${color3}"></span>${label3} : <span style="font-weight:700;">${data3}</span></p>`;
-      let line4 = `<p><span style="${circleStyle};background:${color4}"></span>${label4} : <span style="font-weight:700;">${data4}</span></p>`;
-      let line5 = `<p><span style="${circleStyle};background:${color5}"></span>${label5} : <span style="font-weight:700;">${data5}</span></p>`;
 
-      return titleLine + line0 + line1 + line2 + line3 + line4 + line5;
+      params.forEach((param, index) => {
+        let label = param.seriesName;
+        let data = param.value[param.dimensionNames[param.encode.y[0]]];
+        if (data < 0) {
+          data = -data;
+        }
+        let color = param.color;
+
+        res += `<p><span style="${circleStyle};background:${color}"></span>${label} : <span style="font-weight:700;">${data}</span></p>`;
+      });
+
+      return res;
     },
   },
 };

@@ -337,28 +337,39 @@ export default {
      * 格式化tooltip显示内容
      */
     formatTooltip(params) {
-      // console.log("params: ", params);
+      console.log("params: ", params);
 
       let title = params[0].axisValue;
       let week = params[0].data.week;
 
-      let label1 = params[1].seriesName;
-      let label2 = params[2].seriesName;
-
-      let color1 = params[1].color;
-      let color2 = params[2].color;
-
-      let start = this.formatYAxisTime(params[0].data.rushTimeStartValue);
-      let end = this.formatYAxisTime(params[0].data.p7first0Value);
-
       let line0 = `<p style="font-weight:500;">${title}&nbsp;&nbsp; ${week}</p>`;
+
       let line1 = "";
       let line2 = "";
 
-      if (params[0].data.p7first0Value) {
-        line1 = `<p style="margin-top:3px;" ><span style="color:${color2}">- </span>${label2}&nbsp;&nbsp;&nbsp; : <span style="font-weight:700;">${end}</span></p>`;
+      if (params.length > 1 && params[0].data.p7first0Value) {
+        let start = this.formatYAxisTime(params[0].data.rushTimeStartValue);
+        let end = this.formatYAxisTime(params[0].data.p7first0Value);
+        let circleStyle =
+          "display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;";
 
-        line2 = `<p style="margin-top:3px;"><span style="color:${color1}">- </span>${label1} : <span style="font-weight:700;">${start} - ${end}</span></p>`;
+        if (params[1].seriesIndex === 1) {
+          let label1 = params[1].seriesName;
+          let color1 = params[1].color;
+
+          line2 = `<p style="margin-top:3px;"><span style="${circleStyle};background:${color1}"></span>${label1} : <span style="font-weight:700;">${start} - ${end}</span></p>`;
+
+          if (params[2] && params[2].seriesIndex === 2) {
+            let label2 = params[2].seriesName;
+            let color2 = params[2].color;
+
+            line1 = `<p style="margin-top:3px;" ><span style="${circleStyle};background:${color2}"></span>${label2}&nbsp;&nbsp;&nbsp; : <span style="font-weight:700;">${end}</span></p>`;
+          }
+        } else if (params[1].seriesIndex === 2) {
+          let label2 = params[1].seriesName;
+          let color2 = params[1].color;
+          line1 = `<p style="margin-top:3px;" ><span style="${circleStyle};background:${color2}"></span>${label2}&nbsp;&nbsp;&nbsp; : <span style="font-weight:700;">${end}</span></p>`;
+        }
       }
 
       return line0 + line1 + line2;
