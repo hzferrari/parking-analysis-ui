@@ -182,6 +182,14 @@ export default {
         },
         tooltip: {
           trigger: "axis",
+          axisPointer: {
+            // type: "cross",
+            // snap: true,
+            label: {
+              show: true,
+              precision: 0, // 精确小数点位数
+            },
+          },
         },
         toolbox: {
           show: true,
