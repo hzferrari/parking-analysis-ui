@@ -208,23 +208,23 @@ export default {
         legend: {
           left: "10%",
           data: [
-            "二期天面入",
             "二期天面出",
-            "宿舍区入",
+            "二期天面入",
             "宿舍区出",
-            "西门南侧入",
+            "宿舍区入",
             "西门南侧出",
+            "西门南侧入",
           ],
         },
         dataset: {
           dimensions: [
             "timeStr",
-            "p7Down",
             "p7Up",
-            "p6Down",
+            "p7Down",
             "p6Up",
-            "p5Down",
+            "p6Down",
             "p5Up",
+            "p5Down",
           ],
           source: this.dataObj.dataList,
         },
@@ -288,24 +288,16 @@ export default {
             xAxisIndex: 0,
             yAxisIndex: 0,
             type: "bar",
-            name: "二期天面入",
-            stack: "二期天面",
-            itemStyle: this.barChartStyle.itemStyle,
-          },
-          {
-            xAxisIndex: 0,
-            yAxisIndex: 0,
-            type: "bar",
             name: "二期天面出",
             stack: "二期天面",
             itemStyle: this.barChartStyle.itemStyle2,
           },
           {
-            xAxisIndex: 1,
-            yAxisIndex: 1,
+            xAxisIndex: 0,
+            yAxisIndex: 0,
             type: "bar",
-            name: "宿舍区入",
-            stack: "宿舍区",
+            name: "二期天面入",
+            stack: "二期天面",
             itemStyle: this.barChartStyle.itemStyle,
           },
           {
@@ -317,11 +309,11 @@ export default {
             itemStyle: this.barChartStyle.itemStyle2,
           },
           {
-            xAxisIndex: 2,
-            yAxisIndex: 2,
+            xAxisIndex: 1,
+            yAxisIndex: 1,
             type: "bar",
-            name: "西门南侧入",
-            stack: "西门南侧",
+            name: "宿舍区入",
+            stack: "宿舍区",
             itemStyle: this.barChartStyle.itemStyle,
           },
           {
@@ -331,6 +323,14 @@ export default {
             name: "西门南侧出",
             stack: "西门南侧",
             itemStyle: this.barChartStyle.itemStyle2,
+          },
+          {
+            xAxisIndex: 2,
+            yAxisIndex: 2,
+            type: "bar",
+            name: "西门南侧入",
+            stack: "西门南侧",
+            itemStyle: this.barChartStyle.itemStyle,
           },
         ],
       };
@@ -380,28 +380,28 @@ export default {
       let data0, data1, data2, data3, data4, data5;
       if (params[0].seriesIndex === 0) {
         // 鼠标在图1
-        data0 = -params[0].data.p7Down;
-        data1 = params[0].data.p7Up;
-        data2 = -params[0].data.p6Down;
-        data3 = params[0].data.p6Up;
-        data4 = -params[0].data.p5Down;
-        data5 = params[0].data.p5Up;
+        data0 = params[0].data.p7Up;
+        data1 = -params[0].data.p7Down;
+        data2 = params[0].data.p6Up;
+        data3 = -params[0].data.p6Down;
+        data4 = params[0].data.p5Up;
+        data5 = -params[0].data.p5Down;
       } else if (params[0].seriesIndex === 2) {
         // 鼠标在图2
-        data0 = -params[0].data.p6Down;
-        data1 = params[0].data.p6Up;
-        data2 = -params[0].data.p7Down;
-        data3 = params[0].data.p7Up;
-        data4 = -params[0].data.p5Down;
-        data5 = params[0].data.p5Up;
+        data0 = params[0].data.p6Up;
+        data1 = -params[0].data.p6Down;
+        data2 = params[0].data.p7Up;
+        data3 = -params[0].data.p7Down;
+        data4 = params[0].data.p5Up;
+        data5 = -params[0].data.p5Down;
       } else if (params[0].seriesIndex === 4) {
         // 鼠标在图3
-        data0 = -params[0].data.p5Down;
-        data1 = params[0].data.p5Up;
-        data2 = -params[0].data.p7Down;
-        data3 = params[0].data.p7Up;
-        data4 = -params[0].data.p6Down;
-        data5 = params[0].data.p6Up;
+        data0 = params[0].data.p5Up;
+        data1 = -params[0].data.p5Down;
+        data2 = params[0].data.p7Up;
+        data3 = -params[0].data.p7Down;
+        data4 = params[0].data.p6Up;
+        data5 = -params[0].data.p6Down;
       }
 
       let color0 = params[0].color;

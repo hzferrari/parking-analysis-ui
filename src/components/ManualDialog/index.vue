@@ -33,6 +33,8 @@
       <p class="_margin-top">
         <img class="imgs" :class="{ __mobile: isMobile }" src="./imgs/1.png" />
       </p>
+
+      
     </div>
   </big-dialog>
 </template>
