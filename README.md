@@ -1,6 +1,6 @@
 # 停车场车位数据分析
 
-- 此为个人开发项目，仅用于学习交流。希望能帮助大家早上多睡几分钟:）
+- 此为个人开发项目，仅用于学习交流。希望能帮助大家早上多睡几分钟 :）
 
 - 项目在线地址：[https://static-3173a062-eadb-478f-b52f-dcebddd1ee28.bspapp.com](https://static-3173a062-eadb-478f-b52f-dcebddd1ee28.bspapp.com)
 
