@@ -174,6 +174,7 @@ export default {
             type: "shadow",
             label: {
               show: true,
+              color: this.themeName === "vintage" ? "#fff" : "rgba(0,0,0,0.8)",
             },
           },
           formatter: (params) => {

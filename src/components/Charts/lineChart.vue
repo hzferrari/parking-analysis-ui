@@ -188,6 +188,7 @@ export default {
             label: {
               show: true,
               precision: 0, // 精确小数点位数
+              color: this.themeName === "vintage" ? "#fff" : "rgba(0,0,0,0.8)",
             },
           },
         },

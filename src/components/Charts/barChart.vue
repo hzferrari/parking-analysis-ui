@@ -149,6 +149,7 @@ export default {
             type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
             label: {
               show: true,
+              color: this.themeName === "vintage" ? "#fff" : "rgba(0,0,0,0.8)",
             },
           },
           formatter: (params) => {
