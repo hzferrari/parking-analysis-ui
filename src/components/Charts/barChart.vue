@@ -367,7 +367,7 @@ export default {
      * 格式化tooltip显示内容
      */
     formatTooltip(params) {
-      console.log("params: ", params);
+      // console.log("params: ", params);
 
       let title = params[0].axisValue;
       let week = params[0].data.week;

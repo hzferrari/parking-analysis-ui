@@ -135,7 +135,7 @@ export default {
 
       if (dataList.length === 0) {
         this.$toast("抱歉，没有这天的数据！");
-        return;
+        // return;
       }
 
       // 保存未经处理的原始接口数据，用于切换秒/分钟显示时计算
