@@ -137,6 +137,16 @@ export default {
 
       this.dataObj.dataList = res.data;
 
+      this.dataObj.dataList.forEach((v) => {
+        // 异常数据处理，让异常数据不破坏y轴显示范围
+
+        if (!v.diffInRushTimeValue) {
+          // 如果没有高峰期时段，rushTimeStartValue和diffInRushTimeValue都设为undefined，坐标轴显示才正常
+          v.rushTimeStartValue = undefined;
+          v.diffInRushTimeValue = undefined;
+        }
+      });
+
       this.$store.commit("app/setOnedayDataList", res.data);
 
       // console.log(
