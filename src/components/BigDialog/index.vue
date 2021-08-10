@@ -47,11 +47,14 @@ export default {
   watch: {
     value(val) {
       this.showDialog = val;
+
+      this.setOverflow(val);
     },
   },
   data() {
     return {
       showDialog: false,
+      scrollTopCache: 0,
     };
   },
   created() {
@@ -71,6 +74,33 @@ export default {
      */
     onCloseBtnClk() {
       this.$emit("close");
+    },
+    /**
+     * 开启弹窗时，body禁止滚动；关闭后恢复
+     */
+    setOverflow(dialogShow) {
+      let dom = document.getElementById("app");
+
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+
+      if (dialogShow) {
+        // dom.style.overflow = "hidden";
+        // dom.style.height = "100vh";
+
+        // 记录页面滚动位置
+        this.scrollTopCache = scrollTop;
+      } else {
+        // dom.style.overflow = "auto";
+        // dom.style.height = "100%";
+
+        // 自动回滚之前的位置
+        if (document.documentElement.scrollTop !== undefined) {
+          document.documentElement.scrollTop = this.scrollTopCache;
+        }
+      }
     },
   },
 };
