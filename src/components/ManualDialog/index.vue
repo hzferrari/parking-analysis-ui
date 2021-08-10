@@ -111,6 +111,8 @@ export default {
     display: block;
     margin: 0 auto;
     width: 95%;
+    max-width: 1000px;
+    user-select: none;
     &.__mobile {
       width: 100%;
     }

@@ -18,6 +18,16 @@
       </div>
 
       <el-tooltip class="icon-wrap" :open-delay="200">
+        <div slot="content">刷新数据</div>
+        <svg-icon class="icons" icon-class="refresh" @click="refresh" />
+      </el-tooltip>
+
+      <el-tooltip class="icon-wrap" :open-delay="200">
+        <div slot="content">停车场地图</div>
+        <svg-icon class="icons" icon-class="map" @click="showMap" />
+      </el-tooltip>
+
+      <el-tooltip class="icon-wrap" :open-delay="200">
         <div slot="content">操作手册</div>
         <svg-icon class="icons" icon-class="question" @click="showManual" />
       </el-tooltip>
@@ -32,18 +42,22 @@
       v-model="showManualDialog"
       @close="onManualDialogClose"
     ></manual-dialog>
+
+    <map-dialog v-model="showMapDialog" @close="onMapDialogClose"></map-dialog>
   </div>
 </template>
 
 <script>
 import ChartThemeSwitch from "@/components/ChartThemeSwitch";
 import ManualDialog from "@/components/ManualDialog";
+import MapDialog from "@/components/MapDialog";
 
 export default {
   name: "title-bar-comp",
   components: {
     ChartThemeSwitch,
     ManualDialog,
+    MapDialog,
   },
   props: {},
   computed: {},
@@ -52,6 +66,7 @@ export default {
     return {
       isScrollDown: false,
       showManualDialog: false,
+      showMapDialog: false,
     };
   },
   created() {
@@ -78,6 +93,19 @@ export default {
     },
     onManualDialogClose() {
       this.showManualDialog = false;
+    },
+    /**
+     * 刷新按钮
+     */
+    refresh() {},
+    /**
+     * map按钮
+     */
+    showMap() {
+      this.showMapDialog = true;
+    },
+    onMapDialogClose() {
+      this.showMapDialog = false;
     },
     /**
      * 页面滚动事件
