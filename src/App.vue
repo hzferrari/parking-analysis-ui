@@ -28,11 +28,11 @@ export default {
     if (util.isMobile()) {
       this.initOrientation();
 
-      eruda.init();
-      eruda.position({
-        x: "90%",
-        y: "80%",
-      });
+      // eruda.init();
+      // eruda.position({
+      //   x: "90%",
+      //   y: "80%",
+      // });
     }
   },
   methods: {

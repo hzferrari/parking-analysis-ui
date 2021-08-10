@@ -17,10 +17,10 @@
         <chart-theme-switch></chart-theme-switch>
       </div>
 
-      <el-tooltip class="icon-wrap" :open-delay="200">
+      <!-- <el-tooltip class="icon-wrap" :open-delay="200">
         <div slot="content">刷新数据</div>
         <svg-icon class="icons" icon-class="refresh" @click="refresh" />
-      </el-tooltip>
+      </el-tooltip> -->
 
       <el-tooltip class="icon-wrap" :open-delay="200">
         <div slot="content">停车场地图</div>
@@ -97,7 +97,9 @@ export default {
     /**
      * 刷新按钮
      */
-    refresh() {},
+    refresh() {
+      this.$emit("refresh");
+    },
     /**
      * map按钮
      */

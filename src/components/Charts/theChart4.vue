@@ -88,9 +88,9 @@ export default {
 
     this.initChart();
 
-    // window.addEventListener("resize", () => {
-    //   this.myChart.resize();
-    // });
+    window.addEventListener("resize", () => {
+      this.myChart.resize();
+    });
   },
   methods: {
     /**
