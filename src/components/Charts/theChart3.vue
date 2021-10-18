@@ -20,7 +20,6 @@ export default {
       default: function () {
         return {
           dataList: [],
-          markPoints: {},
         };
       },
     },

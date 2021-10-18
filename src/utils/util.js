@@ -89,7 +89,7 @@ util.getFileNames = function(defaultDay) {
   let fileNames = [];
 
   // 30天
-  for (let i = 5; i > 0; i--) {
+  for (let i = 30; i > 0; i--) {
     fileNames.push(
       year + "/" + (month < 10 ? "0" + month : month) + "/" + (date < 10 ? "0" + date : date)
     );

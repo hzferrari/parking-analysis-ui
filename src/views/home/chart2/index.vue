@@ -128,12 +128,11 @@ export default {
       let dataList = this.dataObj.dataList;
       let weathers = resWeather.data;
 
+      // 将resWeather里每天的天气数据对应到dataObj.dataList中，按照日期一一对应
       for (let i = 0, len = dataList.length; i < len; i++) {
         let dataNow = dataList[i];
 
-        // debugger;
         for (let j = 0; j < weathers.length; j++) {
-          // debugger;
           if (dataNow.date === weathers[j].date) {
             dataList[i].weatherObj = weathers[j];
 

@@ -35,7 +35,6 @@ export default {
     return {
       dataObj: {
         dataList: [], // 这里必须初始化dataList，否则子组件watch不到
-        markPoints: {},
       },
       defaultDay: "",
       curTimestamp: "", // initData() 正在使用的时间戳
@@ -46,8 +45,14 @@ export default {
     // 默认timestamp是今天
     this.defaultDay = new Date().getTime();
 
-    // this.initLocalData();
-    this.initData();
+    // 上班早高峰时间段图表已经获取过getOnedayDataByTimestamp()数据
+    if (this.$store.state.app.onedayDataList.length > 0) {
+      let dataList = this.$store.state.app.onedayDataList;
+
+      this.dataObj.dataList = this.handleData(dataList);
+    } else {
+      this.initData();
+    }
   },
   mounted() {},
   methods: {
@@ -62,8 +67,9 @@ export default {
         new Date(fileNames[fileNames.length - 1] + " 11:59:59").getTime()
       );
 
-      let dataList = res.data;
-
+      this.dataObj.dataList = this.handleData(res.data);
+    },
+    handleData(dataList) {
       dataList.forEach((v) => {
         if (!v.diffInRushTimeValue) {
           v.p7firstNot0Value = undefined;
@@ -72,11 +78,7 @@ export default {
         }
       });
 
-      this.dataObj.dataList = dataList;
-      console.log(
-        "🚀 ~ file: index.vue ~ line 66 ~ initData ~ this.dataObj",
-        this.dataObj
-      );
+      return dataList;
     },
   },
 };
