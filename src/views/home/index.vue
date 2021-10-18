@@ -51,7 +51,7 @@ export default {
      *
      */
     onChart1Loaded() {
-      console.log("chart1 loaded.");
+      // console.log("chart1 loaded.");
       this.showChart.chart1 = true;
       this.showChart.chart2 = true;
       this.showChart.chart3 = true;

@@ -32,7 +32,7 @@ import util from "@/utils/util";
 import BarChart from "@/components/Charts/barChart";
 import TheDaterangePicker from "@/components/TheDatePicker/daterange";
 
-import { getOnedayDataByTimestamp } from "@/api/index";
+import { getOnedayDataByTimestamp, getWeatherByTimestamp } from "@/api/index";
 
 export default {
   name: "chart-2-comp",
@@ -73,58 +73,13 @@ export default {
   mounted() {},
   methods: {
     /**
-     * 获取最近一个月（30天）的日期列表
+     * 日期选择
      */
-    getFileNames() {
-      let newDate = new Date(this.today);
-      let year = newDate.getFullYear();
-      let month = newDate.getMonth() + 1; // 月份从0开始
-      let date = newDate.getDate();
+    onDaterangePickerChange(timestampArr) {
+      // console.log("timestampArr: ", timestampArr);
+      this.curDateRange = timestampArr;
 
-      let fileNames = [];
-
-      // 30天
-      for (let i = 30; i > 0; i--) {
-        fileNames.push(
-          year +
-            "-" +
-            (month < 10 ? "0" + month : month) +
-            "-" +
-            (date < 10 ? "0" + date : date)
-        );
-        // 计算当前日期减一天的日期
-        if (date === 1) {
-          // date是1号
-          if (
-            month === 1 ||
-            month === 3 ||
-            month === 5 ||
-            month === 7 ||
-            month === 10 ||
-            month === 12
-          ) {
-            date = 30;
-          } else {
-            date = 31;
-          }
-
-          if (month === 1) {
-            month = 12;
-            year--;
-          } else {
-            month--;
-          }
-        } else {
-          // date不是1号
-          date--;
-        }
-      }
-
-      // 倒序处理，让时间正序排列
-      _.reverse(fileNames);
-      // console.log("fileNames: ", fileNames);
-
-      return fileNames;
+      this.initData();
     },
     /**
      * 从接口获取数据
@@ -133,6 +88,15 @@ export default {
       let res = await getOnedayDataByTimestamp(
         this.curDateRange[0],
         this.curDateRange[1]
+      );
+
+      let resWeather = await getWeatherByTimestamp(
+        this.curDateRange[0],
+        this.curDateRange[1]
+      );
+      console.log(
+        "🚀 ~ file: index.vue ~ line 141 ~ initData ~ resWeather",
+        resWeather
       );
 
       this.dataObj.dataList = res.data;
@@ -147,6 +111,9 @@ export default {
         }
       });
 
+      // 在有了this.dataObj.dataList之后处理天气数据
+      this.handleWeatherData(resWeather);
+
       this.$store.commit("app/setOnedayDataList", res.data);
 
       // console.log(
@@ -155,10 +122,76 @@ export default {
       // );
     },
     /**
+     * 处理天气数据
+     */
+    handleWeatherData(resWeather) {
+      let dataList = this.dataObj.dataList;
+      let weathers = resWeather.data;
+
+      for (let i = 0, len = dataList.length; i < len; i++) {
+        let dataNow = dataList[i];
+
+        // debugger;
+        for (let j = 0; j < weathers.length; j++) {
+          // debugger;
+          if (dataNow.date === weathers[j].date) {
+            dataList[i].weatherObj = weathers[j];
+
+            dataList[i].weatherToShow = getTodayWeather(
+              weathers[j].weatherList
+            );
+            break;
+          }
+        }
+      }
+
+      console.log("dataList: ", dataList);
+
+      // 计算要用来显示的当天的天气
+      function getTodayWeather(list) {
+        let resObj = {};
+        for (let i = 0, len = list.length; i < len; i++) {
+          let uptime = list[i].uptime;
+          let hh = parseInt(uptime.match(/\d{2}:/)[0]); //获取小时部分
+
+          if (hh === 8) {
+            // console.log("=8 list[i].uptime: ", list[i].uptime);
+            // 如果有第一个8点多的数据，则用这个
+            resObj = list[i];
+            break;
+          } else if (hh < 8) {
+            // console.log("<8 list[i].uptime: ", list[i].uptime);
+            if (list[i + 1]) {
+              // 如果有下一个时间点的数据，查看下一个小时数是否大于8。
+              // 如果hhNext大于8，则选用当前的天气数据，否则继续到下一个循环
+              let hhNext = parseInt(list[i + 1].uptime.match(/\d{2}:/)[0]);
+              if (hhNext > 8) {
+                resObj = list[i];
+                break;
+              } else {
+                continue;
+              }
+            } else {
+              // 没有下一个了，只能用这个最接近8点的
+              resObj = list[i];
+              break;
+            }
+          } else if (hh > 8) {
+            // console.log(">8 list[i].uptime: ", list[i].uptime);
+            // 进入这个分支说明是list[0]的hh就大于8了，则直接用这个数据
+            resObj = list[i];
+            break;
+          }
+        }
+
+        return resObj;
+      }
+    },
+    /**
      * 从本地加载json数据
      */
     initLocalData() {
-      let fileNames = this.getFileNames();
+      let fileNames = util.getFileNames();
       let dataListGroup = [];
 
       fileNames.forEach((dateTime) => {
@@ -178,7 +211,7 @@ export default {
       this.dataObj.dataList = this.handleData(dataListGroup);
     },
     /**
-     * 处理
+     * 处理（从本地加载json数据时）
      */
     handleData(dataListGroup) {
       dataListGroup.forEach((oneDay) => {
@@ -252,14 +285,59 @@ export default {
       return dataListGroup;
     },
     /**
-     * 日期选择
+     * 获取最近一个月（30天）的日期列表
      */
-    onDaterangePickerChange(timestampArr) {
-      // console.log("timestampArr: ", timestampArr);
-      this.curDateRange = timestampArr;
+    // getFileNames() {
+    //   let newDate = new Date(this.today);
+    //   let year = newDate.getFullYear();
+    //   let month = newDate.getMonth() + 1; // 月份从0开始
+    //   let date = newDate.getDate();
 
-      this.initData();
-    },
+    //   let fileNames = [];
+
+    //   // 30天
+    //   for (let i = 7; i > 0; i--) {
+    //     fileNames.push(
+    //       year +
+    //         "-" +
+    //         (month < 10 ? "0" + month : month) +
+    //         "-" +
+    //         (date < 10 ? "0" + date : date)
+    //     );
+    //     // 计算当前日期减一天的日期
+    //     if (date === 1) {
+    //       // date是1号
+    //       if (
+    //         month === 1 ||
+    //         month === 3 ||
+    //         month === 5 ||
+    //         month === 7 ||
+    //         month === 10 ||
+    //         month === 12
+    //       ) {
+    //         date = 30;
+    //       } else {
+    //         date = 31;
+    //       }
+
+    //       if (month === 1) {
+    //         month = 12;
+    //         year--;
+    //       } else {
+    //         month--;
+    //       }
+    //     } else {
+    //       // date不是1号
+    //       date--;
+    //     }
+    //   }
+
+    //   // 倒序处理，让时间正序排列
+    //   _.reverse(fileNames);
+    //   // console.log("fileNames: ", fileNames);
+
+    //   return fileNames;
+    // },
   },
 };
 </script>

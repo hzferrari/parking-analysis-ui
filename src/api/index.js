@@ -32,3 +32,19 @@ export function getOnedayDataByTimestamp(startTime, endTime, needDataList = fals
     data,
   });
 }
+
+/**
+ * 通过时时间戳获取以天为单位的天气数据
+ */
+ export function getWeatherByTimestamp(startTime, endTime,) {
+  const data = {
+    startTime,
+    endTime,
+  };
+  return axios({
+    url:
+      "https://tcb-1i8zosz36f5964-6d80e6151b3c0.service.tcloudbase.com/pkapi/getWeatherByTimestamp",
+    method: "POST",
+    data,
+  });
+}
