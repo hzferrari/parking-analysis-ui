@@ -64,7 +64,7 @@ export default {
 
       lineChartStyle: {
         lineStyle: {
-          type: "dashed", //虚线
+          // type: "dashed", //虚线
           width: 3,
           shadowColor: "rgba(0,0,0,0.3)",
           shadowBlur: 7,
@@ -188,7 +188,7 @@ export default {
             "西区停车场满位",
           ],
           selected: {
-            出现空位: false,
+            二期天面出现空位: false,
           },
         },
         grid: {
@@ -297,7 +297,7 @@ export default {
               },
             },
             lineStyle: {
-              type: "dashed",
+              // type: "dashed",
             },
           },
           {
@@ -319,7 +319,7 @@ export default {
               },
             },
             lineStyle: {
-              type: "dashed",
+              // type: "dashed",
             },
           },
           {
@@ -341,7 +341,7 @@ export default {
               },
             },
             lineStyle: {
-              type: "dashed",
+              // type: "dashed",
             },
           },
         ],

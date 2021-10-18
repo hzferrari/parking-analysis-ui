@@ -9,7 +9,7 @@
 
     <chart-2 v-if="showChart.chart2" style="margin-top: 100px"></chart-2>
 
-    <!-- <chart-3 v-if="showChart.chart3" style="margin-top: 100px"></chart-3> -->
+    <chart-3 v-if="showChart.chart3" style="margin-top: 100px"></chart-3>
 
     <chart-4 v-if="showChart.chart4" style="margin-top: 100px"></chart-4>
 

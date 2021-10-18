@@ -62,7 +62,21 @@ export default {
         new Date(fileNames[fileNames.length - 1] + " 11:59:59").getTime()
       );
 
-      this.dataObj.dataList = res.data;
+      let dataList = res.data;
+
+      dataList.forEach((v) => {
+        if (!v.diffInRushTimeValue) {
+          v.p7firstNot0Value = undefined;
+          v.p6first0Value = undefined;
+          v.p5first0Value = undefined;
+        }
+      });
+
+      this.dataObj.dataList = dataList;
+      console.log(
+        "🚀 ~ file: index.vue ~ line 66 ~ initData ~ this.dataObj",
+        this.dataObj
+      );
     },
   },
 };
