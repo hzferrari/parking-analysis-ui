@@ -17,6 +17,14 @@
         @change="onDatePickerChange"
       ></the-date-picker>
 
+      <svg-icon
+        style="left: 130px"
+        v-show="isLoading"
+        class="icon loading-icon"
+        :class="{ '__is-loading': isLoading }"
+        icon-class="loading"
+      />
+
       <div>
         <p style="font-size: 20px">车辆出入数量</p>
         <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
@@ -60,6 +68,7 @@ export default {
       titleText: "车位变化量",
       subTitle: "",
       isAccuracyToSecond: false, // 是否精确到秒
+      isLoading: false,
     };
   },
   created() {
@@ -85,6 +94,8 @@ export default {
      * 从接口获取数据
      */
     async initData() {
+      this.isLoading = true;
+
       let timestamp = this.curTimestamp ? this.curTimestamp : this.defaultDay; // 默认timestamp是defaultDay
       let dataList = [];
 
@@ -373,6 +384,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/config.scss";
+
 .chart-4-comp {
+  .loading-icon {
+    @include loading-icon;
+  }
 }
 </style>

@@ -11,6 +11,31 @@ $colorErrRed: #ff4437;
 
 $textColorBlack: #333333;
 
+@keyframes loading-rotate {
+  0% {
+    transform: rotate(0deg);
+    color: #eaafc8;
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(180deg);
+    color: #654ea3;
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(360deg);
+    color: #eaafc8;
+    opacity: 1;
+  }
+}
+@mixin loading-icon {
+  position: absolute;
+  left: 220px;
+  top: 5px;
+  font-size: 28px;
+  animation: loading-rotate 1.5s linear infinite !important;
+}
+
 .the-1px-divider {
   position: relative;
   &::after {

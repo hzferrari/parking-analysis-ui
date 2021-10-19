@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-1-comp" v-if="!isLoading">
+  <div class="chart-1-comp" v-if="!isFirstLoading">
     <div
       class="title"
       style="
@@ -16,6 +16,14 @@
         :defaultDay="defaultDay"
         @change="onDatePickerChange"
       ></the-date-picker>
+
+      <svg-icon
+        style="left: 130px"
+        v-show="isLoading"
+        class="icon loading-icon"
+        :class="{ '__is-loading': isLoading }"
+        icon-class="loading"
+      />
 
       <div>
         <p style="font-size: 20px">剩余车位数</p>
@@ -75,6 +83,7 @@ export default {
       curTimestamp: "", // initData() 正在使用的时间戳
       subTitle: "",
       isAccuracyToSecond: false, // 是否精确到秒
+      isFirstLoading: false, //只在第一个表格中有这个字段，用于控制显示效果。只会变化一次
       isLoading: false,
     };
   },
@@ -84,7 +93,7 @@ export default {
     // 默认timestamp是今天
     this.defaultDay = Date.now();
 
-    this.isLoading = true;
+    this.isFirstLoading = true;
 
     this.initData();
     // this.initLocalData();
@@ -95,6 +104,8 @@ export default {
      * 从接口获取数据
      */
     async initData() {
+      this.isLoading = true;
+
       let timestamp = this.curTimestamp ? this.curTimestamp : this.defaultDay; // 默认timestamp是defaultDay
 
       let dataList = [];
@@ -147,6 +158,7 @@ export default {
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
 
+      this.isFirstLoading = false;
       this.isLoading = false;
 
       this.subTitle =
@@ -517,6 +529,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/config.scss";
+
 .chart-1-comp {
+  .loading-icon {
+    @include loading-icon;
+  }
 }
 </style>

@@ -17,6 +17,13 @@
         @change="onDaterangePickerChange"
       ></the-daterange-picker>
 
+      <svg-icon
+        v-show="isLoading"
+        class="icon loading-icon"
+        :class="{ '__is-loading': isLoading }"
+        icon-class="loading"
+      />
+
       <div>
         <p style="font-size: 20px">{{ titleText }}</p>
         <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
@@ -87,9 +94,6 @@ export default {
      * 从接口获取数据
      */
     async initData() {
-      if (this.$refs.myChart) {
-        this.$refs.myChart.showLoading();
-      }
       this.isLoading = true;
 
       let res = await getOnedayDataByTimestamp(
@@ -122,7 +126,6 @@ export default {
       this.$store.commit("app/setOnedayDataList", res.data);
 
       this.isLoading = false;
-      this.$refs.myChart.hideLoading();
     },
     /**
      * 处理天气数据
@@ -344,6 +347,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~@/styles/config.scss";
+
 .chart-2-comp {
+  .loading-icon {
+    @include loading-icon;
+  }
 }
 </style>
