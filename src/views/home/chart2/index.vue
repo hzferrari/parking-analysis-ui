@@ -144,7 +144,7 @@ export default {
 
       // 计算要用来显示的当天的天气
       function getTodayWeather(list) {
-        let timeSet = 8;
+        let timeSet = 9;
         let resObj = {};
         for (let i = 0, len = list.length; i < len; i++) {
           let uptime = list[i].uptime;

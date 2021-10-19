@@ -413,8 +413,13 @@ export default {
 
       let title = params[0].axisValue;
       let week = params[0].data.week;
+      let weatherName = params[0].data.weatherToShow.weather;
+      let weatherIconSrc = util.getWeatherIcon(
+        params[0].data.weatherToShow.weather,
+        "color1"
+      );
 
-      let line0 = `<p style="font-weight:500;">${title}&nbsp;&nbsp; ${week}</p>`;
+      let line0 = `<p style="font-weight:500;">${title}&nbsp;&nbsp; ${week}&nbsp;&nbsp; <span>${weatherName}</span><img src="${weatherIconSrc}" style="width:30px;height:30px;vertical-align:middle;"/></p>`;
 
       let line1 = "";
       let line2 = "";
