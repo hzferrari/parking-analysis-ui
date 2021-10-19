@@ -94,10 +94,6 @@ export default {
         this.curDateRange[0],
         this.curDateRange[1]
       );
-      console.log(
-        "🚀 ~ file: index.vue ~ line 141 ~ initData ~ resWeather",
-        resWeather
-      );
 
       this.dataObj.dataList = res.data;
 
@@ -113,6 +109,8 @@ export default {
 
       // 在有了this.dataObj.dataList之后处理天气数据
       this.handleWeatherData(resWeather);
+
+      console.log("this.dataObj.dataList: ", this.dataObj.dataList);
 
       this.$store.commit("app/setOnedayDataList", res.data);
 
@@ -144,40 +142,36 @@ export default {
         }
       }
 
-      console.log("dataList: ", dataList);
-
       // 计算要用来显示的当天的天气
       function getTodayWeather(list) {
+        let timeSet = 8;
         let resObj = {};
         for (let i = 0, len = list.length; i < len; i++) {
           let uptime = list[i].uptime;
           let hh = parseInt(uptime.match(/\d{2}:/)[0]); //获取小时部分
 
-          if (hh === 8) {
-            // console.log("=8 list[i].uptime: ", list[i].uptime);
+          if (hh === timeSet) {
             // 如果有第一个8点多的数据，则用这个
             resObj = list[i];
             break;
-          } else if (hh < 8) {
-            // console.log("<8 list[i].uptime: ", list[i].uptime);
+          } else if (hh < timeSet) {
             if (list[i + 1]) {
-              // 如果有下一个时间点的数据，查看下一个小时数是否大于8。
-              // 如果hhNext大于8，则选用当前的天气数据，否则继续到下一个循环
+              // 如果有下一个时间点的数据，查看下一个小时数是否大于timeSet。
+              // 如果hhNext大于timeSet，则选用当前的天气数据，否则继续到下一个循环
               let hhNext = parseInt(list[i + 1].uptime.match(/\d{2}:/)[0]);
-              if (hhNext > 8) {
+              if (hhNext > timeSet) {
                 resObj = list[i];
                 break;
               } else {
                 continue;
               }
             } else {
-              // 没有下一个了，只能用这个最接近8点的
+              // 没有下一个了，只能用这个最接近timeSet点的
               resObj = list[i];
               break;
             }
-          } else if (hh > 8) {
-            // console.log(">8 list[i].uptime: ", list[i].uptime);
-            // 进入这个分支说明是list[0]的hh就大于8了，则直接用这个数据
+          } else if (hh > timeSet) {
+            // 进入这个分支说明是list[0]的hh就大于timeSet了，则直接用这个数据
             resObj = list[i];
             break;
           }

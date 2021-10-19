@@ -12,6 +12,7 @@
  */
 import * as echarts from "echarts";
 import { mapGetters } from "vuex";
+import util from "@/utils/util";
 
 export default {
   props: {
@@ -61,7 +62,6 @@ export default {
       themeName: "",
       markPoint: {},
       themeChange: false,
-
       lineChartStyle: {
         lineStyle: {
           type: "dashed", //虚线
@@ -80,6 +80,7 @@ export default {
           shadowOffsetY: 5,
         },
       },
+      weatherMarkpoint: {},
       showLabel: true,
     };
   },
@@ -137,8 +138,48 @@ export default {
       if (!this.myChart) {
         this.myChart = echarts.init(chartEL, this.themeName);
       }
+      this.beforeSetOption();
 
       this.setOption();
+    },
+    /**
+     * 在setOption()之前执行
+     */
+    beforeSetOption() {
+      this.weatherMarkpoint = {
+        itemStyle: {
+          color: "#bbbbbb",
+        },
+        // 气泡里的文字样式
+        label: {
+          color: "rgba(0,0,0,0.8)",
+        },
+        data: [],
+      };
+
+      this.dataObj.dataList.forEach((v) => {
+        if (v.diffInRushTimeValue && v.weatherToShow) {
+          let symbol;
+          if (this.themeName === "vintage") {
+            symbol =
+              "image://" +
+              util.getWeatherIcon(v.weatherToShow.weather, "color1");
+          } else {
+            symbol =
+              "image://" +
+              util.getWeatherIcon(v.weatherToShow.weather, "color2");
+          }
+          let o = {
+            symbol: symbol,
+            symbolSize: [20, 20],
+            xAxis: v.date,
+            yAxis: v.rushTimeStartValue + 300,
+            // value: v.weatherToShow.weather,
+          };
+
+          this.weatherMarkpoint.data.push(o);
+        }
+      });
     },
     setOption() {
       let option = {
@@ -287,6 +328,7 @@ export default {
               show: false,
               position: "top",
             },
+            markPoint: this.weatherMarkpoint,
           },
           {
             name: "停车场满位",

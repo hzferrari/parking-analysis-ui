@@ -30,7 +30,7 @@ export default {
           titleText: "",
           showLegend: true, // 是否显示legend
           // legend_data: [],
-          markPoints: {},
+          markPoint: {},
         };
       },
     },
@@ -324,6 +324,7 @@ export default {
 
         this.markPoint = {
           // 气泡样式
+          symbol: "pin",
           itemStyle: {
             color: chartColors.grad.yellow,
           },

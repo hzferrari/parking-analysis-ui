@@ -248,4 +248,109 @@ util.isMobile = function() {
   return mobileFlag;
 };
 
+/**
+ *
+ * @param {String}} weatherName
+ * @returns icon的base64编码
+ */
+util.getWeatherIcon = function(weatherName, colorType = "color1") {
+  let WHEATHER_ICON = {};
+
+  if (colorType === "color1") {
+    WHEATHER_ICON = {
+      晴: require("../assets/weather-icon/color1/100-晴.png"),
+      多云: require("../assets/weather-icon/color1/101-多云.png"),
+      阴: require("../assets/weather-icon/color1/104-阴.png"),
+      阵雨: "",
+      雷阵雨: "",
+      雷阵雨有冰雹: "",
+      雨夹雪: "",
+      小雨: require("../assets/weather-icon/color1/305-小雨.png"),
+      中雨: require("../assets/weather-icon/color1/306-中雨.png"),
+      大雨: require("../assets/weather-icon/color1/307-大雨.png"),
+      暴雨: require("../assets/weather-icon/color1/310-暴雨.png"),
+      大暴雨: require("../assets/weather-icon/color1/311-大暴雨.png"),
+      特大暴雨: "",
+      阵雪: "",
+      小雪: "",
+      中雪: "",
+      大雪: "",
+      暴雪: "",
+      雾: require("../assets/weather-icon/color1/501-雾.png"),
+      冻雨: "",
+      沙尘暴: "",
+      小到中雨: "",
+      中到大雨: "",
+      大到暴雨: "",
+      暴雨到大暴雨: "",
+      大暴雨到特大暴雨: "",
+      小雪到中雪: "",
+      中雪到大雪: "",
+      大雪到暴雪: "",
+      浮尘: "",
+      扬沙: "",
+      强沙尘暴: "",
+      霾: require("../assets/weather-icon/color1/502-霾.png"),
+      浓雾: "",
+      强浓雾: "",
+      中度霾: "",
+      重度霾: "",
+      严重霾: "",
+      大雾: "",
+      特强浓雾: "",
+      雨: require("../assets/weather-icon/color1/399-雨.png"),
+      雪: "",
+      无: "",
+    };
+  } else if (colorType === "color2") {
+    WHEATHER_ICON = {
+      晴: require("../assets/weather-icon/color2/100-晴.png"),
+      多云: require("../assets/weather-icon/color2/101-多云.png"),
+      阴: require("../assets/weather-icon/color2/104-阴.png"),
+      阵雨: "",
+      雷阵雨: "",
+      雷阵雨有冰雹: "",
+      雨夹雪: "",
+      小雨: require("../assets/weather-icon/color2/305-小雨.png"),
+      中雨: require("../assets/weather-icon/color2/306-中雨.png"),
+      大雨: require("../assets/weather-icon/color2/307-大雨.png"),
+      暴雨: require("../assets/weather-icon/color2/310-暴雨.png"),
+      大暴雨: require("../assets/weather-icon/color2/311-大暴雨.png"),
+      特大暴雨: "",
+      阵雪: "",
+      小雪: "",
+      中雪: "",
+      大雪: "",
+      暴雪: "",
+      雾: require("../assets/weather-icon/color2/501-雾.png"),
+      冻雨: "",
+      沙尘暴: "",
+      小到中雨: "",
+      中到大雨: "",
+      大到暴雨: "",
+      暴雨到大暴雨: "",
+      大暴雨到特大暴雨: "",
+      小雪到中雪: "",
+      中雪到大雪: "",
+      大雪到暴雪: "",
+      浮尘: "",
+      扬沙: "",
+      强沙尘暴: "",
+      霾: require("../assets/weather-icon/color2/502-霾.png"),
+      浓雾: "",
+      强浓雾: "",
+      中度霾: "",
+      重度霾: "",
+      严重霾: "",
+      大雾: "",
+      特强浓雾: "",
+      雨: require("../assets/weather-icon/color2/399-雨.png"),
+      雪: "",
+      无: "",
+    };
+  }
+
+  return WHEATHER_ICON[weatherName];
+};
+
 export default util;

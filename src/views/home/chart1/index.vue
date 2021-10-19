@@ -177,10 +177,6 @@ export default {
 
       this.dataObj.dataList = this.handleData(dataList);
       this.dataObj.timestamp = timestamp;
-      console.log(
-        "🚀 ~ file: chart1.vue ~ line 164 ~ initLocalData ~ this.dataObj",
-        this.dataObj
-      );
 
       this.isLoading = false;
 
