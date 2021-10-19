@@ -80,7 +80,17 @@ export default {
           shadowOffsetY: 5,
         },
       },
-      weatherMarkpoint: {},
+      weatherMarkpoint: {
+        itemStyle: {
+          color: "#bbbbbb",
+        },
+        // 气泡里的文字样式
+        label: {
+          color: "rgba(0,0,0,0.8)",
+        },
+        data: [],
+      },
+      showWeather: true,
       showLabel: true,
     };
   },
@@ -120,6 +130,14 @@ export default {
         this.barChartStyle.itemStyle.color = "#e69d87";
       }
     },
+    showLoading() {
+      if (this.myChart) {
+        this.myChart.showLoading();
+      }
+    },
+    hideLoading() {
+      this.myChart.hideLoading();
+    },
     /**
      * 初始化图表
      */
@@ -146,40 +164,37 @@ export default {
      * 在setOption()之前执行
      */
     beforeSetOption() {
-      this.weatherMarkpoint = {
-        itemStyle: {
-          color: "#bbbbbb",
-        },
-        // 气泡里的文字样式
-        label: {
-          color: "rgba(0,0,0,0.8)",
-        },
-        data: [],
-      };
+      // 计算天气显示
+      if (this.showWeather) {
+        this.weatherMarkpoint.data = [];
 
-      this.dataObj.dataList.forEach((v) => {
-        if (v.diffInRushTimeValue && v.weatherToShow) {
-          let symbol;
-          if (this.themeName === "vintage") {
-            symbol =
-              "image://" +
-              util.getWeatherIcon(v.weatherToShow.weather, "color1");
-          } else {
-            symbol =
-              "image://" +
-              util.getWeatherIcon(v.weatherToShow.weather, "color2");
+        this.dataObj.dataList.forEach((v) => {
+          if (v.diffInRushTimeValue && v.weatherToShow) {
+            let symbol;
+            // 对应两种主题用不同颜色的icon
+            if (this.themeName === "vintage") {
+              symbol =
+                "image://" +
+                util.getWeatherIcon(v.weatherToShow.weather, "color1");
+            } else {
+              symbol =
+                "image://" +
+                util.getWeatherIcon(v.weatherToShow.weather, "color2");
+            }
+            let o = {
+              symbol: symbol,
+              symbolSize: [20, 20],
+              xAxis: v.date,
+              yAxis: v.p7first0Value + (this.showLabel ? 550 : 300),
+              // value: v.weatherToShow.weather,
+            };
+
+            this.weatherMarkpoint.data.push(o);
           }
-          let o = {
-            symbol: symbol,
-            symbolSize: [20, 20],
-            xAxis: v.date,
-            yAxis: v.rushTimeStartValue + 300,
-            // value: v.weatherToShow.weather,
-          };
-
-          this.weatherMarkpoint.data.push(o);
-        }
-      });
+        });
+      } else {
+        this.weatherMarkpoint.data = [];
+      }
     },
     setOption() {
       let option = {
@@ -203,10 +218,30 @@ export default {
           feature: {
             myTool1: {
               show: true,
+              title: "显示/隐藏天气",
+              icon: "path://M493.6 133.6c-3.2 2.4-5.6 26.4-5.6 52 0 36 3.2 48 12.8 52 21.6 8 39.2-8.8 41.6-41.6 4-47.2-4-68-25.6-68-9.6 0-20.8 2.4-23.2 5.6zM240.8 243.2c-12.8 15.2-2.4 35.2 32 64 29.6 25.6 44 26.4 56 4 7.2-14.4 4.8-20.8-21.6-48-32-32.8-51.2-38.4-66.4-20zM720.8 259.2c-28 28.8-30.4 49.6-7.2 64 11.2 7.2 20 2.4 46.4-23.2 37.6-36 40-62.4 8-66.4-14.4-1.6-28 5.6-47.2 25.6zM428 323.2C352.8 358.4 312.8 424 312 508.8c0 147.2 152 246.4 284 184 80-37.6 119.2-97.6 120-184.8 0-64.8-15.2-102.4-58.4-146.4-60-59.2-152-75.2-229.6-38.4z m168 61.6c32.8 22.4 68 86.4 68 122.4-0.8 58.4-49.6 121.6-108.8 140.8C465.6 677.6 368 604.8 368 508c0-38.4 20-86.4 45.6-109.6 46.4-42.4 130.4-48.8 182.4-13.6zM136.8 495.2c-15.2 27.2 5.6 42.4 54.4 39.2 48.8-2.4 68-19.2 49.6-41.6-16-19.2-93.6-17.6-104 2.4zM789.6 485.6c-3.2 2.4-5.6 13.6-5.6 23.2 0 21.6 20.8 29.6 68 25.6 32.8-2.4 49.6-20 41.6-41.6-4-9.6-16-12.8-52-12.8-25.6 0-49.6 2.4-52 5.6zM260.8 720c-24 27.2-28 35.2-20.8 48 12.8 24 33.6 19.2 68-16 25.6-26.4 30.4-35.2 23.2-46.4-16-24.8-39.2-20-70.4 14.4zM706.4 693.6c-32.8 12.8 24.8 94.4 62.4 88.8 30.4-4 28-28.8-5.6-63.2-29.6-30.4-37.6-33.6-56.8-25.6zM493.6 781.6c-3.2 2.4-5.6 26.4-5.6 52 0 49.6 12.8 65.6 39.2 48.8 16-9.6 21.6-78.4 8-95.2-9.6-12-32.8-15.2-41.6-5.6z",
+              //icon: "image://" + require("../../assets/weather-icon/color1/100-晴.png"), // base64形式，不能通过borderWidth调大小
+              iconStyle: {
+                borderWidth: 0.7,
+              },
+              onclick: () => {
+                this.showWeather = !this.showWeather;
+
+                this.beforeSetOption();
+                this.setOption();
+              },
+            },
+            myTool2: {
+              show: true,
               title: "显示/隐藏标签",
               icon: "path://M498.4832 815.9232a60.2112 60.2112 0 0 1-18.8416-2.8672 61.44 61.44 0 0 1-40.96-48.3328l-23.3472-138.4448a20.0704 20.0704 0 0 0-16.7936-16.7936l-138.4448-23.3472a61.44 61.44 0 0 1-33.1776-104.0384l259.2768-259.2768A62.2592 62.2592 0 0 1 528.7936 204.8h228.9664A61.44 61.44 0 0 1 819.2 266.24v228.9664a62.2592 62.2592 0 0 1-18.0224 43.4176l-259.2768 259.2768a61.0304 61.0304 0 0 1-43.4176 18.0224zM528.7936 245.76a19.2512 19.2512 0 0 0-14.336 6.144l-259.2768 259.2768a20.48 20.48 0 0 0-5.3248 21.2992 21.2992 21.2992 0 0 0 16.384 13.9264l138.4448 22.9376a61.44 61.44 0 0 1 50.3808 50.3808l22.9376 138.4448a21.2992 21.2992 0 0 0 13.9264 16.384 20.48 20.48 0 0 0 20.8896-5.3248l259.2768-259.2768a19.2512 19.2512 0 0 0 6.144-14.336V266.24a20.48 20.48 0 0 0-20.48-20.48z M655.36 368.64m-40.96 0a40.96 40.96 0 1 0 81.92 0 40.96 40.96 0 1 0-81.92 0Z",
+              iconStyle: {
+                borderWidth: 0.7,
+              },
               onclick: () => {
                 this.showLabel = !this.showLabel;
+
+                this.beforeSetOption();
                 this.setOption();
               },
             },
@@ -341,6 +376,7 @@ export default {
               distance: 5, // 标签和折线间距
               fontSize: 10,
               emphasis: {
+                show: this.showLabel,
                 fontSize: 12,
                 fontWeight: 700,
               },

@@ -10,6 +10,7 @@
       value-format="timestamp"
       :default-time="['00:00:00', '23:59:59']"
       :picker-options="pickerOptions"
+      :disabled="disabled"
       @change="onChange"
     >
     </el-date-picker>
@@ -28,6 +29,9 @@ export default {
      */
     defaultDay: {
       default: "",
+    },
+    disabled: {
+      type: Boolean,
     },
   },
   computed: {},

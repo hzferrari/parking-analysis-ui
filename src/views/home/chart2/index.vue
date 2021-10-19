@@ -13,6 +13,7 @@
       <the-daterange-picker
         style="position: absolute; left: 10px"
         ref="theDatePicker"
+        :disabled="isLoading"
         @change="onDaterangePickerChange"
       ></the-daterange-picker>
 
@@ -22,7 +23,7 @@
       </div>
     </div>
 
-    <bar-chart chartIndex="1" :dataObj="dataObj"></bar-chart>
+    <bar-chart ref="myChart" chartIndex="1" :dataObj="dataObj"></bar-chart>
   </div>
 </template>
 
@@ -53,6 +54,7 @@ export default {
       curDateRange: [], // initData() 正在使用的时间戳
       titleText: "上班早高峰时间段",
       subTitle: "(二期天面)",
+      isLoading: false,
     };
   },
   created() {
@@ -85,6 +87,11 @@ export default {
      * 从接口获取数据
      */
     async initData() {
+      if (this.$refs.myChart) {
+        this.$refs.myChart.showLoading();
+      }
+      this.isLoading = true;
+
       let res = await getOnedayDataByTimestamp(
         this.curDateRange[0],
         this.curDateRange[1]
@@ -114,10 +121,8 @@ export default {
 
       this.$store.commit("app/setOnedayDataList", res.data);
 
-      // console.log(
-      //   "chart2 initData this.dataObj.dataList: ",
-      //   this.dataObj.dataList
-      // );
+      this.isLoading = false;
+      this.$refs.myChart.hideLoading();
     },
     /**
      * 处理天气数据
@@ -144,34 +149,37 @@ export default {
 
       // 计算要用来显示的当天的天气
       function getTodayWeather(list) {
-        let timeSet = 9;
+        // 后面会计算最靠近这个小时点的时间。
+        // 例：设置为7，优先找7点开始最接近7点的数据；没有7点x的数据时，找6点、5点...的数据；如果前面都没有，则找8点后的数据
+        let hourTime = 7;
+
         let resObj = {};
         for (let i = 0, len = list.length; i < len; i++) {
           let uptime = list[i].uptime;
           let hh = parseInt(uptime.match(/\d{2}:/)[0]); //获取小时部分
 
-          if (hh === timeSet) {
-            // 如果有第一个8点多的数据，则用这个
+          if (hh === hourTime) {
+            // 如果有第一个hourTime点多的数据，则用这个
             resObj = list[i];
             break;
-          } else if (hh < timeSet) {
+          } else if (hh < hourTime) {
             if (list[i + 1]) {
-              // 如果有下一个时间点的数据，查看下一个小时数是否大于timeSet。
-              // 如果hhNext大于timeSet，则选用当前的天气数据，否则继续到下一个循环
+              // 如果有下一个时间点的数据，查看下一个小时数是否大于hourTime。
+              // 如果hhNext大于hourTime，则选用当前的天气数据，否则继续到下一个循环
               let hhNext = parseInt(list[i + 1].uptime.match(/\d{2}:/)[0]);
-              if (hhNext > timeSet) {
+              if (hhNext > hourTime) {
                 resObj = list[i];
                 break;
               } else {
                 continue;
               }
             } else {
-              // 没有下一个了，只能用这个最接近timeSet点的
+              // 没有下一个了，只能用这个最接近hourTime点的
               resObj = list[i];
               break;
             }
-          } else if (hh > timeSet) {
-            // 进入这个分支说明是list[0]的hh就大于timeSet了，则直接用这个数据
+          } else if (hh > hourTime) {
+            // 进入这个分支说明是list[0]的hh就大于hourTime了，则直接用这个数据
             resObj = list[i];
             break;
           }
