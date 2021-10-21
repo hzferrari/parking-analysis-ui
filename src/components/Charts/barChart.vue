@@ -371,7 +371,7 @@ export default {
                 },
               },
               lineStyle: {
-                type: "dashed", //虚线
+                type: "dotted", //虚线
                 opacity: 0.7,
                 color: "#7289ab",
                 width: 2,
@@ -382,7 +382,7 @@ export default {
               symbol: ["none", "circle"],
               data: [
                 {
-                  xAxis: "2021-10-08", //
+                  xAxis: "2021-10-07", //
                   y: "83%",
                   name: "新政策",
                 },
