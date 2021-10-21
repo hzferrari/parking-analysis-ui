@@ -363,7 +363,31 @@ export default {
               show: false,
               position: "top",
             },
-            markPoint: this.weatherMarkpoint,
+            markLine: {
+              label: {
+                show: true,
+                formatter: (params) => {
+                  return "停车新政策颁布";
+                },
+              },
+              lineStyle: {
+                type: "dashed", //虚线
+                opacity: 0.7,
+                color: "#7289ab",
+                width: 2,
+                shadowColor: "rgba(0,0,0,0.3)",
+                shadowBlur: 7,
+                shadowOffsetY: 5,
+              },
+              symbol: ["none", "circle"],
+              data: [
+                {
+                  xAxis: "2021-10-08", //
+                  y: "83%",
+                  name: "新政策",
+                },
+              ],
+            },
           },
           {
             name: "停车场满位",
@@ -377,7 +401,7 @@ export default {
               fontSize: 10,
               emphasis: {
                 show: this.showLabel,
-                fontSize: 12,
+                fontSize: 10,
                 fontWeight: 700,
               },
               formatter: (params) => {
@@ -386,8 +410,8 @@ export default {
             },
             lineStyle: this.lineChartStyle.lineStyle,
             itemStyle: this.lineChartStyle.itemStyle,
+            markPoint: this.weatherMarkpoint,
             markLine: {
-              show: false,
               symbol: ["none", "circle"],
               data: [
                 [
@@ -449,13 +473,21 @@ export default {
 
       let title = params[0].axisValue;
       let week = params[0].data.week;
-      let weatherName = params[0].data.weatherToShow.weather;
-      let weatherIconSrc = util.getWeatherIcon(
-        params[0].data.weatherToShow.weather,
-        "color1"
-      );
+      let weatherName;
+      let weatherIconSrc;
+      let line0;
 
-      let line0 = `<p style="font-weight:500;">${title}&nbsp;&nbsp; ${week}&nbsp;&nbsp; <span>${weatherName}</span><img src="${weatherIconSrc}" style="width:30px;height:30px;vertical-align:middle;"/></p>`;
+      if (params[0].data.weatherToShow) {
+        weatherName = params[0].data.weatherToShow.weather;
+        weatherIconSrc = util.getWeatherIcon(
+          params[0].data.weatherToShow.weather,
+          "color1"
+        );
+
+        line0 = `<p style="font-weight:500;">${title}&nbsp;&nbsp; ${week}&nbsp;&nbsp; <span>${weatherName}</span><img src="${weatherIconSrc}" style="width:30px;height:30px;vertical-align:middle;"/></p>`;
+      } else {
+        line0 = `<p style="font-weight:500;">${title}&nbsp;&nbsp; ${week}&nbsp;&nbsp;</p>`;
+      }
 
       let line1 = "";
       let line2 = "";
