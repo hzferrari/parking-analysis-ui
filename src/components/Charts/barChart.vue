@@ -313,7 +313,7 @@ export default {
             "diffInRushTimeValue",
             "p7first0Value",
             "p7firstNot0Value",
-            "p6first0Value",
+            "markLines", // 没有对应的数据，仅用于显示markLines的series
           ],
           source: this.dataObj.dataList,
         },
@@ -363,31 +363,31 @@ export default {
               show: false,
               position: "top",
             },
-            markLine: {
-              label: {
-                show: true,
-                formatter: (params) => {
-                  return "停车新政策颁布";
-                },
-              },
-              lineStyle: {
-                type: "dotted", //虚线
-                opacity: 0.7,
-                color: "#7289ab",
-                width: 2,
-                shadowColor: "rgba(0,0,0,0.3)",
-                shadowBlur: 7,
-                shadowOffsetY: 5,
-              },
-              symbol: ["none", "circle"],
-              data: [
-                {
-                  xAxis: "2021-10-07", //
-                  y: "83%",
-                  name: "新政策",
-                },
-              ],
-            },
+            // markLine: {
+            //   label: {
+            //     show: true,
+            //     formatter: (params) => {
+            //       return "停车新政策颁布";
+            //     },
+            //   },
+            //   lineStyle: {
+            //     type: "dotted", //虚线
+            //     opacity: 0.7,
+            //     color: "#7289ab",
+            //     width: 2,
+            //     shadowColor: "rgba(0,0,0,0.3)",
+            //     shadowBlur: 7,
+            //     shadowOffsetY: 5,
+            //   },
+            //   symbol: ["none", "circle"],
+            //   data: [
+            //     {
+            //       xAxis: "2021-10-07", //
+            //       y: "83%",
+            //       name: "新政策",
+            //     },
+            //   ],
+            // },
           },
           {
             name: "停车场满位",
@@ -458,6 +458,48 @@ export default {
             },
             lineStyle: {
               type: "dashed",
+            },
+          },
+          {
+            name: "markLines",
+            type: "line",
+            label: {
+              show: false,
+            },
+            markLine: {
+              label: {
+                show: true,
+                formatter: (params) => {
+                  return params.name;
+                },
+              },
+              lineStyle: {
+                type: "dotted", //虚线
+                opacity: 0.7,
+                color: "#7289ab",
+                width: 2,
+                shadowColor: "rgba(0,0,0,0.3)",
+                shadowBlur: 7,
+                shadowOffsetY: 5,
+              },
+              symbol: ["none", "circle"],
+              data: [
+                {
+                  xAxis: "2021-10-07", //
+                  y: "83%",
+                  name: "停车新政策颁布",
+                },
+                {
+                  xAxis: "2021-10-24", //
+                  y: "83%",
+                  name: "总经办财务法务搬惠南",
+                },
+                {
+                  xAxis: "2021-10-31", //
+                  y: "83%",
+                  name: "采购搬惠南",
+                },
+              ],
             },
           },
         ],
