@@ -185,7 +185,8 @@ export default {
               symbol: symbol,
               symbolSize: [20, 20],
               xAxis: v.date,
-              yAxis: v.p7first0Value + (this.showLabel ? 550 : 300),
+              // yAxis: v.p7first0Value + (this.showLabel ? 550 : 300),  // 显示在顶部
+              yAxis: v.rushTimeStartValue - 250, // 显示在底部
               // value: v.weatherToShow.weather,
             };
 
@@ -292,7 +293,8 @@ export default {
           },
         ],
         legend: {
-          data: ["早高峰时间段", "停车场满位"],
+          // data: ["早高峰时间段", "停车场满位", "出现空位 "],
+          data: ["早高峰时间段", "停车场满位", "大事件"],
           selected: {
             出现空位: false,
           },
@@ -363,31 +365,6 @@ export default {
               show: false,
               position: "top",
             },
-            // markLine: {
-            //   label: {
-            //     show: true,
-            //     formatter: (params) => {
-            //       return "停车新政策颁布";
-            //     },
-            //   },
-            //   lineStyle: {
-            //     type: "dotted", //虚线
-            //     opacity: 0.7,
-            //     color: "#7289ab",
-            //     width: 2,
-            //     shadowColor: "rgba(0,0,0,0.3)",
-            //     shadowBlur: 7,
-            //     shadowOffsetY: 5,
-            //   },
-            //   symbol: ["none", "circle"],
-            //   data: [
-            //     {
-            //       xAxis: "2021-10-07", //
-            //       y: "83%",
-            //       name: "新政策",
-            //     },
-            //   ],
-            // },
           },
           {
             name: "停车场满位",
@@ -404,8 +381,19 @@ export default {
                 fontSize: 10,
                 fontWeight: 700,
               },
+              rich: {
+                labelType1: {
+                  color: "#61a0a8",
+                },
+              },
               formatter: (params) => {
-                return this.formatYAxisTime(params.data.p7first0Value);
+                // 如果930没满，显示剩余车位数
+                if (params.data.p7RemainAt930) {
+                  // label富文本，对应rich里的key。（可用\n换行）
+                  return `{labelType1|${params.data.p7RemainAt930}}`;
+                } else {
+                  return this.formatYAxisTime(params.data.p7first0Value);
+                }
               },
             },
             lineStyle: this.lineChartStyle.lineStyle,
@@ -461,7 +449,7 @@ export default {
             },
           },
           {
-            name: "markLines",
+            name: "大事件",
             type: "line",
             label: {
               show: false,
@@ -520,6 +508,7 @@ export default {
       let line0;
 
       if (params[0].data.weatherToShow) {
+        // 有天气
         weatherName = params[0].data.weatherToShow.weather;
         weatherIconSrc = util.getWeatherIcon(
           params[0].data.weatherToShow.weather,
@@ -550,13 +539,23 @@ export default {
             let label2 = params[2].seriesName;
             let color2 = params[2].color;
 
-            line1 = `<p style="margin-top:3px;" ><span style="${circleStyle};background:${color2}"></span>${label2}&nbsp;&nbsp;&nbsp; : <span style="font-weight:700;">${end}</span></p>`;
+            setLine1(params, circleStyle, color2, label2, end);
           }
         } else if (params[1].seriesIndex === 2) {
           let label2 = params[1].seriesName;
           let color2 = params[1].color;
-          line1 = `<p style="margin-top:3px;" ><span style="${circleStyle};background:${color2}"></span>${label2}&nbsp;&nbsp;&nbsp; : <span style="font-weight:700;">${end}</span></p>`;
+
+          setLine1(params, circleStyle, color2, label2, end);
         }
+      }
+
+      function setLine1(params, circleStyle, color2, label2, end) {
+        // 区分有无p7RemainAt930的情况
+        if (params[0].data.p7RemainAt930) {
+          label2 = "9:30剩余车位数";
+          end = params[0].data.p7RemainAt930;
+        }
+        line1 = `<p style="margin-top:3px;" ><span style="${circleStyle};background:${color2}"></span>${label2} : <span style="font-weight:700;">${end}</span></p>`;
       }
 
       return line0 + line1 + line2;
