@@ -121,7 +121,7 @@ export default {
       // 在有了this.dataObj.dataList之后处理天气数据
       this.handleWeatherData(resWeather);
 
-      console.log("this.dataObj.dataList: ", this.dataObj.dataList);
+      // console.log("this.dataObj.dataList: ", this.dataObj.dataList);
 
       this.$store.commit("app/setOnedayDataList", res.data);
 

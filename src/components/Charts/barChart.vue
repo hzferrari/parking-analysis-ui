@@ -185,7 +185,7 @@ export default {
               symbol: symbol,
               symbolSize: [20, 20],
               xAxis: v.date,
-              // yAxis: v.p7first0Value + (this.showLabel ? 550 : 300),  // 显示在顶部
+              // yAxis: v.p7first0Value + (this.showLabel ? 600 : 300),  // 显示在顶部
               yAxis: v.rushTimeStartValue - 250, // 显示在底部
               // value: v.weatherToShow.weather,
             };
