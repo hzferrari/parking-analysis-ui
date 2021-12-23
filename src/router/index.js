@@ -25,6 +25,16 @@ const routes = [
   //   name: "calculate",
   //   component: () => import(/* webpackChunkName: "private" */ "../views/_calculate"),
   // },
+  {
+    path: "/mobile/showAll",
+    name: "mobileShowAll",
+    component: () => import(/* webpackChunkName: "mobile" */ "../views/mobile/showAll"),
+  },
+  {
+    path: "/mobile/practise",
+    name: "mobilePractise",
+    component: () => import(/* webpackChunkName: "mobile" */ "../views/mobile/practise"),
+  },
 ];
 
 const router = new VueRouter({
