@@ -14,7 +14,7 @@
               ref="inputAnsRef"
               class="input-ans"
               v-model="inputAns"
-              type="tel"
+              type="number"
               @keyup.enter="onInputEnter"
             ></cs-input>
             <span class="unit">%</span>
@@ -36,7 +36,7 @@
                 ref="inputAnsRef"
                 class="input-ans"
                 v-model="inputAns"
-                type="tel"
+                type="number"
                 @keyup.enter="onInputEnter"
               ></cs-input>
               )
