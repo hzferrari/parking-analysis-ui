@@ -100,6 +100,21 @@ export default {
               picker.$emit("pick", [start, end]);
             },
           },
+          // {
+          //   text: "最近半年",
+          //   onClick(picker) {
+          //     let todayStr = util.formatDate(new Date(), "yyyy/MM/dd");
+          //     let startDayStr = util.formatDate(
+          //       new Date(Date.now() - 3600 * 1000 * 24 * 182),
+          //       "yyyy/MM/dd"
+          //     );
+
+          //     const start = new Date(startDayStr + " 00:00:00");
+          //     const end = new Date(todayStr + " 23:59:59");
+
+          //     picker.$emit("pick", [start, end]);
+          //   },
+          // },
         ],
       },
       value: "",
