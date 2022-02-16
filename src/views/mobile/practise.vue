@@ -220,6 +220,7 @@ export default {
             margin: 0.02rem auto 0.05rem;
             width: 1rem;
             border-top: 1px solid rgba(0, 0, 0, 0.4);
+            border-color: inherit;
           }
         }
         .equal {
@@ -235,7 +236,8 @@ export default {
       // 答案输入框整体设置
       .input-ans {
         display: inline-block;
-        border-bottom: 1px solid rgba(5, 33, 160, 0.4);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+        border-color: inherit;
         ::v-deep input {
           text-align: center;
         }
