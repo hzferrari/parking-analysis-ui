@@ -240,7 +240,7 @@ export default {
             break;
           }
 
-          // 计算早高峰起点（假设p7剩余车位300时是早高峰的开始）
+          // 计算早高峰起点（假设p7空闲车位300时是早高峰的开始）
           if (!rushTimeStartIndex && oneDay.dataList[i].p7 <= 300) {
             rushTimeStartIndex = i;
           }

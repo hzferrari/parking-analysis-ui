@@ -26,7 +26,7 @@
       />
 
       <div>
-        <p style="font-size: 20px">剩余车位数</p>
+        <p style="font-size: 20px">空闲车位数</p>
         <p style="font-size: 15px; margin-top: 10px">{{ subTitle }}</p>
       </div>
     </div>
@@ -232,7 +232,7 @@ export default {
           this.dataObj.markPoints["p7firstNot0"] = index;
         }
 
-        // 计算早高峰起止（假设p7剩余车位300时是早高峰的开始）
+        // 计算早高峰起止（假设p7空闲车位300时是早高峰的开始）
         if (!this.dataObj.markPoints["rushTimeStart"] && v.p7 <= 300) {
           this.dataObj.markPoints["rushTimeStart"] = index;
         }
@@ -406,7 +406,7 @@ export default {
           let lastItemMinute = lastItem.time.split(":")[1];
 
           if (second !== "00") {
-            // 当前项的数据是记录到秒的，当前分钟的每个停车场剩余车位的最大数量，记录到lastItem
+            // 当前项的数据是记录到秒的，当前分钟的每个停车场空闲车位的最大数量，记录到lastItem
 
             if (lastItemMinute === minute) {
               // 如上一项是 8:30:00，当前项是8:30:05。是同一分钟

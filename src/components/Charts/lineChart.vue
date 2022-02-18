@@ -241,7 +241,7 @@ export default {
                 let redDom =
                   "<div style='padding: 0 20px;font-size:14px;line-height:26px'>" +
                   "<ul style='list-style: disc'>" +
-                  "<li>早高峰定义：（二期天面）剩余300个车位至满位的时间段</li>" +
+                  "<li>早高峰定义：（二期天面）空闲300个车位至满位的时间段</li>" +
                   "<li>红色气泡：停车场满位时刻" +
                   "<p>相邻的下一个黄色气泡：停车场出现空位</p></li>" +
                   "<li><p>默认横坐标间隔以分钟为单位。开启“精确到秒”时，</p><p>大概8:20-8:50的一段时间间隔变为5s</p></li>" +
@@ -268,7 +268,7 @@ export default {
           type: "category",
         },
         yAxis: {
-          name: "剩余车位数",
+          name: "空闲车位数",
           type: "value",
           axisPointer: {
             snap: true, //  坐标轴指示器是否自动吸附到点上。(不显示小数)
@@ -348,7 +348,7 @@ export default {
               value: tData.dataList[tData.markPoints["rushTimeStart"]].p7,
             },
             {
-              name: "剩余车位0",
+              name: "空闲车位0",
               xAxis: tData.markPoints["p7first0"],
               yAxis: tData.dataList[tData.markPoints["p7first0"]].p7,
               value: tData.dataList[tData.markPoints["p7first0"]].p7,
@@ -371,7 +371,7 @@ export default {
 
         if (tData.markPoints["time0800"]) {
           this.markPoint.data.push({
-            name: "8点剩余车位",
+            name: "8点空闲车位数",
             xAxis: tData.markPoints["time0800"],
             yAxis: tData.dataList[tData.markPoints["time0800"]].p7,
             value: tData.dataList[tData.markPoints["time0800"]].p7,
@@ -441,7 +441,7 @@ export default {
           },
           data: [
             {
-              name: "车位剩余最小值",
+              name: "车位空闲最小值",
               type: "min",
             },
           ],
@@ -449,7 +449,7 @@ export default {
         // 这样写，没有那时刻的数据时才不会保存
         if (tData.markPoints["time0800"]) {
           this.markPoint.data.push({
-            name: "8点剩余车位",
+            name: "8点空闲车位数",
             xAxis: tData.markPoints["time0800"],
             yAxis: tData.dataList[tData.markPoints["time0800"]].p7,
             value: tData.dataList[tData.markPoints["time0800"]].p7,

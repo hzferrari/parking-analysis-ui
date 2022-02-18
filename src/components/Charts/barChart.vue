@@ -263,9 +263,9 @@ export default {
                 let redDom =
                   "<div style='padding: 0 20px;font-size:14px;line-height:26px'>" +
                   "<ul style='list-style: disc'>" +
-                  "<li>早高峰定义：（二期天面）剩余300个车位至满位的时间段</li>" +
+                  "<li>早高峰定义：（二期天面）空闲300个车位至满位的时间段</li>" +
                   "<li>平均满位时刻：会随着显示范围的改变而实时变化</li>" +
-                  "<li>每天早上9点更新当天早高峰数据；每天0点更新昨天完整数据</li>" +
+                  "<li>每天早上9点31分更新当天早高峰数据；每天0点更新昨天完整数据</li>" +
                   "</ul>" +
                   "</div>";
 
@@ -387,7 +387,7 @@ export default {
                 },
               },
               formatter: (params) => {
-                // 如果930没满，显示剩余车位数
+                // 如果930没满，显示空闲车位数
                 if (params.data.p7RemainAt930) {
                   // label富文本，对应rich里的key。（可用\n换行）
                   return `{labelType1|${params.data.p7RemainAt930}}`;
@@ -567,7 +567,7 @@ export default {
       function setLine1(params, circleStyle, color2, label2, end) {
         // 区分有无p7RemainAt930的情况
         if (params[0].data.p7RemainAt930) {
-          label2 = "9:30剩余车位数";
+          label2 = "9:30空闲车位数";
           end = params[0].data.p7RemainAt930;
         }
         line1 = `<p style="margin-top:3px;" ><span style="${circleStyle};background:${color2}"></span>${label2} : <span style="font-weight:700;">${end}</span></p>`;
